@@ -1,0 +1,22 @@
+# deny bots on subsites
+
+if ($http_user_agent ~* "bot" )                 { set $deny true; }
+if ($http_user_agent ~* "spider" )              { set $deny true; }
+if ($http_user_agent ~* "crawler" )             { set $deny true; }
+
+if ($host ~ "^\w+\.\w+$" )                      { set $deny false; }
+
+if ($deny = true )                              { return 403; }
+
+
+## deny bots except google, bing, and yahoo on main site
+
+if ($http_user_agent ~* "bot" )                 { set $deny true; }
+if ($http_user_agent ~* "spider" )              { set $deny true; }
+if ($http_user_agent ~* "crawler" )             { set $deny true; }
+
+if ($http_user_agent ~* "google" )              { set $deny false; }
+if ($http_user_agent ~* "bing" )                { set $deny false; }
+if ($http_user_agent ~* "yahoo" )               { set $deny false; }
+
+if ($deny = true )                              { return 403; }

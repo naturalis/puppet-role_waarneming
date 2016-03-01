@@ -1,0 +1,21 @@
+{
+  "name": "madtech-waarneming",
+  "version": "0.1.0",
+  "author": "Edwin Hermans <edwin@madtech.cx>",
+  "summary": "Installs and configures web-server and database components to host waarneming.nl",
+  "license": "Apache 2.0",
+  "source": "https://github.com/madeddie/puppet-waarneming",
+  "project_page": "https://github.com/madeddie/puppet-waarneming",
+  "issues_url": "https://github.com/madeddie/puppet-waarneming/issues",
+  "tags": ["waarneming.nl", "observation.org", "nginx", "php", "fpm", "postgresql"],
+  "operatingsystem_support": [{
+    "operatingsystem": "Ubuntu",
+    "operatingsystemrelease": [ "14.04" ]
+  }],
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 1.0.0"},
+    {"name":"jfryman/nginx","version_requirement":">= 0.3.0"},
+    {"name":"puppetlabs/postgresql","version_requirement":">= 4.7.1"},
+    {"name":"puppetlabs/vcsrepo","version_requirement":">= 1.3.2"}
+  ]
+}

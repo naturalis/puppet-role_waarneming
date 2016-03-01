@@ -1,0 +1,2 @@
+if ($http_user_agent ~ "yandex.com" )           { set $fu true; }
+if ($fu)                                        { return 403; }

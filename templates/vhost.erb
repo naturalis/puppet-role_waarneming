@@ -1,0 +1,111 @@
+server {
+  listen              443<% if @site == 'waarneming' %> default<% end %> ssl;
+  listen              80<% if @site == 'waarneming' %> default<% end %>;
+  server_name         <%= @server_name %>;
+  ssl_certificate     /etc/ssl/<%= @site %>_crt.pem;
+  ssl_certificate_key /etc/ssl/<%= @site %>_key.pem;
+  keepalive_timeout   60;
+  access_log          /var/log/nginx/<%= @site %>_access.log custom;
+  error_log           /var/log/nginx/<%= @site %>_error.log;
+  root                /home/waarneming/www;
+
+<% if @site == 'wnimg' -%>
+  location / {
+    root /home/waarneming/www/static;
+  }
+  location /static {
+    root /home/waarneming/www/static;
+  }
+  location /status {
+    root /home/waarneming/www/status;
+  }
+  location ~ /\.ht {
+    deny all;
+  }
+  location ~* ^.+.php$ {
+    deny all;
+  }
+<% else -%>
+  location / {
+    client_max_body_size 50M;
+    location ~ ^/(_router)|(_robots)\.php$ { include include/php_long; }
+    location ~ /\.ht                       { deny all; } #block .htaccess and .htpasswd
+    include include/block_bot; #block bots on subsites
+
+    ## redirect domains
+    if ($host ~* "observa(?!(tion\.org)|(do\.org)|(tions\.be))" ) { rewrite ^/(.*)$ https://observation.org/$1 permanent; }
+    if ($host ~* "spotvogel\.nl" )                                { rewrite ^/(.*)$ http://waarneming.nl/$1 permanent; }
+    if ($host ~* www\.(.*)) {
+      set $host_without_www $1;
+      rewrite ^(.*)$ http://$host_without_www$1 permanent;
+    }
+
+    ## rewrite /index.php to / and do the opposite for the mobile site
+    #if ($host !~* "^m\..+") { rewrite ^/index.php(.*)$ /$1 permanent; }
+    if ($host ~* "^m\..+") { rewrite ^/$ /index.php permanent; }
+
+    if ($request_uri ~ "(.+)/$") { rewrite ^(.*)$ $1index.php permanent; } # add index.php to directories with a slash
+    if ($request_uri ~ "^/$")    { rewrite ^ /_router.php; }
+    if ($request_uri ~ "^/\?")   { rewrite ^ /_router.php; }
+
+    if ($uri ~ \.php$)               { set $router true; }
+    if ($uri ~ .+\.(jpe?g|gif|png)$) { set $imgr T; }
+    if ($args ~ [hv]\=)              { set $imgr "${imgr}T"; }
+    if ($imgr = TT)                  { set $router true; }
+    if (!-e $request_filename)       { set $router true; }
+    if ($router)                     { rewrite ^ /_router.php; }
+    if ($uri ~ robots\.txt$)         { rewrite ^ /_robots.php; }
+  }
+
+  location /_app       { return 403; }
+  location /_pie       { return 403; }
+  location /_pie.bak   { return 403; }
+  location /tools/temp { return 403; }
+
+  location /_doc {
+    auth_basic "Beveiligd gedeelte";
+    auth_basic_user_file /home/waarneming/www/_doc/.htpasswd;
+  }
+
+  location /ndff {
+    auth_basic "Verification Required";
+    auth_basic_user_file /home/waarneming/www/ndff/.htpasswd;
+  }
+
+  location /fotonew {
+    include include/block_bot; #block bots on subsites
+    include include/block_unwanted;
+    root /home/waarneming/media;
+
+    if ($args ~ [hv]\=) { rewrite ^ /_router.php last; }
+
+    if (-f $request_filename) { break; }
+
+    set $local xx;
+    if ($host ~ waarneming.nl )   { set $local nl; }
+    if ($host ~ waarnemingen.be ) { set $local be; }
+    if ($host ~ observations.be ) { set $local be; }
+
+    if ($uri ~ "/fotonew/\d/(\d+)(\d{3})(\d{3})\.jpg" )   { set $path photo/$1/$2/$1$2$3.jpg; }
+    if ($uri ~ "/fotonew/\d/(\d+)0(\d{2})(\d{3})\.jpg" )  { set $path photo/$1/$2/$10$2$3.jpg; }
+    if ($uri ~ "/fotonew/\d/(\d+)00(\d{1})(\d{3})\.jpg" ) { set $path photo/$1/$2/$100$2$3.jpg; }
+    if ($uri ~ "/fotonew/\d/(\d{1,3})(\d{3})\.jpg" )      { set $path photo/0/$1/$1$2.jpg; }
+    if ($uri ~ "/fotonew/\d/(\d{1,3})\.jpg" )             { set $path photo/0/0/$1.jpg; }
+
+    if (-f "/home/waarneming/media/local_$local/$path" )  { rewrite ^ /local_$local/$path break; }
+    if (-f /home/waarneming/media/local_nl/$path )        { rewrite ^ /local_nl/$path break; }
+    if (-f "/home/waarneming/media/local_be/$path" )      { rewrite ^ /local_be/$path break; }
+    if (-f /home/waarneming/media/local_xx/$path )        { rewrite ^ /local_xx/$path break; }
+  }
+<% end -%>
+<% if @site == 'waarneming' -%>
+
+  include include/phppgadmin;
+
+  location /toolshugo {
+    include include/php-ssl;
+    alias /home/admin/www;
+    index index.php;
+  }
+<% end -%>
+}
