@@ -21,4 +21,10 @@ class waarneming::conf (
   $local_nl_password,
   $local_xx_password,
 ) {
+  # Configure apt to apt-get update once a day
+  class { 'apt':
+    update => {
+      frequency => 'daily',
+    },
+  }
 }
