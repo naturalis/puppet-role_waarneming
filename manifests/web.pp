@@ -1,20 +1,20 @@
 # Install webserver and app
-class waarneming::web (
+class role_waarneming::web (
   $sites = {
     'waarneming'    => {
-      'ssl_key'     => $::waarneming::conf::waarneming_key,
-      'ssl_crt'     => $::waarneming::conf::waarneming_crt,
-      'server_name' => $::waarneming::conf::waarneming_server_name,
+      'ssl_key'     => $::role_waarneming::conf::waarneming_key,
+      'ssl_crt'     => $::role_waarneming::conf::waarneming_crt,
+      'server_name' => $::role_waarneming::conf::waarneming_server_name,
     },
     'observation'   => {
-      'ssl_key'     => $::waarneming::conf::observation_key,
-      'ssl_crt'     => $::waarneming::conf::observation_crt,
-      'server_name' => $::waarneming::conf::observation_server_name,
+      'ssl_key'     => $::role_waarneming::conf::observation_key,
+      'ssl_crt'     => $::role_waarneming::conf::observation_crt,
+      'server_name' => $::role_waarneming::conf::observation_server_name,
     },
     'wnimg'         => {
-      'ssl_key'     => $::waarneming::conf::wnimg_key,
-      'ssl_crt'     => $::waarneming::conf::wnimg_crt,
-      'server_name' => $::waarneming::conf::wnimg_server_name,
+      'ssl_key'     => $::role_waarneming::conf::wnimg_key,
+      'ssl_crt'     => $::role_waarneming::conf::wnimg_crt,
+      'server_name' => $::role_waarneming::conf::wnimg_server_name,
     },
   }
 ) {
@@ -30,6 +30,7 @@ class waarneming::web (
   ::apt::ppa { 'ppa:ondrej/php':
     ensure         => present,
     package_manage => true,
+    notify         => Exec['apt_update'],
   }
 
   # Install required PHP packages 
@@ -40,7 +41,6 @@ class waarneming::web (
     ensure  => present,
     require => [
       Apt::Ppa['ppa:ondrej/php'],
-      Class['apt::update'],
     ]
   }
 
@@ -51,13 +51,13 @@ class waarneming::web (
   }
 
   file { '/etc/php/7.0/fpm/php.ini':
-    source  => 'puppet:///modules/waarneming/fpm/php.ini',
+    source  => 'puppet:///modules/role_waarneming/fpm/php.ini',
     notify  => Service['php7.0-fpm'],
     require => Package['php7.0-fpm'],
   }
 
   file { '/etc/php/7.0/fpm/pool.d/www.conf':
-    source  => 'puppet:///modules/waarneming/fpm/www.conf',
+    source  => 'puppet:///modules/role_waarneming/fpm/www.conf',
     notify  => Service['php7.0-fpm'],
     require => Package['php7.0-fpm'],
   }
@@ -75,14 +75,14 @@ class waarneming::web (
 
   # nginx include files
   file { '/etc/nginx/include':
-    source  => 'puppet:///modules/waarneming/nginx_include',
+    source  => 'puppet:///modules/role_waarneming/nginx_include',
     recurse => true,
     notify  => Service['nginx'],
     require => Package['nginx'],
   }
 
   # Speciale defined resource totdat nginx module gefixt is
-  create_resources('::waarneming::vhost', $sites)
+  create_resources('::role_waarneming::vhost', $sites)
 
   user { 'waarneming':
     ensure     => present,
@@ -106,7 +106,7 @@ class waarneming::web (
     owner   => 'waarneming',
     group   => 'waarneming',
     mode    => '0600',
-    content => $::waarneming::conf::git_repo_key,
+    content => $::role_waarneming::conf::git_repo_key,
     require => File['/home/waarneming/.ssh'],
   }
 
@@ -128,7 +128,7 @@ class waarneming::web (
   vcsrepo { '/home/waarneming/www':
     ensure   => latest,
     provider => git,
-    source   => $::waarneming::conf::git_repo_url,
+    source   => $::role_waarneming::conf::git_repo_url,
     user     => 'waarneming',
     require  => [
       File['/home/waarneming/.ssh/id_rsa'],
@@ -139,7 +139,7 @@ class waarneming::web (
   file { '/home/waarneming/www/_app/config.app.database.php':
     owner   => 'waarneming',
     group   => 'waarneming',
-    content => template('waarneming/config.app.database.php.erb'),
+    content => template('role_waarneming/config.app.database.php.erb'),
     require => Vcsrepo['/home/waarneming/www'],
   }
 }

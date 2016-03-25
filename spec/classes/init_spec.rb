@@ -1,7 +1,7 @@
 require 'spec_helper'
-describe 'waarneming' do
+describe 'role_waarneming' do
 
   context 'with defaults for all parameters' do
-    it { should contain_class('waarneming') }
+    it { should contain_class('role_waarneming') }
   end
 end

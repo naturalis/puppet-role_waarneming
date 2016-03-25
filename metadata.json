@@ -1,12 +1,12 @@
 {
-  "name": "madtech-waarneming",
-  "version": "0.1.0",
+  "name": "role_waarneming",
+  "version": "0.1.1",
   "author": "Edwin Hermans <edwin@madtech.cx>",
   "summary": "Installs and configures web-server and database components to host waarneming.nl",
   "license": "Apache 2.0",
-  "source": "https://github.com/madeddie/puppet-waarneming",
-  "project_page": "https://github.com/madeddie/puppet-waarneming",
-  "issues_url": "https://github.com/madeddie/puppet-waarneming/issues",
+  "source": "https://github.com/madeddie/puppet-role_waarneming",
+  "project_page": "https://github.com/madeddie/puppet-role_waarneming",
+  "issues_url": "https://github.com/madeddie/puppet-role_waarneming/issues",
   "tags": ["waarneming.nl", "observation.org", "nginx", "php", "fpm", "postgresql"],
   "operatingsystem_support": [{
     "operatingsystem": "Ubuntu",

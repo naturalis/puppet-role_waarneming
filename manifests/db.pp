@@ -1,21 +1,21 @@
 # Install and configure PostgreSQL
-class waarneming::db (
+class role_waarneming::db (
   $roles = {
     'waarneming'      => {
       'superuser'     => true,
-      'password_hash' => postgresql_password('waarneming', $::waarneming::conf::waarneming_password),
+      'password_hash' => postgresql_password('waarneming', $::role_waarneming::conf::waarneming_password),
     },
     'local_be'        => {
       'superuser'     => true,
-      'password_hash' => postgresql_password('local_be', $::waarneming::conf::local_be_password),
+      'password_hash' => postgresql_password('local_be', $::role_waarneming::conf::local_be_password),
     },
     'local_nl'        => {
       'superuser'     => true,
-      'password_hash' => postgresql_password('local_nl', $::waarneming::conf::local_nl_password),
+      'password_hash' => postgresql_password('local_nl', $::role_waarneming::conf::local_nl_password),
     },
     'local_xx'        => {
       'superuser'     => true,
-      'password_hash' => postgresql_password('local_xx', $::waarneming::conf::local_xx_password),
+      'password_hash' => postgresql_password('local_xx', $::role_waarneming::conf::local_xx_password),
     },
   }
 ) {
@@ -28,13 +28,13 @@ class waarneming::db (
   # Install PostgreSQL
   class { '::postgresql::globals':
     manage_package_repo => true,
-    version             => $::waarneming::conf::postgresql_version,
+    version             => $::role_waarneming::conf::postgresql_version,
   }->
   class { '::postgresql::server': }
   class { '::postgresql::server::postgis': }
 
   # Create postgresql database
-  ::postgresql::server::database { $::waarneming::conf::postgresql_dbname:
+  ::postgresql::server::database { $::role_waarneming::conf::postgresql_dbname:
     require  => Class['postgresql::server'],
   }
 

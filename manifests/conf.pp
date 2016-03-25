@@ -1,5 +1,5 @@
 # All configurable settings
-class waarneming::conf (
+class role_waarneming::conf (
   # ::web
   $waarneming_key,
   $waarneming_crt,

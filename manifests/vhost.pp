@@ -1,5 +1,5 @@
 # Creates ssl key file, ssl cert file and vhost config file in one go
-define waarneming::vhost (
+define role_waarneming::vhost (
   $ssl_key,
   $ssl_crt,
   $server_name,
@@ -18,6 +18,6 @@ define waarneming::vhost (
   }
 
   file { "/etc/nginx/sites-enabled/${site}":
-    content => template('waarneming/vhost.erb'),
+    content => template('role_waarneming/vhost.erb'),
   }
 }
