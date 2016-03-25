@@ -12,6 +12,7 @@ class role_waarneming::conf (
   $wnimg_server_name = '.wnimg.nl',
   $git_repo_key,
   $git_repo_url = 'ssh://git@bitbucket.org/zostera/waarneming.git',
+  $git_repo_url = 'master',
 
   # ::db
   $postgresql_dbname   = 'waarneming',

@@ -126,9 +126,10 @@ class role_waarneming::web (
   }
 
   vcsrepo { '/home/waarneming/www':
-    ensure   => latest,
+    ensure   => present,
     provider => git,
     source   => $::role_waarneming::conf::git_repo_url,
+    revision => $::role_waarneming::conf::git_repo_rev,
     user     => 'waarneming',
     require  => [
       File['/home/waarneming/.ssh/id_rsa'],
