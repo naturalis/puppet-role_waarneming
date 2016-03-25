@@ -28,7 +28,7 @@ class role_waarneming::db (
   # Install PostgreSQL
   class { '::postgresql::server':
     listen_addresses => "localhost,${$::role_waarneming::conf::db_host}",
-    require          => Class['::postgresql::globals']
+    require          => Class['postgresql::globals']
   }
 
   class { '::postgresql::server::postgis': }

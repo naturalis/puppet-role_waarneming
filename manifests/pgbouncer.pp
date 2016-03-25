@@ -3,7 +3,7 @@ class role_waarneming::pgbouncer (
 ) {
   # Install PostgreSQL client software
   class { '::postgresql::client':
-    require => Class['::postgresql::globals'],
+    require => Class['postgresql::globals'],
   }->
   class { '::pgbouncer':
     config_params => {

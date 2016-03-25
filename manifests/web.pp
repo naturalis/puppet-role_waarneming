@@ -38,7 +38,7 @@ class role_waarneming::web (
 
   # Install required PHP packages 
   $php_packages = [
-    'php7.0-fpm', 'php-memcached', 'php7.0-curl', 'php7.0-gd', 'php7.0-pgsql', 'php7.0-mbstring', 'php7.0-xml', 'php7.0-zip',
+    'php7.0-fpm', 'php-memcached', 'php7.0-curl', 'php7.0-gd', 'php7.0-pgsql', 'php7.0-mbstring', 'php7.0-xml', 'php7.0-zip', 'php-redis'
   ]
   package { $php_packages:
     ensure  => present,
@@ -46,13 +46,19 @@ class role_waarneming::web (
       Apt::Ppa['ppa:ondrej/php'],
       Apt::Key['ppa:ondrej/php'],
       Class['apt::update'],
-    ]
+    ],
   }
+
+  # Activate redis service (for storing PHP sessions)
+  class { '::redis': }
 
   service { 'php7.0-fpm':
     ensure  => running,
     enable  => true,
-    require => Package['php7.0-fpm'],
+    require => [
+      Package['php7.0-fpm'],
+      Class['redis'],
+    ],
   }
 
   file { '/etc/php/7.0/fpm/php.ini':
