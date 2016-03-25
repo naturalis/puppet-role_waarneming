@@ -30,7 +30,10 @@ class role_waarneming::web (
   ::apt::ppa { 'ppa:ondrej/php':
     ensure         => present,
     package_manage => true,
-    notify         => Exec['apt_update'],
+  }
+
+  ::apt::key { 'ppa:ondrej/php':
+    id => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
   }
 
   # Install required PHP packages 
@@ -41,6 +44,8 @@ class role_waarneming::web (
     ensure  => present,
     require => [
       Apt::Ppa['ppa:ondrej/php'],
+      Apt::Key['ppa:ondrej/php'],
+      Class['apt::update'],
     ]
   }
 

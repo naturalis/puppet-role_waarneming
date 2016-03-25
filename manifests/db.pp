@@ -26,19 +26,26 @@ class role_waarneming::db (
   }
 
   # Install PostgreSQL
-  class { '::postgresql::globals':
-    manage_package_repo => true,
-    version             => $::role_waarneming::conf::postgresql_version,
-  }->
-  class { '::postgresql::server': }
+  class { '::postgresql::server':
+    listen_addresses => "localhost,${$::role_waarneming::conf::db_host}",
+    require          => Class['::postgresql::globals']
+  }
+
   class { '::postgresql::server::postgis': }
 
   # Create postgresql database
-  ::postgresql::server::database { $::role_waarneming::conf::postgresql_dbname:
-    require  => Class['postgresql::server'],
-  }
+  ::postgresql::server::database { $::role_waarneming::conf::db_name: }
 
   # Create postgresql users
   create_resources('::postgresql::server::role', $roles)
-}
 
+  ::postgresql::server::pg_hba_rule { 'allow app host to access app database':
+    description => "Open up PostgreSQL for access from ${$::role_waarneming::conf::web_host}",
+    type        => 'host',
+    database    => 'all',
+    user        => 'all',
+    address     => "${$::role_waarneming::conf::web_host}/32",
+    auth_method => 'md5',
+    before      => Class['postgresql::server::reload']
+  }
+}
