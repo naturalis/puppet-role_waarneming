@@ -39,12 +39,19 @@ class role_waarneming::db (
   # Create postgresql users
   create_resources('::postgresql::server::role', $roles)
 
-  ::postgresql::server::pg_hba_rule { 'allow app host to access app database':
-    description => "Open up PostgreSQL for access from ${$::role_waarneming::conf::web_host}",
+  # If conf::web_host is an IP (and not a hostname or CIDR range) add /32
+  if (is_ip_address($::role_waarneming::conf::web_host)) and ($::role_waarneming::conf::web_host !~ /\d+\/\d{1,2}$/) {
+    $web_host = "${$::role_waarneming::conf::web_host}/32"
+  } else {
+    $web_host = $::role_waarneming::conf::web_host
+  }
+
+  ::postgresql::server::pg_hba_rule { 'allow app host(s) to access database':
+    description => "Open up PostgreSQL for access from ${$web_host}",
     type        => 'host',
     database    => 'all',
     user        => 'all',
-    address     => "${$::role_waarneming::conf::web_host}/32",
+    address     => $web_host,
     auth_method => 'md5',
     before      => Class['postgresql::server::reload']
   }

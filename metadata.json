@@ -19,6 +19,7 @@
     {"name":"puppetlabs/vcsrepo","version_requirement":">= 1.3.2"},
     {"name":"saz/locales","version_requirement":">= 2.2.2"},
     {"name":"covermymeds/pgbouncer","version_requirement":">= 0.3.2"},
-    {"name":"arioch/redis","version_requirement":">= 1.2.2"}
+    {"name":"arioch/redis","version_requirement":">= 1.2.2"},
+    {"name":"saz/memcached","version_requirement":">= 2.8.1"}
   ]
 }
