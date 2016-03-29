@@ -11,9 +11,12 @@ class role_waarneming::conf (
   $wnimg_key,
   $wnimg_crt,
   $wnimg_server_name       = '.wnimg.nl',
-  $git_repo_key,
-  $git_repo_url            = 'ssh://git@bitbucket.org/zostera/waarneming.git',
-  $git_repo_rev            = 'master',
+  $git_repo_key_php,
+  $git_repo_key_django,
+  $git_repo_url_php        = 'ssh://git@bitbucket.org/zostera/waarneming.git',
+  $git_repo_url_django     = 'ssh://git@bitbucket.org/zostera/obs.git',
+  $git_repo_rev_php        = 'master',
+  $git_repo_rev_django     = 'master',
 
   # ::db
   $db_host            = '127.0.0.1',

@@ -94,7 +94,7 @@ class role_waarneming::web (
     owner   => 'waarneming',
     group   => 'waarneming',
     mode    => '0600',
-    content => $::role_waarneming::conf::git_repo_key,
+    content => $::role_waarneming::conf::git_repo_key_php,
     require => File['/home/waarneming/.ssh'],
   }
 
@@ -102,8 +102,8 @@ class role_waarneming::web (
   vcsrepo { '/home/waarneming/www':
     ensure   => present,
     provider => git,
-    source   => $::role_waarneming::conf::git_repo_url,
-    revision => $::role_waarneming::conf::git_repo_rev,
+    source   => $::role_waarneming::conf::git_repo_url_php,
+    revision => $::role_waarneming::conf::git_repo_rev_php,
     user     => 'waarneming',
     notify   => Service['php7.0-fpm'],
     require  => [
