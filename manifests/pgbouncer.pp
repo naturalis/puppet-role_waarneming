@@ -4,6 +4,7 @@ class role_waarneming::pgbouncer (
   $local_be_pw   = postgresql_password('local_be', $::role_waarneming::conf::local_be_password),
   $local_nl_pw   = postgresql_password('local_nl', $::role_waarneming::conf::local_nl_password),
   $local_xx_pw   = postgresql_password('local_xx', $::role_waarneming::conf::local_xx_password),
+  $obs_pw        = postgresql_password('obs', $::role_waarneming::conf::obs_password),
 ) {
   # Install PostgreSQL client software
   class { '::postgresql::client':
@@ -19,6 +20,7 @@ class role_waarneming::pgbouncer (
       "\"local_be\" \"${local_be_pw}\"",
       "\"local_nl\" \"${local_nl_pw}\"",
       "\"local_xx\" \"${local_xx_pw}\"",
+      "\"obs\" \"${obs_pw}\"",
     ],
     pool_mode   => 'session',
     pidfile     => '/var/run/postgresql/pgbouncer.pid',

@@ -20,6 +20,7 @@
     {"name":"saz/locales","version_requirement":">= 2.2.2"},
     {"name":"landcareresearch/pgbouncer","version_requirement":">= 0.1.9"},
     {"name":"arioch/redis","version_requirement":">= 1.2.2"},
-    {"name":"saz/memcached","version_requirement":">= 2.8.1"}
+    {"name":"saz/memcached","version_requirement":">= 2.8.1"},
+    {"name":"stankevich/python","version_requirement":">= 1.12.0"}
   ]
 }

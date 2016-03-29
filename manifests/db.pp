@@ -17,6 +17,10 @@ class role_waarneming::db (
       'superuser'     => true,
       'password_hash' => postgresql_password('local_xx', $::role_waarneming::conf::local_xx_password),
     },
+    'obs'        => {
+      'superuser'     => true,
+      'password_hash' => postgresql_password('obs', $::role_waarneming::conf::obs_password),
+    },
   }
 ) {
   # Generate required locales
