@@ -74,6 +74,20 @@ class role_waarneming::php_app (
     require => Vcsrepo['/home/waarneming/www'],
   }
 
+  # Create symlink to static content dir
+  file { '/home/waarneming/www/fotonew':
+    ensure  => link,
+    target  => '/home/waarneming/media/fotonew',
+    require => Vcsrepo['/home/waarneming/www'],
+  }
+
+  # Place missing favicon
+  file { '/home/waarneming/www/favicon.ico':
+    ensure  => present,
+    source  => 'puppet:///modules/role_waarneming/acc_favicon.ico',
+    require => Vcsrepo['/home/waarneming/www'],
+  }
+
   # Add PHP 7.0 ppa
   ::apt::ppa { 'ppa:ondrej/php':
     ensure         => present,
@@ -99,6 +113,7 @@ class role_waarneming::php_app (
 
   # Configure and run fpm service
   file { '/etc/php/7.0/fpm/php.ini':
+    ensure  => present,
     source  => 'puppet:///modules/role_waarneming/fpm/php.ini',
     notify  => Service['php7.0-fpm'],
     require => Package['php7.0-fpm'],

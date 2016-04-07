@@ -27,6 +27,8 @@ class role_waarneming::conf (
   $local_be_password,
   $local_nl_password,
   $local_xx_password,
+  $local_00_password,
+  $hisko_password,
   $obs_password,
 ) {
   # Define postgres version and add postgres apt repo

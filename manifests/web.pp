@@ -45,7 +45,9 @@ class role_waarneming::web (
   Anchor['nginx::begin']
   ->
   class { '::nginx::config':
-    log_format => {
+    super_user  => true,
+    daemon_user => 'waarneming',
+    log_format  => {
       custom => '$time_iso8601 $status $remote_addr $host "$request" "$http_referer" "$http_user_agent" $body_bytes_sent $bytes_sent $request_length $request_time',
     },
   }

@@ -14,10 +14,10 @@ server {
     root /home/waarneming/www/static;
   }
   location /static {
-    root /home/waarneming/www/static;
+    alias /home/waarneming/www/static;
   }
   location /status {
-    root /home/waarneming/www/status;
+    alias /home/waarneming/www/status;
   }
   location ~ /\.ht {
     deny all;
