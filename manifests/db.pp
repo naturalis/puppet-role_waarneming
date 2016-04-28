@@ -29,6 +29,18 @@ class role_waarneming::db (
       'superuser'     => true,
       'password_hash' => postgresql_password('obs', $::role_waarneming::conf::obs_password),
     },
+  },
+  $config_entries = {
+    'max_connections'           => {value => 150},
+    'shared_buffers'            => {value => '16GB'},
+    'effective_cache_size'      => {value => '56GB'},
+    'max_stack_depth'           => {value => '7680kB'},
+    'temp_buffers'              => {value => '16MB'},
+    'work_mem'                  => {value => '16MB'},
+    'maintenance_work_mem'      => {value => '2GB'},
+    'sort_mem'                  => {value => '64MB'},
+    'random_page_cost'          => {value => 2},
+    'track_activity_query_size' => {value => 8192},
   }
 ) {
   # Generate required locales
@@ -44,6 +56,9 @@ class role_waarneming::db (
   }
 
   class { '::postgresql::server::postgis': }
+
+  # Multiple performance enhancing tweaks based on previous production setup
+  create_resources('::postgresql::server::config_entry', $config_entries)
 
   # Create postgresql database
   ::postgresql::server::database { $::role_waarneming::conf::db_name: }

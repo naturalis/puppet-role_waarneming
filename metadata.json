@@ -1,6 +1,6 @@
 {
   "name": "role_waarneming",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Edwin Hermans <edwin@madtech.cx>",
   "summary": "Installs and configures web-server and database components to host waarneming.nl",
   "license": "Apache 2.0",
