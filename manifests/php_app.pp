@@ -88,25 +88,13 @@ class role_waarneming::php_app (
     require => Vcsrepo['/home/waarneming/www'],
   }
 
-  # Add PHP 7.0 ppa
-  ::apt::ppa { 'ppa:ondrej/php':
-    ensure         => present,
-    package_manage => true,
-  }
-
-  ::apt::key { 'ppa:ondrej/php':
-    id => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
-  }
-
   # Install required PHP packages
   $php_packages = [
-    'php7.0-fpm', 'php-memcached', 'php7.0-curl', 'php7.0-gd', 'php7.0-pgsql', 'php7.0-mbstring', 'php7.0-xml', 'php7.0-zip', 'php-redis'
+    'php7.0-fpm', 'php-memcached', 'php7.0-curl', 'php7.0-gd', 'php7.0-pgsql', 'php7.0-intl', 'php7.0-mbstring', 'php7.0-xml', 'php7.0-zip', 'php-redis'
   ]
   package { $php_packages:
     ensure  => present,
     require => [
-      Apt::Ppa['ppa:ondrej/php'],
-      Apt::Key['ppa:ondrej/php'],
       Class['apt::update'],
     ],
   }

@@ -29,11 +29,13 @@ class role_waarneming::conf (
   $local_xx_password,
   $local_00_password,
   $hisko_password,
+  $hugo_password,
   $obs_password,
 ) {
   # Define postgres version and add postgres apt repo
   class { '::postgresql::globals':
     manage_package_repo => true,
     version             => $postgresql_version,
+    postgis_version     => '2.3',
   }
 }

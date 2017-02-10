@@ -58,6 +58,9 @@ server {
     alias /home/obs/media/;
   }
 <% else -%>
+  ## deny everything stating with a dot, like .git
+  location ~ /\.  { deny all; }
+
   location / {
     client_max_body_size 50M;
     location ~ ^/(_router)|(_robots)\.php$ { include include/php_long; }
@@ -73,7 +76,6 @@ server {
     }
 
     ## rewrite /index.php to / and do the opposite for the mobile site
-    #if ($host !~* "^m\..+") { rewrite ^/index.php(.*)$ /$1 permanent; }
     if ($host ~* "^m\..+") { rewrite ^/$ /index.php permanent; }
 
     if ($request_uri ~ "(.+)/$") { rewrite ^(.*)$ $1index.php permanent; } # add index.php to directories with a slash
@@ -89,15 +91,10 @@ server {
     if ($uri ~ robots\.txt$)         { rewrite ^ /_robots.php; }
   }
 
-  location /_app       { return 403; }
-  location /_pie       { return 403; }
-  location /_pie.bak   { return 403; }
-  location /tools/temp { return 403; }
-
-  location /_doc {
-    auth_basic "Beveiligd gedeelte";
-    auth_basic_user_file /home/waarneming/www/_doc/.htpasswd;
-  }
+  location /_app       { deny all; }
+  location /_ext       { deny all; }
+  location /_int       { deny all; }
+  location /_pie       { deny all; }
 
   location /ndff {
     auth_basic "Verification Required";
@@ -133,11 +130,5 @@ server {
 <% if @site == 'waarneming' -%>
 
   include include/phppgadmin;
-
-  location /toolshugo {
-    include include/php-ssl;
-    alias /home/admin/www;
-    index index.php;
-  }
 <% end -%>
 }
