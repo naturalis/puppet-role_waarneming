@@ -1,6 +1,6 @@
 {
   "name": "role_waarneming",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Edwin Hermans <edwin@madtech.cx>",
   "summary": "Installs and configures web-server and database components to host waarneming.nl",
   "license": "Apache 2.0",
@@ -10,7 +10,7 @@
   "tags": ["waarneming.nl", "observation.org", "nginx", "php", "fpm", "postgresql"],
   "operatingsystem_support": [{
     "operatingsystem": "Ubuntu",
-    "operatingsystemrelease": [ "14.04" ]
+    "operatingsystemrelease": [ "16.04" ]
   }],
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 1.0.0"},
