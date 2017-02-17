@@ -42,17 +42,13 @@ class role_waarneming::web (
   }
 
   # Install nginx
-  Anchor['nginx::begin']
-  ->
-  class { '::nginx::config':
+  class { '::nginx':
     super_user  => true,
     daemon_user => 'waarneming',
     log_format  => {
       custom => '$time_iso8601 $status $remote_addr $host "$request" "$http_referer" "$http_user_agent" $body_bytes_sent $bytes_sent $request_length $request_time',
     },
   }
-
-  class { '::nginx': }
 
   # Nginx include files, verbatim
   file { '/etc/nginx/include':
