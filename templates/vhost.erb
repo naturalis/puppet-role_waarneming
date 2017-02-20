@@ -103,7 +103,6 @@ server {
 
   location /fotonew {
     include include/block_bot; #block bots on subsites
-    include include/block_unwanted;
     root /home/waarneming/media;
 
     if ($args ~ [hv]\=) { rewrite ^ /_router.php last; }
