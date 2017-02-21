@@ -33,6 +33,10 @@ class role_waarneming::db (
       'superuser'     => true,
       'password_hash' => postgresql_password('obs', $::role_waarneming::conf::obs_password),
     },
+    'analytics'       => {
+      'superuser'     => true,
+      'password_hash' => postgresql_password('analytics', $::role_waarneming::conf::analytics_password),
+    },
   },
   $config_entries = {
     'max_connections'           => {value => 150},
