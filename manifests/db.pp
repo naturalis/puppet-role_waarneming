@@ -106,4 +106,10 @@ class role_waarneming::db (
     auth_method => 'md5',
     before      => Class['postgresql::server::reload']
   }
+
+  # Postgres analytics scripts
+  file { '/opt/postgresql':
+    source  => 'puppet:///modules/role_waarneming/analytics',
+    recurse => true,
+  }
 }
