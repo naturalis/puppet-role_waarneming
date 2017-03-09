@@ -49,6 +49,8 @@ class role_waarneming::db (
     'sort_mem'                  => {value => '64MB'},
     'random_page_cost'          => {value => 2},
     'track_activity_query_size' => {value => 8192},
+    'shared_preload_libraries'  => {value => 'pg_stat_statements'},
+    'pg_stat_statements.track'  => {value => 'all'}
   }
 ) {
   # Generate required locales
