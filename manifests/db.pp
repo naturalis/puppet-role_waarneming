@@ -112,4 +112,9 @@ class role_waarneming::db (
     source  => 'puppet:///modules/role_waarneming/analytics',
     recurse => true,
   }
+  
+  # Jq for json magic
+  package { 'jq':
+    ensure => present,
+  }
 }
