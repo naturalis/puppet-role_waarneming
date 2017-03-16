@@ -1,0 +1,10 @@
+satisfy  any;
+
+
+<% scope.lookupvar('role_waarneming::conf::nginx_allow_ip').each do |ip| %>allow <%= ip %>;
+<% end %>
+
+deny    all;
+
+auth_basic "Restricted";
+auth_basic_user_file /etc/nginx/include/.htpasswd;

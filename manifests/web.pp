@@ -57,4 +57,11 @@ class role_waarneming::web (
     notify  => Service['nginx'],
     require => Package['nginx'],
   }
+
+  # Nginx include block_ip
+  file { '/etc/nginx/include/block_ip':
+    content => template('role_waarneming/nginx_block_ip.erb'),
+    notify  => Service['nginx'],
+    require => [Package['nginx'],File['/etc/nginx/include']]
+  }
 }

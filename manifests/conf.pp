@@ -17,6 +17,7 @@ class role_waarneming::conf (
   $git_repo_url_django     = 'ssh://git@bitbucket.org/zostera/obs.git',
   $git_repo_rev_php        = 'master',
   $git_repo_rev_django     = 'master',
+  $nginx_allow_ip          = ['1.1.1.1','2.2.2.2'],
 
   # ::db
   $db_host            = '127.0.0.1',
