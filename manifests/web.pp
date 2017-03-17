@@ -46,7 +46,7 @@ class role_waarneming::web (
     super_user  => true,
     daemon_user => 'waarneming',
     log_format  => {
-      custom => '{ "@timestamp": "$time_iso8601", "@fields": { "http_host": "$http_host", "remote_addr": "$remote_addr", "remote_user": "$remote_user", "bytes_sent": "$bytes_sent", "body_bytes_sent": "$body_bytes_sent", "request_length": "$request_length", "request_time": "$request_time", "status": "$status", "request": "$request", "request_method": "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent" } }'
+      custom => '{ "@timestamp": "$time_iso8601", "@fields": { "http_host": "$http_host", "remote_addr": "$remote_addr", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "body_bytes_sent": $body_bytes_sent, "request_length": $request_length, "request_time": $request_time, "status": "$status", "request": "$request", "request_method": "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent" } }'
     },
   }
 
