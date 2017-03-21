@@ -35,6 +35,20 @@ class role_waarneming::php_app (
     managehome => true,
   }
   
+  file { '/home/waarneming/media':
+    ensure  => link,
+    target  => '/data/waarneming/media',
+    require => User['waarneming'],
+  }
+
+  file { [ '/home/waarneming/temp', '/home/waarneming/temp/cache' ]:
+    ensure  => directory,
+    owner   => 'waarneming',
+    group   => 'waarneming',
+    mode    => '0755',
+    require => User['waarneming'],
+  }
+
   file { '/home/waarneming/.ssh':
     ensure  => directory,
     owner   => 'waarneming',
