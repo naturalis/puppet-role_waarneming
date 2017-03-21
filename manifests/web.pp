@@ -64,4 +64,6 @@ class role_waarneming::web (
     notify  => Service['nginx'],
     require => [Package['nginx'],File['/etc/nginx/include']]
   }
+
+  include ::role_waarneming::sites
 }

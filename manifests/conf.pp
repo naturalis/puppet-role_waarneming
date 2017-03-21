@@ -19,6 +19,18 @@ class role_waarneming::conf (
   $git_repo_rev_django     = 'master',
   $nginx_allow_ip          = ['1.1.1.1','2.2.2.2'],
 
+  # ::web, for direct copying of site configs
+  $waarneming_nl_crt,
+  $waarneming_nl_key,
+  $observations_org_crt,
+  $observations_org_key,
+  $observations_be_crt,
+  $observations_be_key,
+  $waarnemingen_be_crt,
+  $waarnemingen_be_key,
+  $www_wnimg_nl_crt,
+  $www_wnimg_nl_key,
+
   # ::db
   $db_host            = '127.0.0.1',
   $db_name            = 'waarneming',

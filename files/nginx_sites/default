@@ -1,0 +1,11 @@
+server {
+    listen		*:443 default ssl;
+    listen		*:80 default;
+    server_name		_;
+    ssl_certificate	/etc/nginx/ssl/waarneming_nl-chained.crt;
+    ssl_certificate_key	/etc/nginx/ssl/waarneming_nl.key;
+    keepalive_timeout	60;
+    access_log		/var/log/nginx/default_access.log custom;
+    error_log		/var/log/nginx/default_error.log;
+    include		include/common-site-config.conf;
+}

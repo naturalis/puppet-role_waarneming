@@ -124,5 +124,6 @@ class role_waarneming::php_app (
 
   # Special defined resource until config is cleaned up
   # and we can use build-in nginx module resources
-  create_resources('::role_waarneming::vhost', $sites)
+  # disabled while copying vhost config files verbatim
+  #create_resources('::role_waarneming::vhost', $sites)
 }
