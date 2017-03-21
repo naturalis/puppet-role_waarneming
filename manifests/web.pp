@@ -14,6 +14,11 @@ class role_waarneming::web (
     ensure => present,
   }
 
+  # Install all locales
+  package { 'locales-all':
+    ensure => present,
+  }
+
   # Add required keys to system-wide known_hosts
   sshkey { 'bitbucket_org_rsa':
     ensure       => present,
