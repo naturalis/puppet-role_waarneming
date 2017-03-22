@@ -6,7 +6,9 @@ class role_waarneming::pgbouncer (
   $local_xx_pw   = postgresql_password('local_xx', $::role_waarneming::conf::local_xx_password),
   $local_00_pw   = postgresql_password('local_00', $::role_waarneming::conf::local_00_password),
   $hisko_pw      = postgresql_password('hisko', $::role_waarneming::conf::hisko_password),
+  $hugo_pw       = postgresql_password('hugo', $::role_waarneming::conf::hugo_password),
   $obs_pw        = postgresql_password('obs', $::role_waarneming::conf::obs_password),
+  $analytics_pw  = postgresql_password('analytics', $::role_waarneming::conf::analytics_password),
 ) {
   # Install PostgreSQL client software
   class { '::postgresql::client':
@@ -15,7 +17,7 @@ class role_waarneming::pgbouncer (
   class { '::pgbouncer':
     listen_port => $::role_waarneming::conf::pgbouncer_port,
     databases   => [ "* = host=${$::role_waarneming::conf::db_host}", ],
-    admin_users => 'hugo,hugoadmin,dylan,dylanadmin,hisko,hiskoadmin',
+    admin_users => 'hugo,hugoadmin,dylan,dylanadmin,hisko,hiskoadmin,analytics',
     auth_type   => 'md5',
     auth_list   => [
       "\"waarneming\" \"${waarneming_pw}\"",
@@ -24,7 +26,9 @@ class role_waarneming::pgbouncer (
       "\"local_xx\" \"${local_xx_pw}\"",
       "\"local_00\" \"${local_00_pw}\"",
       "\"hisko\" \"${hisko_pw}\"",
+      "\"hugo\" \"${hugo_pw}\"",
       "\"obs\" \"${obs_pw}\"",
+      "\"analytics\" \"${analytics_pw}\"",
     ],
     pool_mode   => 'session',
     pidfile     => '/var/run/postgresql/pgbouncer.pid',

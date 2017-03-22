@@ -3,6 +3,7 @@
 if ($http_user_agent ~* "bot" )                 { set $deny true; }
 if ($http_user_agent ~* "spider" )              { set $deny true; }
 if ($http_user_agent ~* "crawler" )             { set $deny true; }
+if ($http_user_agent ~* "yandex" )              { set $deny true; }
 
 if ($host ~ "^\w+\.\w+$" )                      { set $deny false; }
 
@@ -14,6 +15,7 @@ if ($deny = true )                              { return 403; }
 if ($http_user_agent ~* "bot" )                 { set $deny true; }
 if ($http_user_agent ~* "spider" )              { set $deny true; }
 if ($http_user_agent ~* "crawler" )             { set $deny true; }
+if ($http_user_agent ~* "yandex" )              { set $deny true; }
 
 if ($http_user_agent ~* "google" )              { set $deny false; }
 if ($http_user_agent ~* "bing" )                { set $deny false; }

@@ -10,7 +10,10 @@ class role_waarneming::web (
   }
 
   # Git is needed for both PHP and Django websites
-  package { 'git':
+  include git
+
+  # Install all locales
+  package { 'locales-all':
     ensure => present,
   }
 
@@ -42,17 +45,13 @@ class role_waarneming::web (
   }
 
   # Install nginx
-  Anchor['nginx::begin']
-  ->
-  class { '::nginx::config':
+  class { '::nginx':
     super_user  => true,
     daemon_user => 'waarneming',
     log_format  => {
-      custom => '$time_iso8601 $status $remote_addr $host "$request" "$http_referer" "$http_user_agent" $body_bytes_sent $bytes_sent $request_length $request_time',
+      custom => '{ "@timestamp": "$time_iso8601", "http_host": "$http_host", "remote_addr": "$remote_addr", "remote_user": "$remote_user", "bytes_sent": $bytes_sent, "body_bytes_sent": $body_bytes_sent, "request_length": $request_length, "request_time": $request_time, "status": "$status", "request": "$request", "request_method": "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent" }'
     },
   }
-
-  class { '::nginx': }
 
   # Nginx include files, verbatim
   file { '/etc/nginx/include':
@@ -61,4 +60,20 @@ class role_waarneming::web (
     notify  => Service['nginx'],
     require => Package['nginx'],
   }
+
+  # Nginx include block_ip.conf
+  file { '/etc/nginx/include/block_ip.conf':
+    content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd'}),
+    notify  => Service['nginx'],
+    require => [Package['nginx'],File['/etc/nginx/include']]
+  }
+
+  # Nginx include block_ip_intern.conf
+  file { '/etc/nginx/include/block_ip_intern.conf':
+    content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd_intern'}),
+    notify  => Service['nginx'],
+    require => [Package['nginx'],File['/etc/nginx/include']]
+  }
+
+  include ::role_waarneming::sites
 }

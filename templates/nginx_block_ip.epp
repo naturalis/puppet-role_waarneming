@@ -1,0 +1,8 @@
+satisfy any;
+<% $role_waarneming::conf::nginx_allow_ip.each |$ip| { -%>
+allow <%= $ip %>;
+<% } -%>
+deny all;
+
+auth_basic "Restricted";
+auth_basic_user_file /etc/nginx/include/<%= $htpassfile %>;

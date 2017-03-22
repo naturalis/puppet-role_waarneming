@@ -25,9 +25,17 @@ class role_waarneming::db (
       'superuser'     => true,
       'password_hash' => postgresql_password('hisko', $::role_waarneming::conf::hisko_password),
     },
+    'hugo'            => {
+      'superuser'     => true,
+      'password_hash' => postgresql_password('hugo', $::role_waarneming::conf::hugo_password),
+    },
     'obs'             => {
       'superuser'     => true,
       'password_hash' => postgresql_password('obs', $::role_waarneming::conf::obs_password),
+    },
+    'analytics'       => {
+      'superuser'     => true,
+      'password_hash' => postgresql_password('analytics', $::role_waarneming::conf::analytics_password),
     },
   },
   $config_entries = {
@@ -41,12 +49,13 @@ class role_waarneming::db (
     'sort_mem'                  => {value => '64MB'},
     'random_page_cost'          => {value => 2},
     'track_activity_query_size' => {value => 8192},
+    'shared_preload_libraries'  => {value => 'pg_stat_statements'},
+    'pg_stat_statements.track'  => {value => 'all'}
   }
 ) {
-  # Generate required locales
-  class { 'locales':
-    default_locale => 'en_US.UTF-8',
-    locales        => ['af_ZA.UTF-8 UTF-8', 'am_ET.UTF-8 UTF-8', 'ar_MA.UTF-8 UTF-8', 'az_AZ.UTF-8 UTF-8', 'be_BY.UTF-8 UTF-8', 'bg_BG.UTF-8 UTF-8', 'ca_ES.UTF-8 UTF-8', 'crh_UA.UTF-8 UTF-8', 'cs_CZ.UTF-8 UTF-8', 'da_DK.UTF-8 UTF-8', 'de_DE.UTF-8 UTF-8', 'el_GR.UTF-8 UTF-8', 'en_AG.UTF-8 UTF-8', 'en_AU.UTF-8 UTF-8', 'en_BW.UTF-8 UTF-8', 'en_CA.UTF-8 UTF-8', 'en_DK.UTF-8 UTF-8', 'en_GB.UTF-8 UTF-8', 'en_HK.UTF-8 UTF-8', 'en_IE.UTF-8 UTF-8', 'en_IN.UTF-8 UTF-8', 'en_NG.UTF-8 UTF-8', 'en_NZ.UTF-8 UTF-8', 'en_PH.UTF-8 UTF-8', 'en_SG.UTF-8 UTF-8', 'en_US.UTF-8 UTF-8', 'en_ZA.UTF-8 UTF-8', 'en_ZM.UTF-8 UTF-8', 'en_ZW.UTF-8 UTF-8', 'es_ES.UTF-8 UTF-8', 'et_EE.UTF-8 UTF-8', 'fa_IR.UTF-8 UTF-8', 'fr_CH.UTF-8 UTF-8', 'fr_FR.UTF-8 UTF-8', 'fy_NL.UTF-8 UTF-8', 'he_IL.UTF-8 UTF-8', 'hu_HU.UTF-8 UTF-8', 'hy_AM.UTF-8 UTF-8', 'it_IT.UTF-8 UTF-8', 'ja_JP.UTF-8 UTF-8', 'ka_GE.UTF-8 UTF-8', 'lt_LT.UTF-8 UTF-8', 'lv_LV.UTF-8 UTF-8', 'nl_NL.UTF-8 UTF-8', 'nb_NO.UTF-8 UTF-8', 'pap_AN.UTF-8 UTF-8', 'pl_PL.UTF-8 UTF-8', 'pt_PT.UTF-8 UTF-8', 'ro_RO.UTF-8 UTF-8', 'ru_RU.UTF-8 UTF-8', 'ru_UA.UTF-8 UTF-8', 'sl_SI.UTF-8 UTF-8', 'sq_AL.UTF-8 UTF-8', 'sv_SE.UTF-8 UTF-8', 'tr_TR.UTF-8 UTF-8', 'uk_UA.UTF-8 UTF-8']
+  # Install all locales
+  package { 'locales-all':
+    ensure => present,
   }
 
   # Install PostgreSQL
@@ -81,5 +90,16 @@ class role_waarneming::db (
     address     => $web_host,
     auth_method => 'md5',
     before      => Class['postgresql::server::reload']
+  }
+
+  # Postgres analytics scripts
+  file { '/opt/postgresql':
+    source  => 'puppet:///modules/role_waarneming/analytics',
+    recurse => true,
+  }
+  
+  # Jq for json magic
+  package { 'jq':
+    ensure => present,
   }
 }
