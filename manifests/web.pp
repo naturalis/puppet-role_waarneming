@@ -63,14 +63,14 @@ class role_waarneming::web (
 
   # Nginx include block_ip.conf
   file { '/etc/nginx/include/block_ip.conf':
-    content => template('role_waarneming/nginx_block_ip.erb'),
+    content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd'}),
     notify  => Service['nginx'],
     require => [Package['nginx'],File['/etc/nginx/include']]
   }
 
   # Nginx include block_ip_intern.conf
   file { '/etc/nginx/include/block_ip_intern.conf':
-    content => template('role_waarneming/nginx_block_ip_intern.erb'),
+    content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd_intern'}),
     notify  => Service['nginx'],
     require => [Package['nginx'],File['/etc/nginx/include']]
   }
