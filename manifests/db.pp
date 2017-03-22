@@ -53,11 +53,6 @@ class role_waarneming::db (
     'pg_stat_statements.track'  => {value => 'all'}
   }
 ) {
-  # Install all locales
-  package { 'locales-all':
-    ensure => present,
-  }
-
   # Install PostgreSQL
   class { '::postgresql::server':
     listen_addresses => "localhost,${$::role_waarneming::conf::db_host}",

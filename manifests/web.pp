@@ -12,11 +12,6 @@ class role_waarneming::web (
   # Git is needed for both PHP and Django websites
   include git
 
-  # Install all locales
-  package { 'locales-all':
-    ensure => present,
-  }
-
   # Add required keys to system-wide known_hosts
   sshkey { 'bitbucket_org_rsa':
     ensure       => present,

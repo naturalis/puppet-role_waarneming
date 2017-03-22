@@ -51,6 +51,7 @@ class role_waarneming::common (
   $rsync_ssh_defaults = {
     'ensure'  => present,
     'user'    => 'rsync',
+    'type'    => 'ssh-rsa',
     'options' => $rsync_ssh_options,
   }
 
