@@ -31,6 +31,14 @@ class role_waarneming::common (
     managehome => true,
   }
 
+  file { '/home/rsync/.rsyncd.conf':
+    ensure => present,
+    owner  => 'rsync',
+    group  => 'rsync',
+    mode   => '0644',
+    source => 'puppet:///modules/role_waarneming/rsyncd.conf',
+  }
+
   file { '/home/rsync/.ssh':
     ensure  => directory,
     owner   => 'rsync',
@@ -40,7 +48,7 @@ class role_waarneming::common (
 
   # Add authorized ssh keys
   $rsync_ssh_options = [
-    'command="rsync --config=/root/.rsyncd.conf --server --daemon ."',
+    'command="rsync --config=/home/rsync/.rsyncd.conf --server --daemon ."',
     'no-agent-forwarding',
     'no-port-forwarding',
     'no-pty',
