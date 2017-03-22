@@ -29,12 +29,7 @@ class role_waarneming::php_app (
     mode   => '0644',
   }
 
-  # Create group, user and place ssh key and git config
-  group { 'waarneming':
-    ensure => present,
-    gid    => '3107',
-  }
-
+  # Create user and place ssh key and git config
   user { 'waarneming':
     ensure     => present,
     uid        => '3107',
