@@ -29,18 +29,19 @@ class role_waarneming::php_app (
     mode   => '0644',
   }
 
-  # Create user and place ssh key
+  # Create group, user and place ssh key and git config
+  group { 'waarneming':
+    ensure => present,
+    gid    => '3107',
+  }
+
   user { 'waarneming':
     ensure     => present,
+    uid        => '3107',
+    gid        => '3107',
     managehome => true,
   }
   
-  file { '/home/waarneming/media':
-    ensure  => link,
-    target  => '/data/waarneming/media',
-    require => User['waarneming'],
-  }
-
   file { [ '/home/waarneming/temp', '/home/waarneming/temp/cache' ]:
     ensure  => directory,
     owner   => 'waarneming',
@@ -63,6 +64,17 @@ class role_waarneming::php_app (
     mode    => '0600',
     content => $::role_waarneming::conf::git_repo_key_php,
     require => File['/home/waarneming/.ssh'],
+  }
+
+  git::config { 'receive.denyCurrentBranch':
+    value => 'ignore',
+    user  => 'waarneming',
+  }
+
+  file { '/home/waarneming/media':
+    ensure  => link,
+    target  => '/data/waarneming/media',
+    require => User['waarneming'],
   }
 
   # Check out bitbucket repo

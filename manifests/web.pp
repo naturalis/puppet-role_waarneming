@@ -10,9 +10,7 @@ class role_waarneming::web (
   }
 
   # Git is needed for both PHP and Django websites
-  package { 'git':
-    ensure => present,
-  }
+  include git
 
   # Install all locales
   package { 'locales-all':
@@ -63,9 +61,16 @@ class role_waarneming::web (
     require => Package['nginx'],
   }
 
-  # Nginx include block_ip
-  file { '/etc/nginx/include/block_ip':
+  # Nginx include block_ip.conf
+  file { '/etc/nginx/include/block_ip.conf':
     content => template('role_waarneming/nginx_block_ip.erb'),
+    notify  => Service['nginx'],
+    require => [Package['nginx'],File['/etc/nginx/include']]
+  }
+
+  # Nginx include block_ip_intern.conf
+  file { '/etc/nginx/include/block_ip_intern.conf':
+    content => template('role_waarneming/nginx_block_ip_intern.erb'),
     notify  => Service['nginx'],
     require => [Package['nginx'],File['/etc/nginx/include']]
   }
