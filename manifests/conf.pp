@@ -22,8 +22,8 @@ class role_waarneming::conf (
   # ::web, for direct copying of site configs
   $waarneming_nl_crt,
   $waarneming_nl_key,
-  $observations_org_crt,
-  $observations_org_key,
+  $observation_org_crt,
+  $observation_org_key,
   $observations_be_crt,
   $observations_be_key,
   $waarnemingen_be_crt,
