@@ -14,10 +14,17 @@ class role_waarneming::conf (
   $git_repo_key_php,
   $git_repo_key_django,
   $git_repo_url_php        = 'ssh://git@bitbucket.org/zostera/waarneming.git',
+  $git_repo_url_scripts    = 'ssh://git@bitbucket.org/zostera/waarneming-scripts.git',
   $git_repo_url_django     = 'ssh://git@bitbucket.org/zostera/obs.git',
   $git_repo_rev_php        = 'master',
+  $git_repo_rev_scripts    = 'master',
   $git_repo_rev_django     = 'master',
   $nginx_allow_ip          = ['1.1.1.1','2.2.2.2'],
+
+  # ::php_app
+  $scripts_send_mail     = false,
+  $scripts_do_curl       = false,
+  $scripts_domain_prefix = 'acc.',
 
   # ::web, for direct copying of site configs
   $waarneming_nl_crt,

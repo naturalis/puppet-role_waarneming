@@ -1,0 +1,30 @@
+# This file is managed by puppet. Changes will be lost.
+#
+# host specific/private settings
+
+#export PGHOST=wpml
+
+send_mail=<%= scope['::role_waarneming::conf::scripts_send_mail'] %>
+do_curls=<%= scope['::role_waarneming::conf::scripts_do_curl'] %>
+domain_prefix="<%= scope['::role_waarneming::conf::scripts_domain_prefix'] %>" # ex. "test."
+
+waarneming_nl="https://"$domain_prefix"waarneming.nl"
+waarnemingen_be="https://"$domain_prefix"waarnemingen.be"
+observation_org="https://"$domain_prefix"observation.org"
+
+## database logins
+
+waarneming_user="waarneming"
+waarneming_pass="<%= scope['::role_waarneming::conf::waarneming_password'] %>"
+
+local_00_user="waarneming"
+local_00_pass="<%= scope['::role_waarneming::conf::waarneming_password'] %>"
+
+local_nl_user="waarneming"
+local_nl_pass="<%= scope['::role_waarneming::conf::waarneming_password'] %>"
+
+local_be_user="local_be"
+local_be_pass="<%= scope['::role_waarneming::conf::local_be_password'] %>"
+
+local_xx_user="local_xx"
+local_xx_pass="<%= scope['::role_waarneming::conf::local_xx_password'] %>"

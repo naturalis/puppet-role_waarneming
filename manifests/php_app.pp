@@ -72,7 +72,29 @@ class role_waarneming::php_app (
     require => User['waarneming'],
   }
 
-  # Check out bitbucket repo
+  # Check out scripts repo
+  vcsrepo { '/home/waarneming/scripts':
+    ensure   => present,
+    provider => git,
+    source   => $::role_waarneming::conf::git_repo_url_scripts,
+    revision => $::role_waarneming::conf::git_repo_rev_scripts,
+    user     => 'waarneming',
+    require  => [
+      File['/home/waarneming/.ssh/id_rsa'],
+      Sshkey['bitbucket_org_rsa'],
+      Sshkey['bitbucket_org_dsa'],
+    ]
+  }
+
+  # Create config file used by the scripts
+  file { '/home/waarneming/scripts/_settings_local.sh':
+    owner   => 'waarneming',
+    group   => 'waarneming',
+    content => template('role_waarneming/_settings_local.sh.erb'),
+    require => Vcsrepo['/home/waarneming/scripts'],
+  }
+
+  # Check out php app repo
   vcsrepo { '/home/waarneming/www':
     ensure   => present,
     provider => git,
