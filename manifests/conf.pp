@@ -1,32 +1,31 @@
 # All configurable settings
 class role_waarneming::conf (
-  # ::web
-  $web_host                = '127.0.0.1',
-  $waarneming_key,
-  $waarneming_crt,
-  $waarneming_server_name  = '_',
-  $observation_key,
-  $observation_crt,
-  $observation_server_name = '.observation.org',
-  $wnimg_key,
-  $wnimg_crt,
-  $wnimg_server_name       = '.wnimg.nl',
+  # ::php_app
   $git_repo_key_php,
   $git_repo_key_django,
-  $git_repo_url_php        = 'ssh://git@bitbucket.org/zostera/waarneming.git',
-  $git_repo_url_scripts    = 'ssh://git@bitbucket.org/zostera/waarneming-scripts.git',
-  $git_repo_url_django     = 'ssh://git@bitbucket.org/zostera/obs.git',
-  $git_repo_rev_php        = 'master',
-  $git_repo_rev_scripts    = 'master',
-  $git_repo_rev_django     = 'master',
-  $nginx_allow_ip          = ['1.1.1.1','2.2.2.2'],
-
-  # ::php_app
+  $git_repo_url_php      = 'ssh://git@bitbucket.org/zostera/waarneming.git',
+  $git_repo_url_scripts  = 'ssh://git@bitbucket.org/zostera/waarneming-scripts.git',
+  $git_repo_url_django   = 'ssh://git@bitbucket.org/zostera/obs.git',
+  $git_repo_rev_php      = 'master',
+  $git_repo_rev_scripts  = 'master',
+  $git_repo_rev_django   = 'master',
   $scripts_send_mail     = false,
   $scripts_do_curl       = false,
   $scripts_domain_prefix = 'acc.',
 
+  # ::php_app, ::vhost, not currently in use, can be ignored
+  $waarneming_key          = nil,
+  $waarneming_crt          = nil,
+  $waarneming_server_name  = '_',
+  $observation_key         = nil,
+  $observation_crt         = nil,
+  $observation_server_name = '.observation.org',
+  $wnimg_key               = nil,
+  $wnimg_crt               = nil,
+  $wnimg_server_name       = '.wnimg.nl',
+
   # ::web, for direct copying of site configs
+  $nginx_allow_ip = ['1.1.1.1','2.2.2.2'],
   $waarneming_nl_crt,
   $waarneming_nl_key,
   $observation_org_crt,
@@ -39,6 +38,7 @@ class role_waarneming::conf (
   $www_wnimg_nl_key,
 
   # ::db
+  $web_host           = '127.0.0.1',
   $db_host            = '127.0.0.1',
   $db_name            = 'waarneming',
   $postgresql_version = '9.5',
