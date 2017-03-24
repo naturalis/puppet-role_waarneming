@@ -110,6 +110,13 @@ class role_waarneming::django_app (
     require => Package['supervisor'],
   }
 
+  # Create uwsgi socket dir
+  file { '/var/uwsgi':
+    ensure => directory,
+    mode   => '0733',
+    before => Exec['restart obs'],
+  }
+
   file { '/etc/supervisor/conf.d/obs.conf':
     ensure  => present,
     source  => 'puppet:///modules/role_waarneming/supervisor_obs.conf',
