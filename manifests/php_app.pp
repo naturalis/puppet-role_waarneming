@@ -34,6 +34,7 @@ class role_waarneming::php_app (
     ensure     => present,
     uid        => '3107',
     gid        => '3107',
+    groups     => 'obs',
     managehome => true,
   }
   
