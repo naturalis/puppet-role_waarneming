@@ -22,6 +22,9 @@ class role_waarneming::django_app (
   # Create user and place ssh key
   user { 'obs':
     ensure     => present,
+    uid        => '3000',
+    gid        => '3000',
+    groups     => ['waarneming'],
     managehome => true,
   }
   
@@ -31,6 +34,13 @@ class role_waarneming::django_app (
     group   => 'obs',
     mode    => '0700',
     require => User['obs'],
+  }
+
+  ssh_authorized_key { 'obs_django':
+    ensure => present,
+    user   => 'obs',
+    type   => 'ssh-rsa',
+    key    => $::role_waarneming::conf::ssh_key_obs,
   }
 
   file { '/home/obs/.ssh/id_rsa':

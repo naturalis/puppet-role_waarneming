@@ -53,6 +53,13 @@ class role_waarneming::php_app (
     require => User['waarneming'],
   }
 
+  ssh_authorized_key { 'waarneming_php':
+    ensure => present,
+    user   => 'waarneming',
+    type   => 'ssh-rsa',
+    key    => $::role_waarneming::conf::ssh_key_waarneming,
+  }
+
   file { '/home/waarneming/.ssh/id_rsa':
     owner   => 'waarneming',
     group   => 'waarneming',
