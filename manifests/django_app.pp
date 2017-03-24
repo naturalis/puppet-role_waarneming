@@ -53,12 +53,11 @@ class role_waarneming::django_app (
 
   # Check out bitbucket repo
   vcsrepo { '/home/obs/django':
-    ensure   => present,
+    ensure   => latest,
     provider => git,
     source   => $::role_waarneming::conf::git_repo_url_django,
     revision => $::role_waarneming::conf::git_repo_rev_django,
     user     => 'obs',
-    #notify   => Service['php7.0-fpm'],
     require  => [
       File['/home/obs/.ssh/id_rsa'],
       Sshkey['bitbucket_org_rsa'],
@@ -98,6 +97,62 @@ class role_waarneming::django_app (
       Vcsrepo['/home/obs/django'],
       Class['postgresql::lib::devel'],
     ],
+  }
+
+  # Supervisord is used to manage the django UWSGI process
+  package { 'supervisor':
+    ensure  => present,
+    require => Class['apt::update'],
+  }
+
+  service { 'supervisor':
+    ensure  => running,
+    require => Package['supervisor'],
+  }
+
+  file { '/etc/supervisor/conf.d/obs.conf':
+    ensure  => present,
+    source  => 'puppet:///modules/role_waarneming/supervisor_obs.conf',
+    require => Package['supervisor'],
+    notify  => Service['supervisor'],
+  }
+
+  # Run migrate to update DB schema
+  exec { 'migrate obs':
+    command     => 'python manage.py migrate --noinput',
+    path        => '/home/obs/virtualenv/bin/',
+    cwd         => '/home/obs/django',
+    user        => 'obs',
+    require     => [
+      File['/home/obs/django/app/settings_local.py'],
+      Python::Virtualenv['/home/obs/virtualenv'],
+    ],
+    before      => Exec['restart obs'],
+    subscribe   => Vcsrepo['/home/obs/django'],
+    refreshonly => true,
+    timeout     => 0,
+  }
+
+  exec { 'collectstatic obs':
+    command     => 'python manage.py collectstatic --noinput',
+    path        => '/home/obs/virtualenv/bin/',
+    cwd         => '/home/obs/django',
+    user        => 'obs',
+    require     => [
+      File['/home/obs/django/app/settings_local.py'],
+      Python::Virtualenv['/home/obs/virtualenv'],
+    ],
+    before      => Exec['restart obs'],
+    subscribe   => Vcsrepo['/home/obs/django'],
+    refreshonly => true,
+    timeout     => 0,
+  }
+
+  exec { 'restart obs':
+    command     => '/usr/bin/supervisorctl restart obs',
+    require     => File['/etc/supervisor/conf.d/obs.conf'],
+    subscribe   => Vcsrepo['/home/obs/django'],
+    refreshonly => true,
   }
 
   # Special defined resource until config is cleaned up
