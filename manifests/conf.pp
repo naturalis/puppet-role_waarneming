@@ -1,16 +1,16 @@
 # All configurable settings
 class role_waarneming::conf (
   # ssh public keys
-  ssh_key_b1,
-  ssh_key_b2,
-  ssh_key_bt,
-  ssh_key_bh,
-  ssh_key_waarneming,
-  ssh_key_obs,
-  ssh_key_hugo,
-  ssh_key_dylan,
-  ssh_key_folkert,
-  ssh_key_hisko,
+  $ssh_key_b1,
+  $ssh_key_b2,
+  $ssh_key_bt,
+  $ssh_key_bh,
+  $ssh_key_waarneming,
+  $ssh_key_obs,
+  $ssh_key_hugo,
+  $ssh_key_dylan,
+  $ssh_key_folkert,
+  $ssh_key_hisko,
 
   # ::php_app
   $git_repo_key_php,
