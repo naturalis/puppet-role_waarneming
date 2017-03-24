@@ -145,9 +145,7 @@ class role_waarneming::php_app (
   ]
   package { $php_packages:
     ensure  => present,
-    require => [
-      Class['apt::update'],
-    ],
+    require => Class['apt::update'],
   }
 
   # Configure and run fpm service

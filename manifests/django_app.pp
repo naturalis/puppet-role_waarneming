@@ -78,6 +78,13 @@ class role_waarneming::django_app (
   class { '::postgresql::lib::python': }
   class { '::postgresql::lib::devel': }
 
+  # Install packages needed by django-app
+  package { ['zlib1g-dev', 'libgdal1i']:
+    ensure => present,
+    require => Class['apt::update'],
+  }
+
+  # Install python, python-dev, virtualenv and create the virtualenv
   class { '::python':
     dev        => present,
     virtualenv => present,
