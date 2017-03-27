@@ -97,4 +97,11 @@ class role_waarneming::db (
   package { 'jq':
     ensure => present,
   }
+
+  # Configure postgres user credentials in app
+  file { '/usr/local/sbin/restore_db.sh':
+    mode    => '0700',
+    content => template('role_waarneming/restore_db.erb'),
+  }
+
 }

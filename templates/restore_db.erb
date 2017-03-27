@@ -1,0 +1,76 @@
+#!/bin/bash
+
+backup_dir="/tmp/pgsql"
+pgv="<%= scope['::role_waarneming::conf::postgresql_version'] %>"
+db_dir="/var/lib/postgresql/$pgv/main"
+psql=/usr/lib/postgresql/$pgv/bin/psql
+pg_dump=/usr/lib/postgresql/$pgv/bin/pg_dump
+pg_restore=/usr/lib/postgresql/$pgv/bin/pg_restore
+initdb=/usr/lib/postgresql/$pgv/bin/initdb
+db="<%= scope['::role_waarneming::conf::db_name'] %>"
+
+cd $backup_dir
+
+echo `date +%H:%M`' stop puppet agent daemon'
+service puppet stop
+echo ''
+
+echo `date +%H:%M`' Stopping PostgreSQL:'
+/etc/init.d/postgresql stop
+echo ''
+
+echo `date +%H:%M`' Removing data dir:'
+/bin/rm -rf $db_dir
+echo ''
+
+echo `date +%H:%M`' Reinitializing database:'
+/bin/su postgres -c "$initdb --encoding=UTF8 --locale=C --auth=ident --pgdata=$db_dir"
+echo ''
+
+
+echo `date +%H:%M`' Starting PostgreSQL:'
+/etc/init.d/postgresql start
+echo ''
+
+echo `date +%H:%M`' one time puppet run ( create db + set roles)'
+puppet agent -t
+echo ''
+
+echo `date +%H:%M`' Superuser on:'
+/bin/su postgres -c "$psql -d postgres -c 'ALTER USER waarneming WITH superuser;'"
+echo ''
+
+echo `date +%H:%M`' Restore schema:'
+/bin/su postgres -c "$pg_restore --schema-only --role=$db --superuser=$db --dbname=$db  $backup_dir/waarneming.dump"
+echo ''
+
+echo `date +%H:%M`' Restoring database including schema:'
+/bin/su postgres -c "$pg_restore --data-only --disable-triggers --role=$db --superuser=$db --dbname=$db $backup_dir/waarneming.dump"
+echo ''
+
+echo `date +%H:%M`' Superuser off:'
+/bin/su postgres -c "$psql -d postgres -c 'ALTER USER waarneming WITH nosuperuser;'"
+echo ''
+
+echo `date +%H:%M`': Size:'
+du -hs $db_dir
+echo ''
+
+echo `date +%H:%M`': Vacuum analyzing:'
+/bin/su postgres -c "$psql -d $db <<EOF
+SET statement_timeout = 0;
+VACUUM ANALYZE;
+EOF" | grep -v "SET"
+echo ''
+
+echo `date +%H:%M`': Size:'
+du -hs $db_dir
+echo ''
+
+echo `date +%H:%M`' start puppet agent daemon'
+service puppet start
+echo ''
+
+echo `date +%H:%M`': Done.:'
+
+

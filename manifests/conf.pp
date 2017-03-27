@@ -53,7 +53,7 @@ class role_waarneming::conf (
   $web_host           = '127.0.0.1',
   $db_host            = '127.0.0.1',
   $db_name            = 'waarneming',
-  $postgresql_version = '9.5',
+  $postgresql_version = '9.6',
   $pgbouncer_port     = 5432,
   $waarneming_password,
   $local_be_password,
