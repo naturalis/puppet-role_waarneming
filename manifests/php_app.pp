@@ -38,7 +38,17 @@ class role_waarneming::php_app (
     managehome => true,
   }
   
-  file { [ '/home/waarneming/temp', '/home/waarneming/temp/cache' ]:
+  # Create /home/waarneming/temp dir structure
+  $tmpdir = '/home/waarneming/temp'
+  $temp_dirs = [
+    $tmpdir, "${tmpdir}/cache",
+    "${tmpdir}/export", "${tmpdir}/export/files",
+    "${tmpdir}/lockfiles", "${tmpdir}/log", "${tmpdir}/ndff",
+    "${tmpdir}/obsmapp", "${tmpdir}/obsmapp/temp", "${tmpdir}/obsmapp/upload",
+    "${tmpdir}/scripts", "${tmpdir}/tmp"
+  ]
+
+  file { $temp_dirs:
     ensure  => directory,
     owner   => 'waarneming',
     group   => 'waarneming',
