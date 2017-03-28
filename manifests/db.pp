@@ -98,7 +98,7 @@ class role_waarneming::db (
     ensure => present,
   }
 
-  # Configure postgres user credentials in app
+  # Generating postgres restore script
   file { '/usr/local/sbin/restore_db.sh':
     mode    => '0700',
     content => template('role_waarneming/restore_db.erb'),
