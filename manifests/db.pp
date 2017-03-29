@@ -28,7 +28,7 @@ class role_waarneming::db (
       'password_hash' => postgresql_password('obs', $::role_waarneming::conf::obs_password),
     },
     'obs_be'          => {
-      'password_hash' => postgresql_password('obs', $::role_waarneming::conf::obs_be_password),
+      'password_hash' => postgresql_password('obs_be', $::role_waarneming::conf::obs_be_password),
     },
     'analytics'       => {
       'superuser'     => true,
@@ -36,7 +36,7 @@ class role_waarneming::db (
     },
   },
 
-  $grants = {
+  $db_grants = {
     'waarneming@waarneming' => { privilege => 'CONNECT', db => 'waarneming', role => 'waarneming' },
     'obs@waarneming'        => { privilege => 'CONNECT', db => 'waarneming', role => 'obs' },
     'obs_be@waarneming'     => { privilege => 'CONNECT', db => 'waarneming', role => 'obs_be' },
@@ -44,6 +44,34 @@ class role_waarneming::db (
     'local_nl@waarneming'   => { privilege => 'CONNECT', db => 'waarneming', role => 'local_nl' },
     'local_xx@waarneming'   => { privilege => 'CONNECT', db => 'waarneming', role => 'local_xx' },
     'local_00@waarneming'   => { privilege => 'CONNECT', db => 'waarneming', role => 'local_00' },
+  },
+
+  # GRANT local_00 TO obs GRANTED BY root;
+  # GRANT local_be TO local_00 GRANTED BY root;
+  # GRANT local_be TO obs GRANTED BY root;
+  # GRANT local_nl TO local_00 GRANTED BY root;
+  # GRANT local_xx TO local_00 GRANTED BY root;
+  # GRANT local_xx TO obs GRANTED BY root;
+  # GRANT waarneming TO local_00 GRANTED BY root;
+  # GRANT waarneming TO local_be GRANTED BY hugo;
+  # GRANT waarneming TO local_nl GRANTED BY hugo;
+  # GRANT waarneming TO local_xx GRANTED BY hugo;
+  # GRANT waarneming TO obs GRANTED BY root;
+  # GRANT waarneming TO obs_be GRANTED BY postgres;
+
+  $role_grants = {
+    'local_00-obs'        => { role => 'local_00', group   => 'obs' },
+    'local_be-local_00'   => { role => 'local_be', group   => 'local_00' },
+    'local_be-obs'        => { role => 'local_be', group   => 'obs' },
+    'local_nl-local_00'   => { role => 'local_nl', group   => 'local_00' },
+    'local_xx-local_00'   => { role => 'local_xx', group   => 'local_00' },
+    'local_xx-obs'        => { role => 'local_xx', group   => 'obs' },
+    'waarneming-local_00' => { role => 'waarneming', group => 'local_00' },
+    'waarneming-local_be' => { role => 'waarneming', group => 'local_be' },
+    'waarneming-local_nl' => { role => 'waarneming', group => 'local_nl' },
+    'waarneming-local_xx' => { role => 'waarneming', group => 'local_xx' },
+    'waarneming-obs'      => { role => 'waarneming', group => 'obs' },
+    'waarneming-obs_be'   => { role => 'waarneming', group => 'obs_be' },
   },
 
   $config_entries = {
@@ -82,7 +110,10 @@ class role_waarneming::db (
   create_resources('::postgresql::server::role', $roles)
 
   # CONNECT privileges for users
-  create_resources('::postgresql::server::database_grant', $grants)
+  create_resources('::postgresql::server::database_grant', $db_grants)
+
+  # Role grants
+  create_resources('::postgresql::server::role_grant', $role_grants)
 
   # If conf::web_host is an IP (and not a hostname or CIDR range) add /32
   if (is_ip_address($::role_waarneming::conf::web_host)) and ($::role_waarneming::conf::web_host !~ /\d+\/\d{1,2}$/) {
