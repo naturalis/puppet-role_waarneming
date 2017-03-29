@@ -2,23 +2,18 @@
 class role_waarneming::db (
   $roles = {
     'waarneming'      => {
-      'superuser'     => true,
       'password_hash' => postgresql_password('waarneming', $::role_waarneming::conf::waarneming_password),
     },
     'local_be'        => {
-      'superuser'     => true,
       'password_hash' => postgresql_password('local_be', $::role_waarneming::conf::local_be_password),
     },
     'local_nl'        => {
-      'superuser'     => true,
       'password_hash' => postgresql_password('local_nl', $::role_waarneming::conf::local_nl_password),
     },
     'local_xx'        => {
-      'superuser'     => true,
       'password_hash' => postgresql_password('local_xx', $::role_waarneming::conf::local_xx_password),
     },
     'local_00'        => {
-      'superuser'     => true,
       'password_hash' => postgresql_password('local_00', $::role_waarneming::conf::local_00_password),
     },
     'hisko'           => {
@@ -30,8 +25,10 @@ class role_waarneming::db (
       'password_hash' => postgresql_password('hugo', $::role_waarneming::conf::hugo_password),
     },
     'obs'             => {
-      'superuser'     => true,
       'password_hash' => postgresql_password('obs', $::role_waarneming::conf::obs_password),
+    },
+    'obs_be'          => {
+      'password_hash' => postgresql_password('obs', $::role_waarneming::conf::obs_be_password),
     },
     'analytics'       => {
       'superuser'     => true,
