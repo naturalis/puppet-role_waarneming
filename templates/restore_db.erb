@@ -40,6 +40,16 @@ echo `date +%H:%M`' Superuser on:'
 /bin/su postgres -c "$psql -d postgres -c 'ALTER USER waarneming WITH superuser;'"
 echo ''
 
+echo `date +%H:%M`' Set role search_path:'
+/bin/su postgres -c "$psql -d postgres -c 'ALTER ROLE local_00 SET search_path TO local_00, public;'"
+/bin/su postgres -c "$psql -d postgres -c 'ALTER ROLE local_be SET search_path TO local_be, local_00, public;'"
+/bin/su postgres -c "$psql -d postgres -c 'ALTER ROLE local_nl SET search_path TO local_nl, local_00, public;'"
+/bin/su postgres -c "$psql -d postgres -c 'ALTER ROLE local_xx SET search_path TO local_xx, local_00, public;'"
+/bin/su postgres -c "$psql -d postgres -c 'ALTER ROLE obs SET search_path TO \"\$user\", obs_00, local_nl, local_00, public;'"
+/bin/su postgres -c "$psql -d postgres -c 'ALTER ROLE obs_be SET search_path TO obs_be, obs_00, local_be, local_00, public;'"
+/bin/su postgres -c "$psql -d postgres -c 'ALTER ROLE waarneming SET search_path TO local_nl, local_00, public;'"
+echo ''
+
 echo `date +%H:%M`' Restore schema:'
 /bin/su postgres -c "$pg_restore --schema-only --role=$db --superuser=$db --dbname=$db  $backup_dir/waarneming.dump"
 echo ''
