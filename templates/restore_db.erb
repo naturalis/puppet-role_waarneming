@@ -1,6 +1,6 @@
 #!/bin/bash
 
-backup_dir="/tmp/pgsql"
+backup_dir="/var/backup/pgsql"
 pgv="<%= scope['::role_waarneming::conf::postgresql_version'] %>"
 db_dir="/var/lib/postgresql/$pgv/main"
 psql=/usr/lib/postgresql/$pgv/bin/psql
@@ -50,12 +50,8 @@ echo `date +%H:%M`' Set role search_path:'
 /bin/su postgres -c "$psql -d postgres -c 'ALTER ROLE waarneming SET search_path TO local_nl, local_00, public;'"
 echo ''
 
-echo `date +%H:%M`' Restore schema:'
-/bin/su postgres -c "$pg_restore --schema-only --role=$db --superuser=$db --dbname=$db  $backup_dir/waarneming.dump"
-echo ''
-
 echo `date +%H:%M`' Restoring database including schema:'
-/bin/su postgres -c "$pg_restore --data-only --disable-triggers --role=$db --superuser=$db --dbname=$db $backup_dir/waarneming.dump"
+/bin/su postgres -c "$pg_restore --role=$db --superuser=$db --dbname=$db $backup_dir/waarneming.dump"
 echo ''
 
 echo `date +%H:%M`' Superuser off:'
