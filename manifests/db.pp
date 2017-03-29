@@ -46,32 +46,19 @@ class role_waarneming::db (
     'local_00@waarneming'   => { privilege => 'CONNECT', db => 'waarneming', role => 'local_00' },
   },
 
-  # GRANT local_00 TO obs GRANTED BY root;
-  # GRANT local_be TO local_00 GRANTED BY root;
-  # GRANT local_be TO obs GRANTED BY root;
-  # GRANT local_nl TO local_00 GRANTED BY root;
-  # GRANT local_xx TO local_00 GRANTED BY root;
-  # GRANT local_xx TO obs GRANTED BY root;
-  # GRANT waarneming TO local_00 GRANTED BY root;
-  # GRANT waarneming TO local_be GRANTED BY hugo;
-  # GRANT waarneming TO local_nl GRANTED BY hugo;
-  # GRANT waarneming TO local_xx GRANTED BY hugo;
-  # GRANT waarneming TO obs GRANTED BY root;
-  # GRANT waarneming TO obs_be GRANTED BY postgres;
-
   $role_grants = {
-    'local_00-obs'        => { role => 'local_00', group   => 'obs' },
-    'local_be-local_00'   => { role => 'local_be', group   => 'local_00' },
-    'local_be-obs'        => { role => 'local_be', group   => 'obs' },
-    'local_nl-local_00'   => { role => 'local_nl', group   => 'local_00' },
-    'local_xx-local_00'   => { role => 'local_xx', group   => 'local_00' },
-    'local_xx-obs'        => { role => 'local_xx', group   => 'obs' },
-    'waarneming-local_00' => { role => 'waarneming', group => 'local_00' },
-    'waarneming-local_be' => { role => 'waarneming', group => 'local_be' },
-    'waarneming-local_nl' => { role => 'waarneming', group => 'local_nl' },
-    'waarneming-local_xx' => { role => 'waarneming', group => 'local_xx' },
-    'waarneming-obs'      => { role => 'waarneming', group => 'obs' },
-    'waarneming-obs_be'   => { role => 'waarneming', group => 'obs_be' },
+    'local_00-obs'        => { group => 'local_00', role   => 'obs' },
+    'local_be-local_00'   => { group => 'local_be', role   => 'local_00' },
+    'local_be-obs'        => { group => 'local_be', role   => 'obs' },
+    'local_nl-local_00'   => { group => 'local_nl', role   => 'local_00' },
+    'local_xx-local_00'   => { group => 'local_xx', role   => 'local_00' },
+    'local_xx-obs'        => { group => 'local_xx', role   => 'obs' },
+    'waarneming-local_00' => { group => 'waarneming', role => 'local_00' },
+    'waarneming-local_be' => { group => 'waarneming', role => 'local_be' },
+    'waarneming-local_nl' => { group => 'waarneming', role => 'local_nl' },
+    'waarneming-local_xx' => { group => 'waarneming', role => 'local_xx' },
+    'waarneming-obs'      => { group => 'waarneming', role => 'obs' },
+    'waarneming-obs_be'   => { group => 'waarneming', role => 'obs_be' },
   },
 
   $config_entries = {
