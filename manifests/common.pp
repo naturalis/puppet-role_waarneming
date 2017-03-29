@@ -6,6 +6,11 @@ class role_waarneming::common (
     ensure => present,
   }
 
+  # Set timezone to Amsterdam
+  class { 'timezone':
+    timezone => 'Europe/Amsterdam',
+  }
+
   # Create rsync, waarneming and obs groups to allow dependencies
   group { 'obs':
     ensure => present,
