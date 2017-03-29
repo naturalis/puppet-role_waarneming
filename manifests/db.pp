@@ -113,7 +113,7 @@ class role_waarneming::db (
   create_resources('::postgresql::server::database_grant', $db_grants)
 
   # Role grants
-  create_resources('::postgresql::server::role_grant', $role_grants)
+  create_resources('::postgresql::server::grant_role', $role_grants)
 
   # If conf::web_host is an IP (and not a hostname or CIDR range) add /32
   if (is_ip_address($::role_waarneming::conf::web_host)) and ($::role_waarneming::conf::web_host !~ /\d+\/\d{1,2}$/) {
