@@ -35,6 +35,17 @@ class role_waarneming::db (
       'password_hash' => postgresql_password('analytics', $::role_waarneming::conf::analytics_password),
     },
   },
+
+  $grants = {
+    'waarneming@waarneming' => { privilege => 'CONNECT', db => 'waarneming', role => 'waarneming' },
+    'obs@waarneming'        => { privilege => 'CONNECT', db => 'waarneming', role => 'obs' },
+    'obs_be@waarneming'     => { privilege => 'CONNECT', db => 'waarneming', role => 'obs_be' },
+    'local_be@waarneming'   => { privilege => 'CONNECT', db => 'waarneming', role => 'local_be' },
+    'local_nl@waarneming'   => { privilege => 'CONNECT', db => 'waarneming', role => 'local_nl' },
+    'local_xx@waarneming'   => { privilege => 'CONNECT', db => 'waarneming', role => 'local_xx' },
+    'local_00@waarneming'   => { privilege => 'CONNECT', db => 'waarneming', role => 'local_00' },
+  },
+
   $config_entries = {
     'max_connections'           => {value => 150},
     'shared_buffers'            => {value => '16GB'},
@@ -47,18 +58,21 @@ class role_waarneming::db (
     'random_page_cost'          => {value => 2},
     'track_activity_query_size' => {value => 8192},
     'shared_preload_libraries'  => {value => 'pg_stat_statements'},
-    'pg_stat_statements.track'  => {value => 'all'}
-  }
+    'pg_stat_statements.track'  => {value => 'all'},
+    'log_timezone'              => {value => 'localtime'},
+  },
+
 ) {
   # Install PostgreSQL
   class { '::postgresql::server':
     listen_addresses => "localhost,${$::role_waarneming::conf::db_host}",
+    timezone         => 'localtime',
     require          => Class['postgresql::globals']
   }
 
   class { '::postgresql::server::postgis': }
 
-  # Multiple performance enhancing tweaks based on previous production setup
+  # Multiple configuration setting based on previous production setup
   create_resources('::postgresql::server::config_entry', $config_entries)
 
   # Create postgresql database
@@ -66,6 +80,9 @@ class role_waarneming::db (
 
   # Create postgresql users
   create_resources('::postgresql::server::role', $roles)
+
+  # CONNECT privileges for users
+  create_resources('::postgresql::server::database_grant', $grants)
 
   # If conf::web_host is an IP (and not a hostname or CIDR range) add /32
   if (is_ip_address($::role_waarneming::conf::web_host)) and ($::role_waarneming::conf::web_host !~ /\d+\/\d{1,2}$/) {
