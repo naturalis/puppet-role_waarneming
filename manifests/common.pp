@@ -45,10 +45,10 @@ class role_waarneming::common (
   }
 
   file { '/home/rsync/.ssh':
-    ensure  => directory,
-    owner   => 'rsync',
-    group   => 'rsync',
-    mode    => '0700',
+    ensure => directory,
+    owner  => 'rsync',
+    group  => 'rsync',
+    mode   => '0700',
   }
 
   # Add authorized ssh keys

@@ -16,6 +16,17 @@ class role_waarneming::php_app (
       'ssl_crt'     => $::role_waarneming::conf::wnimg_crt,
       'server_name' => $::role_waarneming::conf::wnimg_server_name,
     },
+  },
+
+  $ssh_keys = {
+    'waarneming_php' => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_waarneming },
+    'hugo_php'       => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_hugo },
+    'dylan_php'      => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_dylan },
+    'hisko_php'      => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_hisko },
+    'b1_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_b1 },
+    'b2_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_b2 },
+    'bt_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_bt },
+    'bh_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_bh },
   }
 ) {
   # Install and configure webserver
@@ -27,6 +38,12 @@ class role_waarneming::php_app (
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
+  }
+
+  # Defaults for all ssh authorized keys
+  Ssh_Authorized_Key {
+    ensure => present,
+    type   => 'ssh-rsa',
   }
 
   # Create user and place ssh key and git config
@@ -64,18 +81,21 @@ class role_waarneming::php_app (
     require => User['waarneming'],
   }
 
-  ssh_authorized_key { 'waarneming_php':
-    ensure => present,
-    user   => 'waarneming',
-    type   => 'ssh-rsa',
-    key    => $::role_waarneming::conf::ssh_key_waarneming,
-  }
+  create_resources('ssh_authorized_key', $ssh_keys)
 
+  # Place obs ssh key private and public parts
   file { '/home/waarneming/.ssh/id_rsa':
     owner   => 'waarneming',
     group   => 'waarneming',
     mode    => '0600',
     content => $::role_waarneming::conf::git_repo_key_php,
+    require => File['/home/waarneming/.ssh'],
+  }
+
+  ssh_authorized_key { 'waarneming@web':
+    user    => 'waarneming',
+    key     => $::role_waarneming::conf::ssh_key_waarneming,
+    target  => '/home/waarneming/.ssh/id_rsa.pub',
     require => File['/home/waarneming/.ssh'],
   }
 

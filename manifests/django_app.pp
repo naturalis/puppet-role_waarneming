@@ -6,6 +6,17 @@ class role_waarneming::django_app (
       'ssl_crt'     => $::role_waarneming::conf::observation_crt,
       'server_name' => 'test-nl.observation.org test-be.observation.org',
     },
+  },
+
+  $ssh_keys = {
+    'obs_django'     => { user => 'obs', key => $::role_waarneming::conf::ssh_key_obs },
+    'hugo_django'    => { user => 'obs', key => $::role_waarneming::conf::ssh_key_hugo },
+    'dylan_django'   => { user => 'obs', key => $::role_waarneming::conf::ssh_key_dylan },
+    'folkert_django' => { user => 'obs', key => $::role_waarneming::conf::ssh_key_folkert },
+    'b1_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_b1 },
+    'b2_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_b2 },
+    'bt_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_bt },
+    'bh_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_bh },
   }
 ) {
   # Install and configure webserver
@@ -17,6 +28,12 @@ class role_waarneming::django_app (
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
+  }
+
+  # Defaults for all ssh authorized keys
+  Ssh_Authorized_Key {
+    ensure => present,
+    type   => 'ssh-rsa',
   }
 
   # Create user and place ssh key
@@ -36,18 +53,21 @@ class role_waarneming::django_app (
     require => User['obs'],
   }
 
-  ssh_authorized_key { 'obs_django':
-    ensure => present,
-    user   => 'obs',
-    type   => 'ssh-rsa',
-    key    => $::role_waarneming::conf::ssh_key_obs,
-  }
+  create_resources('ssh_authorized_key', $ssh_keys)
 
+  # Place obs ssh key private and public parts
   file { '/home/obs/.ssh/id_rsa':
     owner   => 'obs',
     group   => 'obs',
     mode    => '0600',
     content => $::role_waarneming::conf::git_repo_key_django,
+    require => File['/home/obs/.ssh'],
+  }
+
+  ssh_authorized_key { 'obs@web':
+    user    => 'obs',
+    key     => $::role_waarneming::conf::ssh_key_obs,
+    target  => '/home/obs/.ssh/id_rsa.pub',
     require => File['/home/obs/.ssh'],
   }
 
@@ -79,7 +99,7 @@ class role_waarneming::django_app (
 
   # Install packages needed by django-app
   package { ['zlib1g-dev', 'libgdal1i']:
-    ensure => present,
+    ensure  => present,
     require => Class['apt::update'],
   }
 
