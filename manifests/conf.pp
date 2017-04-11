@@ -52,6 +52,8 @@ class role_waarneming::conf (
   # ::db
   $web_host           = '127.0.0.1',
   $db_host            = '127.0.0.1',
+  $db_slave_naturalis = '127.0.0.1',
+  $db_slave_zostera   = '127.0.0.1',
   $db_name            = 'waarneming',
   $postgresql_version = '9.6',
   $pgbouncer_port     = 5432,
@@ -65,6 +67,7 @@ class role_waarneming::conf (
   $obs_password,
   $obs_be_password,
   $analytics_password,
+  $async_slave_password,
 ) {
   # Define postgres version and add postgres apt repo
   class { '::postgresql::globals':

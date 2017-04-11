@@ -34,6 +34,10 @@ class role_waarneming::db (
       'superuser'     => true,
       'password_hash' => postgresql_password('analytics', $::role_waarneming::conf::analytics_password),
     },
+    'async_slave'     => {
+      'replication'   => true,
+      'password_hash' => postgresql_password('async_slave', $::role_waarneming::conf::async_slave_password),
+    },
   },
 
   $db_grants = {
@@ -75,6 +79,9 @@ class role_waarneming::db (
     'shared_preload_libraries'  => {value => 'pg_stat_statements'},
     'pg_stat_statements.track'  => {value => 'all'},
     'log_timezone'              => {value => 'localtime'},
+    'wal_level'                 => {value => 'hot_standby'},
+    'max_wal_senders'           => {value => 2},
+    'wal_keep_segments'         => {value => 512},
   },
 
 ) {
@@ -119,6 +126,40 @@ class role_waarneming::db (
     before      => Class['postgresql::server::reload']
   }
 
+  # If conf::db_slave_naturalis is an IP (and not a hostname or CIDR range) add /32
+  if (is_ip_address($::role_waarneming::conf::db_slave_naturalis)) and ($::role_waarneming::conf::db_slave_naturalis !~ /\d+\/\d{1,2}$/) {
+    $db_slave_naturalis = "${$::role_waarneming::conf::db_slave_naturalis}/32"
+  } else {
+    $db_slave_naturalis = $::role_waarneming::conf::db_slave_naturalis
+  }
+
+  ::postgresql::server::pg_hba_rule { 'allow db_slave_naturalis host to access database':
+    description => "Open up PostgreSQL for access from ${$db_slave_naturalis}",
+    type        => 'host',
+    database    => 'replication',
+    user        => 'async_slave',
+    address     => $db_slave_naturalis,
+    auth_method => 'md5',
+    before      => Class['postgresql::server::reload']
+  }
+
+  # If conf::db_slave_zostera is an IP (and not a hostname or CIDR range) add /32
+  if (is_ip_address($::role_waarneming::conf::db_slave_zostera)) and ($::role_waarneming::conf::db_slave_zostera !~ /\d+\/\d{1,2}$/) {
+    $db_slave_zostera = "${$::role_waarneming::conf::db_slave_zostera}/32"
+  } else {
+    $db_slave_zostera = $::role_waarneming::conf::db_slave_zostera
+  }
+
+  ::postgresql::server::pg_hba_rule { 'allow db_slave_zostera host to access database':
+    description => "Open up PostgreSQL for access from ${$db_slave_zostera}",
+    type        => 'host',
+    database    => 'replication',
+    user        => 'async_slave',
+    address     => $db_slave_zostera,
+    auth_method => 'md5',
+    before      => Class['postgresql::server::reload']
+  }
+
   # Postgres analytics scripts
   file { '/opt/postgresql':
     source  => 'puppet:///modules/role_waarneming/analytics',
@@ -135,5 +176,4 @@ class role_waarneming::db (
     mode    => '0700',
     content => template('role_waarneming/restore_db.erb'),
   }
-
 }
