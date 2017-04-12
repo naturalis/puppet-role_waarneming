@@ -4,7 +4,7 @@ class role_waarneming::phppgadmin (
   $path     = '/srv/phppgadmin',
   $user     = 'www-data',
   $servers  = [],
-  $revision = 'origin/REL_5-1'
+  $revision = 'origin/REL_5-1',
 ) {
 
   file { $path:
@@ -41,6 +41,13 @@ class role_waarneming::phppgadmin (
       'include'                 => 'fastcgi_params'
     },
     notify              => Class['nginx::service'],
+  }
+
+  file_line{'phppgadmin_conf_file_host':
+    path    => '/srv/phppgadmin/conf/config.inc.php',
+    match   => "\\t\\\$conf\\['servers'\\]\\[0\\]\\['host'\\] = '.*';$",
+    line    => "\t\$conf['servers'][0]['host'] = '${conf::db_host}';",
+    #require => Vcsrepo[$patch],
   }
 
 }
