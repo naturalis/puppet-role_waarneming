@@ -54,6 +54,7 @@ class role_waarneming::conf (
   $db_host            = '127.0.0.1',
   $db_slave_naturalis = '127.0.0.1',
   $db_slave_zostera   = '127.0.0.1',
+  $db_slave_zostera2  = '127.0.0.1',
   $db_name            = 'waarneming',
   $postgresql_version = '9.6',
   $pgbouncer_port     = 5432,

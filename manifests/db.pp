@@ -160,6 +160,23 @@ class role_waarneming::db (
     before      => Class['postgresql::server::reload']
   }
 
+  # If conf::db_slave_zostera2 is an IP (and not a hostname or CIDR range) add /32
+  if (is_ip_address($::role_waarneming::conf::db_slave_zostera2)) and ($::role_waarneming::conf::db_slave_zostera2 !~ /\d+\/\d{1,2}$/) {
+    $db_slave_zostera2 = "${$::role_waarneming::conf::db_slave_zostera2}/32"
+  } else {
+    $db_slave_zostera2 = $::role_waarneming::conf::db_slave_zostera2
+  }
+
+  ::postgresql::server::pg_hba_rule { 'allow db_slave_zostera2 host to access database':
+    description => "Open up PostgreSQL for access from ${$db_slave_zostera2}",
+    type        => 'host',
+    database    => 'replication',
+    user        => 'async_slave',
+    address     => $db_slave_zostera2,
+    auth_method => 'md5',
+    before      => Class['postgresql::server::reload']
+  }
+
   # Postgres analytics scripts
   file { '/opt/postgresql':
     source  => 'puppet:///modules/role_waarneming/analytics',
