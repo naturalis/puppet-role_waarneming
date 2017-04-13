@@ -133,7 +133,7 @@ class role_waarneming::db (
     $phppgadmin_host = $::role_waarneming::conf::phppgadmin_host
   }
 
-  ::postgresql::server::pg_hba_rule { 'allow app host(s) to access database':
+  ::postgresql::server::pg_hba_rule { 'allow phppgadmin host to access database':
     description => "Open up PostgreSQL for access from ${$phppgadmin_host}",
     type        => 'host',
     database    => 'all',
