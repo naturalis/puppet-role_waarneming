@@ -20,7 +20,14 @@ class role_waarneming::phppgadmin (
     revision => $revision,
   }
 
-  class { 'php': } ->
+  package { 'php' :
+    ensure => present,
+  }
+
+  package { 'php7.0-pgsql' :
+    ensure => present,
+  }
+  
   class { 'nginx': }
 
   nginx::resource::server { 'phppgadmin':
