@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+import sys
+import psycopg2
+import pylibmc
+
+connection_string="dbname='<%= scope['::role_waarneming::conf::db_name'] %>' user='local_00' password='<%= scope['::role_waarneming::conf::local_00_password'] %>'"
+
+database = psycopg2.connect(connection_string)
+database.set_client_encoding('UTF-8')
+cursor = database.cursor()
+mc = pylibmc.Client(["127.0.0.1"])
+
+def query(query, args=[]):
+    database.reset()
+    cursor.execute(query, [args])
+    return cursor.fetchall()
+
+c1 = 0
+c2 = 0
+
+for t in query("SELECT table_name AS name, string_agg(table_schema,', ') AS schemas FROM information_schema.tables \
+             WHERE table_schema NOT IN ('information_schema', 'pg_catalog', 'pg_toast') \
+             GROUP BY table_name ORDER BY table_name;"):
+
+    table_info = '(for %s in %s)'% t
+
+    for what in ['structure', 'primary_key']:
+        key = 'ActiveRecord_%s_%s' % (t[0], what)
+        c1 += 1
+        print key
+        try:
+            r = mc.get(key)
+        except:
+            r = 'ERROR'
+        if r:
+            if '--expire' in sys.argv:
+                mc.delete(key)
+                print 'removed key "%s" %s' % (key, table_info)
+                c2 += 1
+            else:
+                print 'found key "%s" %s' % (key, table_info)
+                c2 += 1
+
+if '--expire' in sys.argv:
+    action = 'removed'
+else:
+    action = 'found'
+
+print '\n%s keys checked, %s %s\n' % (c1, c2, action)

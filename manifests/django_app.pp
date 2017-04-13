@@ -25,8 +25,8 @@ class role_waarneming::django_app (
   # Defaults for all file resources
   File {
     ensure => present,
-    owner  => 'root',
-    group  => 'root',
+    owner  => 'obs',
+    group  => 'obs',
     mode   => '0644',
   }
 
@@ -46,20 +46,27 @@ class role_waarneming::django_app (
     shell      => '/bin/bash',
   }
   
+  file {
+    '/home/obs/.bashrc': source => 'puppet:///modules/role_waarneming/obs_bashrc';
+    '/home/obs/.bash_profile': source => 'puppet:///modules/role_waarneming/obs_bash_profile';
+  }
+
+  file {
+    '/home/obs/bin'                    : ensure => 'directory';
+    '/home/obs/bin/flush_memcache.py'  : content => template('role_waarneming/obs_bin/flush_memcache.py.erb'), mode => '0755';
+    '/home/obs/bin/remove_constraints' : content => template('role_waarneming/obs_bin/remove_constraints.erb'), mode => '0755';
+    '/home/obs/bin/schema_cache'       : content => template('role_waarneming/obs_bin/schema_cache.erb'), mode => '0755';
+  }
+
   file { '/home/obs/.ssh':
     ensure  => directory,
-    owner   => 'obs',
-    group   => 'obs',
     mode    => '0700',
-    require => User['obs'],
   }
 
   create_resources('ssh_authorized_key', $ssh_keys)
 
   # Place obs ssh key private and public parts
   file { '/home/obs/.ssh/id_rsa':
-    owner   => 'obs',
-    group   => 'obs',
     mode    => '0600',
     content => $::role_waarneming::conf::git_repo_key_django,
     require => File['/home/obs/.ssh'],
@@ -88,8 +95,6 @@ class role_waarneming::django_app (
 
   # Configure postgres user credentials in app
   file { '/home/obs/django/app/settings_local.py':
-    owner   => 'obs',
-    group   => 'obs',
     content => template('role_waarneming/settings_local.py.erb'),
     require => Vcsrepo['/home/obs/django'],
   }
@@ -134,12 +139,16 @@ class role_waarneming::django_app (
   # Create uwsgi socket dir
   file { '/var/uwsgi':
     ensure => directory,
+    owner  => 'root',
+    group  => 'root',
     mode   => '0733',
     before => Exec['restart obs'],
   }
 
   file { '/etc/supervisor/conf.d/obs.conf':
     ensure  => present,
+    owner  => 'root',
+    group  => 'root',
     source  => 'puppet:///modules/role_waarneming/supervisor_obs.conf',
     require => Package['supervisor'],
     notify  => Service['supervisor'],
