@@ -46,8 +46,8 @@ class role_waarneming::phppgadmin (
   file_line{'phppgadmin_conf_file_host':
     path    => '/srv/phppgadmin/conf/config.inc.php',
     match   => "\\t\\\$conf\\['servers'\\]\\[0\\]\\['host'\\] = '.*';$",
-    line    => "\t\$conf['servers'][0]['host'] = '${conf::db_host}';",
-    #require => Vcsrepo[$patch],
+    line    => "\t\$conf['servers'][0]['host'] = '${role_waarneming::conf::db_host}';",
+    require => Vcsrepo[$path],
   }
 
 }
