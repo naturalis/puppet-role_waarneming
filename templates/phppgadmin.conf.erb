@@ -1,0 +1,4 @@
+location /phppgadmin/ {
+    include    include/block_ip_intern.conf;
+    proxy_pass http://<%= scope['::role_waarneming::conf::phppgadmin_host'] %>/;
+}
