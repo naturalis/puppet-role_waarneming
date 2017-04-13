@@ -126,6 +126,23 @@ class role_waarneming::db (
     before      => Class['postgresql::server::reload']
   }
 
+  # If conf::phppgadmin_host is an IP (and not a hostname or CIDR range) add /32
+  if (is_ip_address($::role_waarneming::conf::phppgadmin_host)) and ($::role_waarneming::conf::phppgadmin_host !~ /\d+\/\d{1,2}$/) {
+    $phppgadmin_host = "${$::role_waarneming::conf::phppgadmin_host}/32"
+  } else {
+    $phppgadmin_host = $::role_waarneming::conf::phppgadmin_host
+  }
+
+  ::postgresql::server::pg_hba_rule { 'allow app host(s) to access database':
+    description => "Open up PostgreSQL for access from ${$phppgadmin_host}",
+    type        => 'host',
+    database    => 'all',
+    user        => 'all',
+    address     => $phppgadmin_host,
+    auth_method => 'md5',
+    before      => Class['postgresql::server::reload']
+  }
+
   # If conf::db_slave_naturalis is an IP (and not a hostname or CIDR range) add /32
   if (is_ip_address($::role_waarneming::conf::db_slave_naturalis)) and ($::role_waarneming::conf::db_slave_naturalis !~ /\d+\/\d{1,2}$/) {
     $db_slave_naturalis = "${$::role_waarneming::conf::db_slave_naturalis}/32"
