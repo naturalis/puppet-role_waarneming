@@ -43,6 +43,7 @@ class role_waarneming::django_app (
     gid        => '3000',
     groups     => ['waarneming'],
     managehome => true,
+    shell      => '/bin/bash',
   }
   
   file { '/home/obs/.ssh':

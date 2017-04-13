@@ -53,6 +53,7 @@ class role_waarneming::php_app (
     gid        => '3107',
     groups     => 'obs',
     managehome => true,
+    shell      => '/bin/bash',
   }
   
   # Create /home/waarneming/temp dir structure
