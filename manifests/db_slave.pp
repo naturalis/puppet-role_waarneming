@@ -16,6 +16,8 @@ class role_waarneming::db_slave (
     require              => Class['postgresql::globals']
   }
 
+  class { '::postgresql::server::postgis': }
+
   # Multiple configuration setting based on previous production setup
   create_resources('::postgresql::server::config_entry', $config_entries)
 
