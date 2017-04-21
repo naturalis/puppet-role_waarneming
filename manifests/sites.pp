@@ -22,7 +22,8 @@ class role_waarneming::sites (
     '/etc/nginx/sites-enabled/waarnemingen.be'         => { source => 'puppet:///modules/role_waarneming/nginx_sites/waarnemingen.be' },
     '/etc/nginx/sites-enabled/waarnemingen.nl'         => { source => 'puppet:///modules/role_waarneming/nginx_sites/waarnemingen.nl' },
     '/etc/nginx/sites-enabled/wnimg'                   => { source => 'puppet:///modules/role_waarneming/nginx_sites/wnimg' },
-    '/etc/nginx/sites-enabled/project.waarnemingen.be' => { source => 'puppet:///modules/role_waarneming/nginx_sites/project.waarnemingen.be'},
+    '/etc/nginx/sites-enabled/project.waarnemingen.be' => { source => 'puppet:///modules/role_waarneming/nginx_sites/project.waarnemingen.be' },
+    '/etc/nginx/sites-available/offline'               => { source => 'puppet:///modules/role_waarneming/nginx_sites/offline' },
   }
 ) {
   # Defaults for all file resources
@@ -31,6 +32,7 @@ class role_waarneming::sites (
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
+    notify => Service['nginx'],
   }
 
   file { '/etc/nginx/ssl':
@@ -43,4 +45,8 @@ class role_waarneming::sites (
 
   # Nginx site config files, verbatim
   create_resources(file, $sites, $defaults)
+
+  file { '/etc/nginx/sites-enabled/offline':
+    ensure => absent,
+  }
 }

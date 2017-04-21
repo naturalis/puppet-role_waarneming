@@ -75,4 +75,10 @@ class role_waarneming::web (
   }
 
   include ::role_waarneming::sites
+
+  # Script to set nginx in offline mode
+  file { '/usr/local/bin/sites_offline.sh':
+    source => 'puppet:///modules/role_waarneming/sites_offline.sh',
+    mode   => '0755',
+  }
 }
