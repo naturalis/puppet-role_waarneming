@@ -81,4 +81,11 @@ class role_waarneming::web (
     source => 'puppet:///modules/role_waarneming/sites_offline.sh',
     mode   => '0755',
   }
+
+  # Install additional fonts
+  package { ['ttf-dejavu-core','ttf-dejavu-extra']:
+    ensure => present,
+  }
+
+
 }
