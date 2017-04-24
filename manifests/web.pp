@@ -87,5 +87,9 @@ class role_waarneming::web (
     ensure => present,
   }
 
+  # Install exif for metadata extraction from images
+  package { 'exif':
+    ensure => present,
+  }
 
 }
