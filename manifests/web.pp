@@ -91,5 +91,10 @@ class role_waarneming::web (
   package { 'exif':
     ensure => present,
   }
+  
+  # Install libfile-mimeinfo-perl used for uploads
+  package { 'libfile-mimeinfo-perl':
+    ensure => present,
+  }
 
 }
