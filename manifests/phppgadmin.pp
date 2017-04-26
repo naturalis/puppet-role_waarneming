@@ -27,7 +27,11 @@ class role_waarneming::phppgadmin (
   package { 'php7.0-pgsql' :
     ensure => present,
   }
-  
+
+  package { 'postgresql-client' :
+    ensure => present,
+  }
+
   class { 'nginx': }
 
   nginx::resource::server { 'phppgadmin':
