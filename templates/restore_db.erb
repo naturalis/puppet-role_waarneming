@@ -1,5 +1,6 @@
 #!/bin/bash
 
+backup_rootdir="/var/backup"  # temporary change owner of this dir from root to postgres
 backup_dir="/var/backup/pgsql"
 pgv="<%= scope['::role_waarneming::conf::postgresql_version'] %>"
 db_dir="/var/lib/postgresql/$pgv/main"
@@ -9,6 +10,8 @@ pg_restore=/usr/lib/postgresql/$pgv/bin/pg_restore
 initdb=/usr/lib/postgresql/$pgv/bin/initdb
 db="<%= scope['::role_waarneming::conf::db_name'] %>"
 
+
+chown -R postgres:postgres $backup_rootdir
 cd $backup_dir
 
 echo `date +%H:%M`' stop puppet agent daemon'
@@ -51,7 +54,7 @@ echo `date +%H:%M`' Set role search_path:'
 echo ''
 
 echo `date +%H:%M`' Restoring database including schema:'
-/bin/su postgres -c "$pg_restore --role=$db --superuser=$db --dbname=$db $backup_dir/waarneming.dump"
+/bin/su postgres -c "$pg_restore --role=$db --superuser=$db --dbname=$db $backup_dir/pgsql_waarneming.dump"
 echo ''
 
 echo `date +%H:%M`' Superuser off:'
@@ -78,5 +81,7 @@ service puppet start
 echo ''
 
 echo `date +%H:%M`': Done.:'
+
+chown -R root:root $backup_rootdir
 
 

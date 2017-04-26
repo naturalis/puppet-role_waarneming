@@ -156,20 +156,6 @@ class role_waarneming::php_app (
     require => Vcsrepo['/home/waarneming/www'],
   }
 
-  # Create symlink to static content dir
-  file { '/home/waarneming/www/fotonew':
-    ensure  => link,
-    target  => '/home/waarneming/media/fotonew',
-    require => Vcsrepo['/home/waarneming/www'],
-  }
-
-  # Place missing favicon
-  file { '/home/waarneming/www/favicon.ico':
-    ensure  => present,
-    source  => 'puppet:///modules/role_waarneming/acc_favicon.ico',
-    require => Vcsrepo['/home/waarneming/www'],
-  }
-
   # Install required PHP packages
   $php_packages = [
     'php7.0-fpm', 'php-memcached', 'php7.0-curl', 'php7.0-gd', 'php7.0-pgsql', 'php7.0-intl', 'php7.0-mbstring', 'php7.0-xml', 'php7.0-zip', 'php-redis'
