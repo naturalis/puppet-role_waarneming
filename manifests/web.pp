@@ -102,4 +102,10 @@ class role_waarneming::web (
   package { 'gettext':
     ensure => present,
   }
+
+  # Install postgis
+  package { 'postgis':
+    ensure => present,
+    install_options => [ '--no-install-recommends' ],
+  }
 }
