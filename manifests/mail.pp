@@ -5,7 +5,12 @@ class role_waarneming::mail (
   # listen only on local interfaces
   # set domain as origin
   class { '::postfix':
-    inet_interfaces => '127.0.0.1, [::1]',
+    inet_interfaces => '127.0.0.1',
     myorigin        => 'waarneming.nl',
+  }
+
+  postfix::config { 'inet_protocols':
+    ensure  => present,
+    value   => 'ipv4',
   }
 }
