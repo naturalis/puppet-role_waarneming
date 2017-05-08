@@ -67,8 +67,8 @@ class role_waarneming::db (
 
   $config_entries = {
     'max_connections'                   => {value => 150},
-    'shared_buffers'                    => {value => '32GB'},
-    'effective_cache_size'              => {value => '72GB'},
+    'shared_buffers'                    => {value => '96GB'},
+    'effective_cache_size'              => {value => '216GB'},
     'max_stack_depth'                   => {value => '7680kB'},
     'temp_buffers'                      => {value => '16MB'},
     'work_mem'                          => {value => '16MB'},

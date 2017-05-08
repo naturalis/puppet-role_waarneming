@@ -13,4 +13,20 @@ class role_waarneming::mail (
     ensure  => present,
     value   => 'ipv4',
   }
+
+  postfix::config { 'smpt_destination_concurrency_limit':
+    ensure  => present,
+    value   => '2',
+  }
+
+  postfix::config { 'smpt_destination_rate_delay':
+    ensure  => present,
+    value   => '1s',
+  }
+
+  postfix::config { 'smpt_extra_recipient_limit':
+    ensure  => present,
+    value   => '10',
+  }
+
 }
