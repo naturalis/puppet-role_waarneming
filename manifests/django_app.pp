@@ -45,7 +45,23 @@ class role_waarneming::django_app (
     managehome => true,
     shell      => '/bin/bash',
   }
-  
+
+  # Add entries to sudoers. obs user can restart services. 
+  augeas { "sudorestartobs":
+    context => "/files/etc/sudoers",
+    changes => [
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/name SERVICES",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[1] '/usr/bin/supervisorctl start obs'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[2] '/usr/bin/supervisorctl stop obs'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[3] '/usr/bin/supervisorctl restart obs'",
+      "set spec[user = 'obs']/user obs",
+      "set spec[user = 'obs']/host_group/host ALL",
+      "set spec[user = 'obs']/host_group/command SERVICES",
+      "set spec[user = 'obs']/host_group/command/runas_user root",
+      "set spec[user = 'obs']/host_group/command/tag NOPASSWD",
+      ],
+  }
+
   file {
     '/home/obs/.bashrc': source => 'puppet:///modules/role_waarneming/obs_bashrc';
     '/home/obs/.bash_profile': source => 'puppet:///modules/role_waarneming/obs_bash_profile';
