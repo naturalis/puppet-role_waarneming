@@ -39,15 +39,31 @@ class role_waarneming::phppgadmin (
 
   class { 'nginx': }
 
-  nginx::resource::server { 'phppgadmin':
-    www_root             => '/srv/phppgadmin',
-    use_default_location => false
+  if ($role_waarneming::phppgadmin::enableletsencrypt == true) {
+    $sslfolder = $role_waarneming::phppgadmin::letsencrypt_domains[0]
+    nginx::resource::server { 'phppgadmin':
+      www_root             => '/srv/phppgadmin',
+      use_default_location => false,
+      listen_port           => 443,
+      ssl                   => true,
+      ssl_cert              => "/etc/letsencrypt/live/${sslfolder}/cert.pem",
+      ssl_key               => "/etc/letsencrypt/live/${sslfolder}/privkey.pem",
+    }
+    nginx::resource::server { 'phppgadmin_nonssl':
+      location_cfg_append   => { 'rewrite' => "^ https://${sslfolder} permanent" },
+    }
+  }else{
+    nginx::resource::server { 'phppgadmin':
+      www_root             => '/srv/phppgadmin',
+      use_default_location => false
+    }
   }
 
   nginx::resource::location { "phppgadmin":
     ensure              => present,
     server              => 'phppgadmin',
     www_root            => '/srv/phppgadmin',
+    ssl_only            => $role_waarneming::phppgadmin::enableletsencrypt,
     location            => '~ \.php$',
     location_cfg_append => {
       'fastcgi_split_path_info' => '^(.+\.php)(/.+)$',
