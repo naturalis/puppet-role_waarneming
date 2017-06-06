@@ -1,10 +1,15 @@
 # == Class role_waarneming::phppgadmin
 #
 class role_waarneming::phppgadmin (
-  $path     = '/srv/phppgadmin',
-  $user     = 'www-data',
-  $servers  = [],
-  $revision = 'origin/REL_5-1',
+  $path                         = '/srv/phppgadmin',
+  $user                         = 'www-data',
+  $servers                      = [],
+  $revision                     = 'origin/REL_5-1',
+  $enableletsencrypt            = false,
+  $letsencrypt_email            = 'letsencypt@mydomain.me',
+  $letsencrypt_version          = 'master',
+  $letsencrypt_domains          = ['phppgadmin.site.nl'],
+  $letsencrypt_server           = 'https://acme-v01.api.letsencrypt.org/directory',
 ) {
 
   file { $path:
@@ -61,4 +66,31 @@ class role_waarneming::phppgadmin (
     require => Vcsrepo[$path],
   }
 
+# install letsencrypt certs only and crontab
+  if ($role_waarneming::phppgadmin::enableletsencrypt == true) {
+  $firstcert = $role_waarneming::phppgadmin::letsencrypt_domains[0]
+   anchor { 'role_waarneming::phppgadmin::begin': }
+     -> exec { 'stop nginx':
+        command        => "/usr/sbin/service nginx stop",
+        require        => Class['nginx'],
+        unless         => "/usr/bin/test -d /etc/letsencrypt/live/${firstcert}",
+      }
+     -> class { ::letsencrypt:
+        config => {
+          email  => $role_waarneming::phppgadmin::letsencrypt_email,
+          server => $role_waarneming::phppgadmin::letsencrypt_server,
+        }
+      }
+     -> letsencrypt::certonly { 'letsencrypt_cert':
+        domains               => $role_waarneming::phppgadmin::letsencrypt_domains,
+        cron_before_command   => 'service nginx stop',
+        cron_success_command  => '/bin/systemctl reload nginx.service',
+        manage_cron           => true,
+      }
+     -> exec { 'start nginx':
+        command        => "/usr/sbin/service nginx start",
+        unless         => "/usr/bin/test -d /etc/letsencrypt/live/${firstcert}",
+      }
+    anchor { 'role_waarneming::phppgadmin::end': }
+  }
 }
