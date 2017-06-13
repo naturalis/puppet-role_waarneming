@@ -26,7 +26,10 @@ class role_waarneming::phppgadmin (
   }
 
   package { 'php' :
-    ensure => present,
+    ensure   => present,
+    settings => {
+      'PHP/max_execution_time' => '900',
+    }
   }
 
   package { 'php7.0-pgsql' :
