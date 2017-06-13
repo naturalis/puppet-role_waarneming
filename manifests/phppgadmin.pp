@@ -71,7 +71,7 @@ class role_waarneming::phppgadmin (
       'fastcgi_pass'            => '127.0.0.1:9000',
       'fastcgi_index'           => 'index.php',
       'include'                 => 'fastcgi_params',
-      'fastcgi_read_timeout'    => '300'
+      'fastcgi_read_timeout'    => '900'
     },
     notify              => Class['nginx::service'],
   }
