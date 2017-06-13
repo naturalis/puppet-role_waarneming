@@ -113,7 +113,7 @@ class role_waarneming::php_app (
 
   # Check out scripts repo
   vcsrepo { '/home/waarneming/scripts':
-    ensure   => latest,
+    ensure   => present,
     provider => git,
     source   => $::role_waarneming::conf::git_repo_url_scripts,
     revision => $::role_waarneming::conf::git_repo_rev_scripts,
