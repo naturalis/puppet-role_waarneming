@@ -38,6 +38,7 @@ class role_waarneming::conf (
 
   # ::web, for direct copying of site configs
   $nginx_allow_ip = ['1.1.1.1','2.2.2.2'],
+  $nginx_allow_user = {'user' => {'cryptpasswd' => 'xx'}, 'user2' => {'cryptpasswd' => 'yy'}},
   $waarneming_nl_crt,
   $waarneming_nl_key,
   $observation_org_crt,

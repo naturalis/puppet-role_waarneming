@@ -63,6 +63,9 @@ class role_waarneming::web (
     notify  => Service['nginx'],
   }
 
+  # Add users to Nginx htpasswd file
+  create_resources('htpasswd', $::role_waarneming::conf::nginx_allow_user, {'target' => '/etc/nginx/include/.htpasswd'})
+
   # Nginx include block_ip.conf
   file { '/etc/nginx/include/block_ip.conf':
     content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd'}),
@@ -71,7 +74,7 @@ class role_waarneming::web (
 
   # Nginx include block_ip_intern.conf
   file { '/etc/nginx/include/block_ip_intern.conf':
-    content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd_intern'}),
+    content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd'}),
     notify  => Service['nginx'],
   }
 
