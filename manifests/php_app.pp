@@ -135,7 +135,7 @@ class role_waarneming::php_app (
 
   # Check out php app repo
   vcsrepo { '/home/waarneming/www':
-    ensure   => present,
+    ensure   => $::role_waarneming::conf::git_repo_ensure_php,
     provider => git,
     source   => $::role_waarneming::conf::git_repo_url_php,
     revision => $::role_waarneming::conf::git_repo_rev_php,

@@ -18,6 +18,7 @@ class role_waarneming::conf (
   $git_repo_url_php      = 'ssh://git@bitbucket.org/zostera/waarneming.git',
   $git_repo_url_scripts  = 'ssh://git@bitbucket.org/zostera/waarneming-scripts.git',
   $git_repo_url_django   = 'ssh://git@bitbucket.org/zostera/obs.git',
+  $git_repo_ensure_php   = 'latest',
   $git_repo_rev_php      = 'master',
   $git_repo_rev_scripts  = 'master',
   $git_repo_rev_django   = 'master',
