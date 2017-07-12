@@ -64,7 +64,7 @@ class role_waarneming::web (
   }
 
   # Add users to Nginx htpasswd file
-  create_resources('htpasswd', $::role_waarneming::conf::nginx_allow_user, {'target' => '/etc/nginx/include/.htpasswd'})
+  create_resources('htpasswd', $::role_waarneming::conf::nginx_allow_user, {'target' => '/etc/nginx/include/.htpasswd', 'require' => Service['nginx']})
 
   # Nginx include block_ip.conf
   file { '/etc/nginx/include/block_ip.conf':
