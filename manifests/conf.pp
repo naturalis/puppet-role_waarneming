@@ -50,6 +50,11 @@ class role_waarneming::conf (
   $waarnemingen_be_key,
   $www_wnimg_nl_crt,
   $www_wnimg_nl_key,
+  $web_host_prod      = '127.0.0.1',
+  $rsync_media        = false,
+  $rsync_cron_weekday = 0,
+  $rsync_cron_hour    = 1,
+  $rsync_cron_minute  = 0,
 
   # ::db
   $web_host           = '127.0.0.1',

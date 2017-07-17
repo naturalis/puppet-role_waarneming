@@ -111,4 +111,26 @@ class role_waarneming::web (
     ensure => present,
     install_options => [ '--no-install-recommends' ],
   }
+
+  # Script to rsync media files from production to test, acc or dev. 
+  file { '/usr/local/sbin/rsync_media.sh':
+    content => template('role_waarneming/rsync_media.erb'),
+    mode   => '0755',
+  }
+
+  # Script to set nginx in offline mode
+  file { '/etc/logrotate.d/rsync_media':
+    source => 'puppet:///modules/role_waarneming/rsync_logrotate',
+    mode   => '0644',
+  }
+
+  if ($::role_waarneming::conf::rsync_media == true){
+    cron { 'rsync media':
+      command => '/usr/local/sbin/rsync_media.sh',
+      user    => root,
+      hour    => $::role_waarneming::conf::rsync_cron_hour,
+      minute  => $::role_waarneming::conf::rsync_cron_minute,
+      weekday => $::role_waarneming::conf::rsync_cron_weekday
+    }
+  }
 }
