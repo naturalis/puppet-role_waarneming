@@ -15,17 +15,20 @@ class role_waarneming::conf (
   # ::php_app
   $git_repo_key_php,
   $git_repo_key_django,
-  $git_repo_url_php        = 'ssh://git@bitbucket.org/zostera/waarneming.git',
-  $git_repo_url_scripts    = 'ssh://git@bitbucket.org/zostera/waarneming-scripts.git',
-  $git_repo_url_django     = 'ssh://git@bitbucket.org/zostera/obs.git',
-  $git_repo_ensure_php     = 'latest',
-  $git_repo_ensure_django  = 'latest',
-  $git_repo_rev_php        = 'master',
-  $git_repo_rev_scripts    = 'master',
-  $git_repo_rev_django     = 'master',
-  $scripts_send_mail       = false,
-  $scripts_do_curl         = false,
-  $scripts_domain_prefix   = 'acc.',
+  $git_repo_url_php                 = 'ssh://git@bitbucket.org/zostera/waarneming.git',
+  $git_repo_url_scripts             = 'ssh://git@bitbucket.org/zostera/waarneming-scripts.git',
+  $git_repo_url_django              = 'ssh://git@bitbucket.org/zostera/obs.git',
+  $git_repo_ensure_php              = 'latest',
+  $git_repo_ensure_django           = 'latest',
+  $git_repo_rev_php                 = 'master',
+  $git_repo_rev_scripts             = 'master',
+  $git_repo_rev_django              = 'master',
+  $scripts_send_mail                = false,
+  $scripts_do_curl                  = false,
+  $scripts_domain_prefix            = 'acc.',
+  $php_ini_opcache_revalidate_freq  = '300',           # dev, test, acc = '5'
+  $php_ini_display_errors           = 'Off',           # dev, test, acc = 'On',
+
 
   # ::php_app, ::vhost, not currently in use, can be ignored
   $waarneming_key          = nil,

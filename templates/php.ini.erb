@@ -3,7 +3,7 @@
 opcache.memory_consumption=128
 opcache.interned_strings_buffer=8
 opcache.max_accelerated_files=4000
-opcache.revalidate_freq=300
+opcache.revalidate_freq=<%= scope['::role_waarneming::conf::php_ini_opcache_revalidate_freq'] %>
 opcache.fast_shutdown=1
 opcache.enable_cli=1
 
@@ -467,7 +467,7 @@ error_reporting = E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/display-errors
-display_errors = Off
+display_errors = <%= scope['::role_waarneming::conf::php_ini_display_errors'] %>
 
 ; The display of errors which occur during PHP's startup sequence are handled
 ; separately from display_errors. PHP's default behavior is to suppress those

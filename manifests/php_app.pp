@@ -168,7 +168,7 @@ class role_waarneming::php_app (
   # Configure and run fpm service
   file { '/etc/php/7.0/fpm/php.ini':
     ensure  => present,
-    source  => 'puppet:///modules/role_waarneming/fpm/php.ini',
+    content => template('role_waarneming/php.ini.erb'),
     notify  => Service['php7.0-fpm'],
     require => Package['php7.0-fpm'],
   }
