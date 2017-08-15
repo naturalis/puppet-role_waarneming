@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# rsync media from production to acc, test or dev.
+# runs as user waarneming.
+#
+# Add ssh key if needed
+if ! grep "$(ssh-keyscan <%= scope['::role_waarneming::conf::web_host_prod'] %> 2>/dev/null)" /home/waarneming/.ssh/known_hosts > /dev/null; then
+    ssh-keyscan <%= scope['::role_waarneming::conf::web_host_prod'] %> >> /home/waarneming/.ssh/known_hosts
+fi
+
+# touch log and set permissions
+touch /var/log/rsync_media.log
+chown waarneming:root /var/log/rsync_media.log
+
+# rsync with --delete option, without compression. 
+/bin/su waarneming -c "rsync -avh --no-owner --no-group --no-perms --delete --log-file=/var/log/rsync_media.log waarneming@<%= scope['::role_waarneming::conf::web_host_prod'] %>:/data/waarneming/media /data/waarneming/"
