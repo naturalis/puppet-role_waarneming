@@ -97,7 +97,7 @@ class role_waarneming::django_app (
 
   # Check out bitbucket repo
   vcsrepo { '/home/obs/django':
-    ensure   => latest,
+    ensure   => $::role_waarneming::conf::git_repo_ensure_django,
     provider => git,
     source   => $::role_waarneming::conf::git_repo_url_django,
     revision => $::role_waarneming::conf::git_repo_rev_django,
