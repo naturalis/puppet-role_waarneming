@@ -29,4 +29,20 @@ class role_waarneming::mail (
     value   => '10',
   }
 
+  # adjust default rsyslog config for removing mail logging from syslog and to mail.log and mail.err only
+  file_line { 'rsyslog config':
+    ensure             => present,
+    path               => '/etc/rsyslog.d/50-default.conf',
+    line               => '*.*;mail.none,auth,authpriv.none       -/var/log/syslog',
+    match              => '^*.*;auth,authpriv.none',
+    notify             => Exec['restart rsyslog'],
+  }
+
+  # restart syslog when config is adjusted
+  exec { 'restart rsyslog':
+    refreshonly     => true,
+    path            => ['/usr/bin', '/usr/sbin','/bin','/sbin'],
+    command         => 'systemctl restart rsyslog.service'
+  }
+
 }

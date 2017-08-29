@@ -4,6 +4,7 @@ class role_waarneming::db_slave (
     'max_connections'      => {value => 150},
     'hot_standby'          => {value => 'on'},
     'hot_standby_feedback' => {value => 'on'},
+    'max_worker_processes' => {value => 16},
     'log_timezone'         => {value => 'localtime'},
   },
 
