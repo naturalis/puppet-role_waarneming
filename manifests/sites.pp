@@ -23,6 +23,11 @@ class role_waarneming::sites (
     '/etc/nginx/sites-enabled/waarnemingen.nl'         => { source => 'puppet:///modules/role_waarneming/nginx_sites/waarnemingen.nl' },
     '/etc/nginx/sites-enabled/wnimg'                   => { source => 'puppet:///modules/role_waarneming/nginx_sites/wnimg' },
     '/etc/nginx/sites-enabled/project.waarnemingen.be' => { source => 'puppet:///modules/role_waarneming/nginx_sites/project.waarnemingen.be' },
+    '/etc/nginx/sites-enabled/beta.waarneming.nl'      => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarneming.nl' },
+    '/etc/nginx/sites-enabled/beta.waarnemingen.be'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarnemingen.be' },
+    '/etc/nginx/sites-enabled/beta.observations.be'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observations.be' },
+    '/etc/nginx/sites-enabled/beta.observation.org'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observation.org' },
+    '/etc/nginx/sites-enabled/beta.observado.org'      => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observado.org' },
     '/etc/nginx/sites-available/offline'               => { source => 'puppet:///modules/role_waarneming/nginx_sites/offline' },
   }
 ) {

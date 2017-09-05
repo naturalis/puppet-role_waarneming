@@ -1,8 +1,8 @@
 server {
     listen		443 ssl;
-    server_name		project.waarnemingen.be project-acc.waarnemingen.be project-test.waarnemingen.be;
-    ssl_certificate	/etc/nginx/ssl/waarnemingen_be-chained.crt;
-    ssl_certificate_key	/etc/nginx/ssl/waarnemingen_be.key;
+    server_name		>beta.observations.be beta-acc.observations.be beta-test.observations.be;
+    ssl_certificate	/etc/nginx/ssl/observations_be-chained.crt;
+    ssl_certificate_key	/etc/nginx/ssl/observations_be.key;
 
     #include include/block_ip.conf;
 
@@ -40,6 +40,6 @@ server {
 
 server {
     listen 80;
-    server_name		project.waarnemingen.be project-acc.waarnemingen.be project-test.waarnemingen.be;
+    server_name		>beta.observations.be beta-acc.observations.be beta-test.observations.be;
     rewrite ^ https://$host$request_uri? permanent;
 }
