@@ -112,6 +112,7 @@ class role_waarneming::django_app (
   # Configure postgres user credentials in app
   file { '/home/obs/django/app/settings_local.py':
     content => template('role_waarneming/settings_local.py.erb'),
+    replace => $::role_waarneming::conf::obs_managesettings,
     require => Vcsrepo['/home/obs/django'],
   }
 

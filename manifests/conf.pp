@@ -28,7 +28,7 @@ class role_waarneming::conf (
   $scripts_domain_prefix            = 'acc.',
   $php_ini_opcache_revalidate_freq  = '300',           # dev, test, acc = '5'
   $php_ini_display_errors           = 'Off',           # dev, test, acc = 'On',
-
+  $obs_managesettings               = 'yes',           # dev = 'no'
 
   # ::php_app, ::vhost, not currently in use, can be ignored
   $waarneming_key          = nil,
