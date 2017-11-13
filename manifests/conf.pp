@@ -7,6 +7,7 @@ class role_waarneming::conf (
   $ssh_key_bh,
   $ssh_key_waarneming,
   $ssh_key_obs,
+  $ssh_key_jieter,
   $ssh_key_hugo,
   $ssh_key_dylan,
   $ssh_key_folkert,
