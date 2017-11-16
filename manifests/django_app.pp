@@ -55,6 +55,8 @@ class role_waarneming::django_app (
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[1] '/usr/bin/supervisorctl start obs'",
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[2] '/usr/bin/supervisorctl stop obs'",
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[3] '/usr/bin/supervisorctl restart obs'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[4] '/usr/bin/puppet agent -t'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[5] '/usr/bin/puppet agent -t --debug'",
       "set spec[user = 'obs']/user obs",
       "set spec[user = 'obs']/host_group/host ALL",
       "set spec[user = 'obs']/host_group/command SERVICES",
