@@ -33,7 +33,7 @@ class role_waarneming::db_slave (
   # Link pg_ctl
   file { '/usr/bin/pg_ctl':
     ensure  => link,
-    target  => '/usr/lib/postgresql/9.6/bin/pg_ctl',
+    target  => '/usr/lib/postgresql/${::role_waarneming::conf::postgresql_version}/bin/pg_ctl',
     require => Class['postgresql::globals']
   }
   
