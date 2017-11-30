@@ -37,4 +37,11 @@ class role_waarneming::db_slave (
     require => Class['postgresql::globals']
   }
   
+  # Link pg_basebackup
+  file { '/usr/bin/pg_basebackup':
+    ensure  => link,
+    target  => '/usr/lib/postgresql/${::role_waarneming::conf::postgresql_version}/bin/pg_basebackup',
+    require => Class['postgresql::globals']
+  }
+  
 }
