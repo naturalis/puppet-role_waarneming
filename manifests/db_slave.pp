@@ -29,4 +29,12 @@ class role_waarneming::db_slave (
     standby_mode     => 'on',
     primary_conninfo => "host=${db_host} port=5432 user=async_slave password=${slavepw} application_name=async_slave",
   }
+  
+  # Link pg_ctl
+  file { '/usr/bin/pg_ctl':
+    ensure  => link,
+    target  => '/usr/lib/postgresql/9.6/bin/pg_ctl',
+    require => Class['postgresql::globals']
+  }
+  
 }
