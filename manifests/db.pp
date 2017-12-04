@@ -216,14 +216,14 @@ class role_waarneming::db (
   # Link pg_ctl
   file { '/usr/bin/pg_ctl':
     ensure  => link,
-    target  => '/usr/lib/postgresql/${::role_waarneming::conf::postgresql_version}/bin/pg_ctl',
+    target  => "/usr/lib/postgresql/${::role_waarneming::conf::postgresql_version}/bin/pg_ctl",
     require => Class['postgresql::globals']
   }
   
   # Link pg_basebackup
   file { '/usr/bin/pg_basebackup':
     ensure  => link,
-    target  => '/usr/lib/postgresql/${::role_waarneming::conf::postgresql_version}/bin/pg_basebackup',
+    target  => "/usr/lib/postgresql/${::role_waarneming::conf::postgresql_version}/bin/pg_basebackup",
     require => Class['postgresql::globals']
   }
     
