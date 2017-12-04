@@ -28,4 +28,12 @@ Vagrant.configure("2") do |config|
       inline: "curl https://raw.githubusercontent.com/rudibroekhuizen/puppet-role_base/master/files/bootstrap.sh > bootstrap.sh; chmod +x bootstrap.sh;./bootstrap.sh server-waarneming-db-slave"
   end
 
+  config.vm.define "vb-03" do |config|
+    config.vm.host_name = "server-waarneming-db-slaveslave"
+    config.vm.network "forwarded_port", id: 'ssh', guest: 22, host: 2223
+    config.vm.network "private_network", ip: "192.168.56.7"
+    config.vm.provision "shell",
+      inline: "curl https://raw.githubusercontent.com/rudibroekhuizen/puppet-role_base/master/files/bootstrap.sh > bootstrap.sh; chmod +x bootstrap.sh;./bootstrap.sh server-waarneming-db-slave"
+  end
+
 end
