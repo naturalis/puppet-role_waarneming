@@ -19,7 +19,7 @@ service puppet stop
 echo ''
 
 echo `date +%H:%M`' dump obs_00 schema'
-/bin/su postgres -c "$pg_dump $db --schema=obs_00 -Fc -f /tmp/obs_00.dump"
+/bin/su postgres -c "$pg_dump --superuser=$db --dbname=$db --schema=obs_00 -Fc -f /tmp/obs_00.dump"
 echo ''
 
 echo `date +%H:%M`' Stopping PostgreSQL:'
@@ -62,7 +62,7 @@ echo `date +%H:%M`' Restoring database including schema:'
 echo ''
 
 echo `date +%H:%M`' import obs_00 schema:'
-/bin/su postgres -c "$pg_restore --clean --if-exists --role=$db --superuser=$db --dbname=$db /tmp/obs_00.dump"
+/bin/su postgres -c "$pg_restore --clean --if-exists --superuser=$db --dbname=$db --schema=obs_00 /tmp/obs_00.dump"
 echo ''
 
 echo `date +%H:%M`' Superuser off:'
