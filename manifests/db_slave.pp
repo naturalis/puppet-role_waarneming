@@ -7,7 +7,8 @@ class role_waarneming::db_slave (
     'max_worker_processes' => {value => 16},
     'log_timezone'         => {value => 'localtime'},
     'wal_level'            => {value => 'replica'}, # to replicate to yet another slave server
-    'max_wal_senders'      => {value => 2} # to replicate to yet another slave server
+    'max_wal_senders'      => {value => 2}, # to replicate to yet another slave server
+    'wal_keep_segments'    => {value => 512} # to replicate to yet another slave server
   },
 
 ) {
