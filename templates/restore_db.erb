@@ -65,6 +65,10 @@ echo `date +%H:%M`' import obs_00 schema:'
 /bin/su postgres -c "$pg_restore --clean --if-exists --superuser=$db --dbname=$db --schema=obs_00 /tmp/obs_00.dump"
 echo ''
 
+echo `date +%H:%M`' cleanup obs_00 restore:'
+rm /tmp/obs_00.dump
+echo ''
+
 echo `date +%H:%M`' Superuser off:'
 /bin/su postgres -c "$psql -d postgres -c 'ALTER USER waarneming WITH nosuperuser;'"
 echo ''
