@@ -17,7 +17,7 @@ server {
         default_type  "text/html; charset=utf-8";
         set $memcached_key "fpc:$scheme://$host$request_uri";
         memcached_pass localhost:11211;
-        error_page     404 502 504 = @uwsgi;
+        error_page     404 405 502 504 = @uwsgi;
     }
 
     location /robots.txt {
