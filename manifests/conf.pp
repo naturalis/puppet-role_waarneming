@@ -69,7 +69,7 @@ class role_waarneming::conf (
   $db_slave_zostera   = '127.0.0.1',
   $db_slave_zostera2  = '127.0.0.1',
   $db_name            = 'waarneming',
-  $postgresql_version = '9.6',
+  $postgresql_version = '10',
   $pgbouncer_port     = 5432,
   $waarneming_password,
   $local_be_password,
