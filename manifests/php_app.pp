@@ -140,7 +140,7 @@ class role_waarneming::php_app (
     source   => $::role_waarneming::conf::git_repo_url_php,
     revision => $::role_waarneming::conf::git_repo_rev_php,
     user     => 'waarneming',
-    notify   => Service['php7.0-fpm'],
+    notify   => Service['php7.2-fpm'],
     require  => [
       File['/home/waarneming/.ssh/id_rsa'],
       Sshkey['bitbucket_org_rsa'],
@@ -157,33 +157,42 @@ class role_waarneming::php_app (
   }
 
   # Install required PHP packages
+   apt::key { 'ondrej':
+    id      => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
+    server  => 'pgp.mit.edu',
+    notify  => Exec['apt_update']
+  }
+
+  ::apt::ppa { 'ppa:ondrej/php': }
+
   $php_packages = [
-    'php7.0-fpm', 'php-memcached', 'php7.0-curl', 'php7.0-gd', 'php7.0-pgsql', 'php7.0-intl', 'php7.0-mbstring', 'php7.0-xml', 'php7.0-zip', 'php-redis'
+    'php7.2-fpm', 'php-memcached', 'php7.2-curl', 'php7.2-gd', 'php7.2-pgsql', 'php7.2-intl', 'php7.2-mbstring', 'php7.2-xml', 'php7.2-zip', 'php-redis'
   ]
   package { $php_packages:
     ensure  => present,
-    require => Class['apt::update'],
+    require => [Class['apt::update'],Apt::Ppa['ppa:ondrej/php'],Apt::Key['ondrej']]
   }
+
 
   # Configure and run fpm service
-  file { '/etc/php/7.0/fpm/php.ini':
+  file { '/etc/php/7.2/fpm/php.ini':
     ensure  => present,
     content => template('role_waarneming/php.ini.erb'),
-    notify  => Service['php7.0-fpm'],
-    require => Package['php7.0-fpm'],
+    notify  => Service['php7.2-fpm'],
+    require => Package['php7.2-fpm'],
   }
 
-  file { '/etc/php/7.0/fpm/pool.d/www.conf':
+  file { '/etc/php/7.2/fpm/pool.d/www.conf':
     source  => 'puppet:///modules/role_waarneming/fpm/www.conf',
-    notify  => Service['php7.0-fpm'],
-    require => Package['php7.0-fpm'],
+    notify  => Service['php7.2-fpm'],
+    require => Package['php7.2-fpm'],
   }
 
-  service { 'php7.0-fpm':
+  service { 'php7.2-fpm':
     ensure  => running,
     enable  => true,
     require => [
-      Package['php7.0-fpm'],
+      Package['php7.2-fpm'],
       Class['redis'],
     ],
   }

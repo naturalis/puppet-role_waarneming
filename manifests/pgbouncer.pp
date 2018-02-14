@@ -8,6 +8,8 @@ class role_waarneming::pgbouncer (
   $hisko_pw      = postgresql_password('hisko', $::role_waarneming::conf::hisko_password),
   $hugo_pw       = postgresql_password('hugo', $::role_waarneming::conf::hugo_password),
   $obs_pw        = postgresql_password('obs', $::role_waarneming::conf::obs_password),
+  $noordzee_pw        = postgresql_password('noordzee', $::role_waarneming::conf::noordzee_password),
+  $nederlandzoemt_pw        = postgresql_password('nederlandzoemt', $::role_waarneming::conf::nederlandzoemt_password),
   $analytics_pw  = postgresql_password('analytics', $::role_waarneming::conf::analytics_password),
 ) {
   # Install PostgreSQL client software
@@ -28,6 +30,8 @@ class role_waarneming::pgbouncer (
       "\"hisko\" \"${hisko_pw}\"",
       "\"hugo\" \"${hugo_pw}\"",
       "\"obs\" \"${obs_pw}\"",
+      "\"noordzee\" \"${noordzee_pw}\"",
+      "\"nederlandzoemt\" \"${nederlandzoemt_pw}\"",
       "\"analytics\" \"${analytics_pw}\"",
     ],
     pool_mode   => 'session',

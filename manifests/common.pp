@@ -17,6 +17,16 @@ class role_waarneming::common (
     gid    => '3000',
   }
 
+  group { 'noordzee':
+    ensure => present,
+    gid    => '3010',
+  }
+
+  group { 'nederlandzoemt':
+    ensure => present,
+    gid    => '3020',
+  }
+
   group { 'rsync':
     ensure => present,
     gid    => '3001',
@@ -32,7 +42,7 @@ class role_waarneming::common (
     ensure     => present,
     uid        => '3001',
     gid        => '3001',
-    groups     => [ 'obs', 'waarneming' ],
+    groups     => [ 'obs', 'waarneming', 'noordzee', 'nederlandzoemt' ],
     managehome => true,
   }
 

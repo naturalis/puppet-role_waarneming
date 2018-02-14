@@ -1,0 +1,8 @@
+source ~/virtualenv/bin/activate
+
+alias start="/usr/bin/sudo /usr/bin/supervisorctl start nederlandzoemt"
+alias stop="/usr/bin/sudo /usr/bin/supervisorctl stop nederlandzoemt"
+alias restart="/usr/bin/sudo /usr/bin/supervisorctl restart nederlandzoemt"
+
+#alias upgrade_all="pip install --upgrade --no-deps \`pip freeze | grep -v jango | sed 's/\=\=.*//g'\`"
+alias upgrade_all="pip install --upgrade --no-deps \`pip freeze | sed 's/\=\=.*//g'\`"

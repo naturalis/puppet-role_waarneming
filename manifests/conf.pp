@@ -7,29 +7,43 @@ class role_waarneming::conf (
   $ssh_key_bh,
   $ssh_key_waarneming,
   $ssh_key_obs,
+  $ssh_key_noordzee,
+  $ssh_key_nederlandzoemt,
   $ssh_key_jieter,
   $ssh_key_hugo,
   $ssh_key_dylan,
   $ssh_key_folkert,
   $ssh_key_hisko,
 
-  # ::php_app
+  # ::django_app
   $git_repo_key_php,
   $git_repo_key_django,
   $git_repo_url_php                 = 'ssh://git@bitbucket.org/zostera/waarneming.git',
   $git_repo_url_scripts             = 'ssh://git@bitbucket.org/zostera/waarneming-scripts.git',
-  $git_repo_url_django              = 'ssh://git@bitbucket.org/zostera/obs.git',
+  $git_repo_url_django_obs          = 'ssh://git@bitbucket.org/zostera/obs.git',
+  $git_repo_url_django_noordzee     = 'ssh://git@bitbucket.org/zostera/noordzee.git',
+  $git_repo_url_django_nederlandzoemt  = 'ssh://git@bitbucket.org/zostera/nederlandzoemt.git',
   $git_repo_ensure_php              = 'latest',
   $git_repo_ensure_django           = 'latest',
+  $git_repo_ensure_noordzee         = 'latest',
+  $git_repo_ensure_nederlandzoemt   = 'latest',
   $git_repo_rev_php                 = 'master',
   $git_repo_rev_scripts             = 'master',
   $git_repo_rev_django              = 'master',
+  $git_repo_rev_noordzee            = 'master',
+  $git_repo_rev_nederlandzoemt      = 'master',
   $scripts_send_mail                = false,
   $scripts_do_curl                  = false,
   $scripts_domain_prefix            = 'acc.',
   $php_ini_opcache_revalidate_freq  = '300',           # dev, test, acc = '5'
   $php_ini_display_errors           = 'Off',           # dev, test, acc = 'On',
   $obs_managesettings               = 'yes',           # dev = 'no'
+  $noordzee_managesettings          = 'yes',           # dev = 'no'
+  $nederlandzoemt_managesettings    = 'yes',           # dev = 'no'
+  $obs_python_version               = 'python2.7',
+  $noordzee_python_version          = 'python3',
+  $nederlandzoemt_python_version    = 'python3.6',
+
 
   # ::php_app, ::vhost, not currently in use, can be ignored
   $waarneming_key          = nil,
@@ -69,7 +83,7 @@ class role_waarneming::conf (
   $db_slave_zostera   = '127.0.0.1',
   $db_slave_zostera2  = '127.0.0.1',
   $db_name            = 'waarneming',
-  $postgresql_version = '9.6',
+  $postgresql_version = '10.0',
   $pgbouncer_port     = 5432,
   $waarneming_password,
   $local_be_password,
@@ -79,6 +93,8 @@ class role_waarneming::conf (
   $hisko_password,
   $hugo_password,
   $obs_password,
+  $noordzee_password,
+  $nederlandzoemt_password,
   $obs_be_password,
   $analytics_password,
   $async_slave_password,

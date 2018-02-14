@@ -1,5 +1,6 @@
 # Install webserver and app
 class role_waarneming::django_app (
+  $python_version = $::role_waarneming::conf::obs_python_version,
   $sites = {
     'django' => {
       'ssl_key'     => $::role_waarneming::conf::observation_key,
@@ -7,7 +8,6 @@ class role_waarneming::django_app (
       'server_name' => 'test-nl.observation.org test-be.observation.org',
     },
   },
-
   $ssh_keys = {
     'obs_django'     => { user => 'obs', key => $::role_waarneming::conf::ssh_key_obs },
     'hugo_django'    => { user => 'obs', key => $::role_waarneming::conf::ssh_key_hugo },
@@ -100,10 +100,10 @@ class role_waarneming::django_app (
 
   # Check out bitbucket repo
   vcsrepo { '/home/obs/django':
-    ensure   => $::role_waarneming::conf::git_repo_ensure_django,
+    ensure   => $::role_waarneming::conf::git_repo_ensure_django_obs,
     provider => git,
-    source   => $::role_waarneming::conf::git_repo_url_django,
-    revision => $::role_waarneming::conf::git_repo_rev_django,
+    source   => $::role_waarneming::conf::git_repo_url_django_obs,
+    revision => $::role_waarneming::conf::git_repo_rev_django_obs,
     user     => 'obs',
     require  => [
       File['/home/obs/.ssh/id_rsa'],
@@ -131,6 +131,7 @@ class role_waarneming::django_app (
 
   # Install python, python-dev, virtualenv and create the virtualenv
   class { '::python':
+    version    => $python_version,
     dev        => present,
     virtualenv => present,
   }->
