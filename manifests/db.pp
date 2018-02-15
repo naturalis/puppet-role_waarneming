@@ -90,7 +90,7 @@ class role_waarneming::db (
   # Install PostgreSQL
   class { 'postgresql::globals':
     manage_package_repo => true,
-    version             => $postgresql_version,
+    version             => $::role_waarneming::conf::postgresql_version,
     postgis_version     => '2.3'
   }
 
