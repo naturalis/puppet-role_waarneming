@@ -18,9 +18,9 @@ echo `date +%H:%M`' stop puppet agent daemon'
 service puppet stop
 echo ''
 
-echo `date +%H:%M`' dump obs_00 schema'
-/bin/su postgres -c "$pg_dump --superuser=$db --dbname=$db --schema=obs_00 -Fc -f /tmp/obs_00.dump"
-echo ''
+#echo `date +%H:%M`' dump obs_00 schema'
+#/bin/su postgres -c "$pg_dump --superuser=$db --dbname=$db --schema=obs_00 -Fc -f /tmp/obs_00.dump"
+#echo ''
 
 echo `date +%H:%M`' Stopping PostgreSQL:'
 /etc/init.d/postgresql stop
@@ -61,13 +61,13 @@ echo `date +%H:%M`' Restoring database including schema:'
 /bin/su postgres -c "$pg_restore --role=$db --superuser=$db --dbname=$db $backup_dir/pgsql_waarneming.dump"
 echo ''
 
-echo `date +%H:%M`' import obs_00 schema:'
-/bin/su postgres -c "$pg_restore --clean --if-exists --superuser=$db --dbname=$db --schema=obs_00 /tmp/obs_00.dump"
-echo ''
+#echo `date +%H:%M`' import obs_00 schema:'
+#/bin/su postgres -c "$pg_restore --clean --if-exists --superuser=$db --dbname=$db --schema=obs_00 /tmp/obs_00.dump"
+#echo ''
 
-echo `date +%H:%M`' cleanup obs_00 restore:'
-rm /tmp/obs_00.dump
-echo ''
+#echo `date +%H:%M`' cleanup obs_00 restore:'
+#rm /tmp/obs_00.dump
+#echo ''
 
 echo `date +%H:%M`' Superuser off:'
 /bin/su postgres -c "$psql -d postgres -c 'ALTER USER waarneming WITH nosuperuser;'"
