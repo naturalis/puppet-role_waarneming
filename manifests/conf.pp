@@ -100,9 +100,9 @@ class role_waarneming::conf (
   $async_slave_password,
 ) {
   # Define postgres version and add postgres apt repo
-  class { '::postgresql::globals':
-    manage_package_repo => true,
-    version             => $postgresql_version,
-    postgis_version     => '2.3',
-  }
+  #class { '::postgresql::globals':
+  #  manage_package_repo => true,
+  #  version             => $postgresql_version,
+  #  postgis_version     => '2.3',
+  #}
 }
