@@ -91,7 +91,7 @@ class role_waarneming::db (
   class { 'postgresql::globals':
     manage_package_repo => true,
     version             => $::role_waarneming::conf::postgresql_version,
-    postgis_version     => '2.4'
+    postgis_version    => '2.4'
   }
 
   class { '::postgresql::server':
