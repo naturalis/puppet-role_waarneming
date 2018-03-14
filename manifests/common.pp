@@ -12,21 +12,6 @@ class role_waarneming::common (
   }
 
   # Create rsync, waarneming and obs groups to allow dependencies
-  group { 'obs':
-    ensure => present,
-    gid    => '3000',
-  }
-
-  group { 'noordzee':
-    ensure => present,
-    gid    => '3010',
-  }
-
-  group { 'nederlandzoemt':
-    ensure => present,
-    gid    => '3020',
-  }
-
   group { 'rsync':
     ensure => present,
     gid    => '3001',

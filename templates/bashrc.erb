@@ -1,8 +1,8 @@
 source ~/virtualenv/bin/activate
 
-alias start="/usr/bin/sudo /usr/bin/supervisorctl start obs"
-alias stop="/usr/bin/sudo /usr/bin/supervisorctl stop obs"
-alias restart="/usr/bin/sudo /usr/bin/supervisorctl restart obs"
+alias start="/usr/bin/sudo /usr/bin/supervisorctl start <%= $title %>"
+alias stop="/usr/bin/sudo /usr/bin/supervisorctl stop <%= $title %>"
+alias restart="/usr/bin/sudo /usr/bin/supervisorctl restart <%= $title %>"
 
 #alias upgrade_all="pip install --upgrade --no-deps \`pip freeze | grep -v jango | sed 's/\=\=.*//g'\`"
 alias upgrade_all="pip install --upgrade --no-deps \`pip freeze | sed 's/\=\=.*//g'\`"

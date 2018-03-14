@@ -1,9 +1,9 @@
 #!/bin/bash
 
 export PGHOST="<%= scope['::role_waarneming::conf::db_host'] %>"
-export PGDATABASE="<%= scope['::role_waarneming::conf::db_name'] %>"
-export PGUSER="obs"
-export PGPASSWORD="<%= scope['::role_waarneming::conf::obs_password'] %>"
+export PGDATABASE="<%= scope['::role_waarneming::django::pg_dbname'] %>"
+export PGUSER="<%= scope['::role_waarneming::django::pg_user'] %>"
+export PGPASSWORD="<%= scope['::role_waarneming::django::pg_password'] %>"
 
 psql --set ON_ERROR_STOP=on \
 --no-align \

@@ -17,33 +17,51 @@ class role_waarneming::conf (
 
   # ::django_app
   $git_repo_key_php,
-  $git_repo_key_django,
   $git_repo_url_php                 = 'ssh://git@bitbucket.org/zostera/waarneming.git',
   $git_repo_url_scripts             = 'ssh://git@bitbucket.org/zostera/waarneming-scripts.git',
-  $git_repo_url_django_obs          = 'ssh://git@bitbucket.org/zostera/obs.git',
-  $git_repo_url_django_noordzee     = 'ssh://git@bitbucket.org/zostera/noordzee.git',
-  $git_repo_url_django_nederlandzoemt  = 'ssh://git@bitbucket.org/zostera/nederlandzoemt.git',
-  $git_repo_ensure_php              = 'latest',
-  $git_repo_ensure_django           = 'latest',
-  $git_repo_ensure_noordzee         = 'latest',
-  $git_repo_ensure_nederlandzoemt   = 'latest',
-  $git_repo_rev_php                 = 'master',
+  $django_config                    = {'obs' => {
+                                         'repo_key'           => 'KEYHERE',
+                                         'repo_url'           => 'ssh://git@bitbucket.org/zostera/obs.git',
+                                         'repo_ensure'        => 'latest',
+                                         'repo_rev'           => 'master',
+                                         'managesettings'     => 'yes',
+                                         'gid'                => 3000,
+                                         'uid'                => 3000,
+                                         'pg_dbname'          => 'waarneming',
+                                         'pg_user'            => 'obs',
+                                         'pg_password'        => 'dbpassword'
+                                         },
+                                      'noordzee' => {
+                                         'repo_key'           => 'KEYHERE',
+                                         'repo_url'           => 'ssh://git@bitbucket.org/zostera/obs.git',
+                                         'repo_ensure'        => 'latest',
+                                         'repo_rev'           => 'noordzee_master',
+                                         'managesettings'     => 'yes',
+                                         'gid'                => 3100,
+                                         'uid'                => 3100,
+                                         'pg_dbname'          => 'waarneming',
+                                         'pg_user'            => 'obs',
+                                         'pg_password'        => 'dbpassword'
+                                         },
+                                      'nederlandzoemt' => {
+                                         'repo_key'           => 'KEYHERE',
+                                         'repo_url'           => 'ssh://git@bitbucket.org/zostera/nederlandzoemt.git',
+                                         'repo_ensure'        => 'latest',
+                                         'repo_rev'           => 'master',
+                                         'managesettings'     => 'yes',
+                                         'gid'                => 3200,
+                                         'uid'                => 3200,
+                                         'pg_dbname'          => 'waarneming',
+                                         'pg_user'            => 'obs',
+                                         'pg_password'        => 'dbpassword'
+                                         },
+                                      },
   $git_repo_rev_scripts             = 'master',
-  $git_repo_rev_django              = 'master',
-  $git_repo_rev_noordzee            = 'master',
-  $git_repo_rev_nederlandzoemt      = 'master',
   $scripts_send_mail                = false,
   $scripts_do_curl                  = false,
   $scripts_domain_prefix            = 'acc.',
   $php_ini_opcache_revalidate_freq  = '300',           # dev, test, acc = '5'
   $php_ini_display_errors           = 'Off',           # dev, test, acc = 'On',
-  $obs_managesettings               = 'yes',           # dev = 'no'
-  $noordzee_managesettings          = 'yes',           # dev = 'no'
-  $nederlandzoemt_managesettings    = 'yes',           # dev = 'no'
-  $obs_python_version               = 'python2.7',
-  $noordzee_python_version          = 'python3',
-  $nederlandzoemt_python_version    = 'python3.6',
-
 
   # ::php_app, ::vhost, not currently in use, can be ignored
   $waarneming_key          = nil,
