@@ -1,17 +1,18 @@
-# Install webserver and app
+# Install webserver and app7
 define role_waarneming::django_app(
   $repo_key,
   $repo_url,
   $repo_ensure,
   $repo_rev,
   $managesettings,
+  $debug_mode,
   $uid,
   $gid,
   $pg_dbname,
   $pg_user,
   $pg_password,
+  $ssh_pub_key,
   $ssh_keys = {
-    "${title}_obs_django"     => { user => $title, key => $::role_waarneming::conf::ssh_key_obs },
     "${title}_hugo_django"    => { user => $title, key => $::role_waarneming::conf::ssh_key_hugo },
     "${title}_dylan_django"   => { user => $title, key => $::role_waarneming::conf::ssh_key_dylan },
     "${title}_folkert_django" => { user => $title, key => $::role_waarneming::conf::ssh_key_folkert },
@@ -22,6 +23,7 @@ define role_waarneming::django_app(
     "${title}_bh_django"      => { user => $title, key => $::role_waarneming::conf::ssh_key_bh },
   }
 ) {
+
   # Defaults for all file resources
   File {
     ensure => present,
@@ -53,29 +55,34 @@ define role_waarneming::django_app(
   }
 
 
-
   # Add entries to sudoers. obs user can restart services. 
-#  augeas { "sudorestart${title}":
-#    context => "/files/etc/sudoers",
-#    changes => [
-#      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/name SERVICES",
-#      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[1] '/usr/bin/supervisorctl start obs'",
-#      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[2] '/usr/bin/supervisorctl stop obs'",
-#      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[3] '/usr/bin/supervisorctl restart obs'",
-#      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[4] '/usr/bin/puppet agent -t'",
-#      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[5] '/usr/bin/puppet agent -t --debug'",
-#      "set spec[user = 'obs']/user obs",
-#      "set spec[user = 'obs']/host_group/host ALL",
-#      "set spec[user = 'obs']/host_group/command SERVICES",
-#      "set spec[user = 'obs']/host_group/command/runas_user root",
-#      "set spec[user = 'obs']/host_group/command/tag NOPASSWD",
-#      ],
-#  }
-
-  file {
-    "/home/${title}/.bashrc":  content => template('role_waarneming/bashrc.erb');
-    "/home/${title}/.bash_profile": source => 'puppet:///modules/role_waarneming/bash_profile';
+  augeas { "sudorestart${title}":
+    context => "/files/etc/sudoers",
+    changes => [
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/name ${upcase($title)}SERVICES",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[1] '/usr/local/bin/docker-compose pull'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[2] '/usr/local/bin/docker-compose up -d'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[3] '/usr/local/bin/docker-compose up -d --force-recreate'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[4] '/usr/bin/puppet agent -t'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[5] '/usr/bin/puppet agent -t --debug'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[6] '/usr/local/bin/docker-compose exec ${title} bash'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[7] '/usr/local/bin/docker-compose logs ${title}'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[8] '/usr/local/bin/docker-compose logs -f ${title}'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[9] '/usr/local/bin/docker-compose logs'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[10] '/usr/local/bin/docker-compose logs -f'",
+      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[11] '/usr/local/bin/docker-compose ps'",
+      "set spec[user = '${title}']/user ${title}",
+      "set spec[user = '${title}']/host_group/host ALL",
+      "set spec[user = '${title}']/host_group/command ${upcase($title)}SERVICES",
+      "set spec[user = '${title}']/host_group/command/runas_user root",
+      "set spec[user = '${title}']/host_group/command/tag NOPASSWD",
+      ],
   }
+
+#  file {
+#    "/home/${title}/.bashrc":  content => template('role_waarneming/bashrc.erb');
+#    "/home/${title}/.bash_profile": source => 'puppet:///modules/role_waarneming/bash_profile';
+#  }
 
   file {
     "/home/${title}/bin"                             : ensure => 'directory';
@@ -89,6 +96,11 @@ define role_waarneming::django_app(
     mode    => '0700',
   }
 
+  file { "/home/${title}/media":
+    ensure  => 'link',
+    target  => '/home/waarneming/media',
+  }
+
   create_resources('ssh_authorized_key', $ssh_keys)
 
   # Place obs ssh key private and public parts
@@ -99,7 +111,7 @@ define role_waarneming::django_app(
 
   ssh_authorized_key { "${title}@web":
     user    => $title,
-    key     => $::role_waarneming::conf::ssh_key_obs,
+    key     => $ssh_pub_key,
     target  => "/home/${title}/.ssh/id_rsa.pub",
     require => File["/home/${title}/.ssh"],
   }
@@ -113,17 +125,26 @@ define role_waarneming::django_app(
     user     => $title,
     require  => [
       File["/home/${title}/.ssh/id_rsa"],
+      Ssh_authorized_key["${title}@web"],
       Sshkey['bitbucket_org_rsa'],
       Sshkey['bitbucket_org_dsa'],
     ]
   }
 
   # Configure postgres user credentials in app
-  file { "/home/${title}/django/app/settings_local.py":
-    content => template('role_waarneming/settings_local.py.erb'),
+#  file { "/home/${title}/django/app/settings_local.py":
+#    content => template('role_waarneming/settings_local.py.erb'),
+#    replace => $managesettings,
+#    require => Vcsrepo["/home/${title}/django"],
+#  }
+
+  # Configure postgres user credentials in app
+  file { "/home/${title}/django/.env":
+    content => template('role_waarneming/env.erb'),
     replace => $managesettings,
     require => Vcsrepo["/home/${title}/django"],
   }
+
 
   # Install postgres python and dev libs
 #  class { '::postgresql::lib::python': }

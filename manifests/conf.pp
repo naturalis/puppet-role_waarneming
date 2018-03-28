@@ -6,9 +6,6 @@ class role_waarneming::conf (
   $ssh_key_bt,
   $ssh_key_bh,
   $ssh_key_waarneming,
-  $ssh_key_obs,
-  $ssh_key_noordzee,
-  $ssh_key_nederlandzoemt,
   $ssh_key_jieter,
   $ssh_key_hugo,
   $ssh_key_dylan,
@@ -24,7 +21,9 @@ class role_waarneming::conf (
                                          'repo_url'           => 'ssh://git@bitbucket.org/zostera/obs.git',
                                          'repo_ensure'        => 'latest',
                                          'repo_rev'           => 'master',
+                                         'ssh_pub_key'        => 'PUBKEYHERE',
                                          'managesettings'     => 'yes',
+                                         'debug_mode'         => 'False',
                                          'gid'                => 3000,
                                          'uid'                => 3000,
                                          'pg_dbname'          => 'waarneming',
@@ -36,7 +35,9 @@ class role_waarneming::conf (
                                          'repo_url'           => 'ssh://git@bitbucket.org/zostera/obs.git',
                                          'repo_ensure'        => 'latest',
                                          'repo_rev'           => 'noordzee_master',
+                                         'ssh_pub_key'        => 'PUBKEYHERE',
                                          'managesettings'     => 'yes',
+                                         'debug_mode'         => 'False',
                                          'gid'                => 3100,
                                          'uid'                => 3100,
                                          'pg_dbname'          => 'waarneming',
@@ -48,7 +49,9 @@ class role_waarneming::conf (
                                          'repo_url'           => 'ssh://git@bitbucket.org/zostera/nederlandzoemt.git',
                                          'repo_ensure'        => 'latest',
                                          'repo_rev'           => 'master',
+                                         'ssh_pub_key'        => 'PUBKEYHERE',
                                          'managesettings'     => 'yes',
+                                         'debug_mode'         => 'False',
                                          'gid'                => 3200,
                                          'uid'                => 3200,
                                          'pg_dbname'          => 'waarneming',
@@ -116,6 +119,13 @@ class role_waarneming::conf (
   $obs_be_password,
   $analytics_password,
   $async_slave_password,
+
+  # ::docker
+  $docker_compose_version      = '1.17.1',
+  $docker_repo_source          = 'https://github.com/naturalis/docker-waarneming.git',
+  $docker_repo_ensure          = 'latest',
+  $docker_repo_dir             = '/opt/docker-waarneming',
+
 ) {
   # Define postgres version and add postgres apt repo
   #class { '::postgresql::globals':
