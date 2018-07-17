@@ -92,6 +92,10 @@ echo `date +%H:%M`' start puppet agent daemon'
 service puppet start
 echo ''
 
+echo `date +%H:%M`' run obs migrate actions'
+su -c 'source /home/obs/virtualenv/bin/activate && python manage.py migrate --no-input' obs
+echo ''
+
 echo `date +%H:%M`': Done.:'
 
 chown -R root:root $backup_rootdir
