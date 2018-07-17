@@ -25,6 +25,7 @@ class role_waarneming::sites (
     '/etc/nginx/sites-enabled/project.waarnemingen.be' => { source => 'puppet:///modules/role_waarneming/nginx_sites/project.waarnemingen.be' },
     '/etc/nginx/sites-enabled/nederlandzoemt.waarneming.nl'  => { source => 'puppet:///modules/role_waarneming/nginx_sites/nederlandzoemt.waarneming.nl' },
     '/etc/nginx/sites-enabled/beta.waarneming.nl'      => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarneming.nl' },
+    '/etc/nginx/sites-enabled/noordzee.waarneming.nl'  => { source => 'puppet:///modules/role_waarneming/nginx_sites/noordzee.waarneming.nl' },
     '/etc/nginx/sites-enabled/beta.waarnemingen.be'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarnemingen.be' },
     '/etc/nginx/sites-enabled/beta.observations.be'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observations.be' },
     '/etc/nginx/sites-enabled/beta.observation.org'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observation.org' },
