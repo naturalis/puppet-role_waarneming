@@ -133,7 +133,4 @@ class role_waarneming::web (
       weekday => $::role_waarneming::conf::rsync_cron_weekday
     }
   }
-
- create_resources('role_waarneming::django_app', $::role_waarneming::conf::django_config)
-
 }

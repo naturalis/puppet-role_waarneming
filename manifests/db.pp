@@ -88,12 +88,6 @@ class role_waarneming::db (
 
 ) {
   # Install PostgreSQL
-  class { 'postgresql::globals':
-    manage_package_repo => true,
-    version             => $::role_waarneming::conf::postgresql_version,
-    postgis_version     => '2.4'
-  }
-
   class { '::postgresql::server':
     listen_addresses => "localhost,${$::role_waarneming::conf::db_host}",
     timezone         => 'localtime',

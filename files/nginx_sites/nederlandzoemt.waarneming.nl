@@ -7,7 +7,7 @@ server {
     #include include/block_ip.conf;
 
     location @uwsgi {
-    uwsgi_pass  unix:///var/uwsgi/nederlandzoemt.socket;
+    uwsgi_pass  unix:///var/uwsgi/obs.socket;
         include uwsgi_params;
     }
 
@@ -21,19 +21,19 @@ server {
     }
 
     location /robots.txt {
-    alias /home/nederlandzoemt/static/robots.txt;
+    alias /home/obs/static/robots.txt;
     }
 
     location /favicon.ico {
-    alias /home/nederlandzoemt/static/img/icon/favicon.ico;
+    alias /home/obs/static/img/icon/favicon.ico;
     }
 
     location /static/ {
-    alias /home/nederlandzoemt/static/;
+    alias /home/obs/static/;
     }
 
     location /media/ {
-    alias /home/nederlandzoemt/media/;
+    alias /home/obs/media/;
     }
 
 }

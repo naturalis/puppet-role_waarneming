@@ -1,34 +1,33 @@
-# Install webserver and app7
-define role_waarneming::django_app(
-  $repo_key,
-  $repo_url,
-  $repo_ensure,
-  $repo_rev,
-  $managesettings,
-  $debug_mode,
-  $uid,
-  $gid,
-  $pg_dbname,
-  $pg_user,
-  $pg_password,
-  $ssh_pub_key,
+# Install webserver and app
+class role_waarneming::django_app (
+  $sites = {
+    'django' => {
+      'ssl_key'     => $::role_waarneming::conf::observation_key,
+      'ssl_crt'     => $::role_waarneming::conf::observation_crt,
+      'server_name' => 'test-nl.observation.org test-be.observation.org',
+    },
+  },
+
   $ssh_keys = {
-    "${title}_hugo_django"    => { user => $title, key => $::role_waarneming::conf::ssh_key_hugo },
-    "${title}_dylan_django"   => { user => $title, key => $::role_waarneming::conf::ssh_key_dylan },
-    "${title}_folkert_django" => { user => $title, key => $::role_waarneming::conf::ssh_key_folkert },
-    "${title}_jieter_django"  => { user => $title, key => $::role_waarneming::conf::ssh_key_jieter },
-    "${title}_b1_django"      => { user => $title, key => $::role_waarneming::conf::ssh_key_b1 },
-    "${title}_b2_django"      => { user => $title, key => $::role_waarneming::conf::ssh_key_b2 },
-    "${title}_bt_django"      => { user => $title, key => $::role_waarneming::conf::ssh_key_bt },
-    "${title}_bh_django"      => { user => $title, key => $::role_waarneming::conf::ssh_key_bh },
+    'obs_django'     => { user => 'obs', key => $::role_waarneming::conf::ssh_key_obs },
+    'hugo_django'    => { user => 'obs', key => $::role_waarneming::conf::ssh_key_hugo },
+    'dylan_django'   => { user => 'obs', key => $::role_waarneming::conf::ssh_key_dylan },
+    'folkert_django' => { user => 'obs', key => $::role_waarneming::conf::ssh_key_folkert },
+    'jieter_django'  => { user => 'obs', key => $::role_waarneming::conf::ssh_key_jieter },
+    'b1_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_b1 },
+    'b2_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_b2 },
+    'bt_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_bt },
+    'bh_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_bh },
   }
 ) {
+  # Install and configure webserver
+  include ::role_waarneming::web
 
   # Defaults for all file resources
   File {
     ensure => present,
-    owner  => $title,
-    group  => $title,
+    owner  => 'obs',
+    group  => 'obs',
     mode   => '0644',
   }
 
@@ -39,205 +38,182 @@ define role_waarneming::django_app(
   }
 
   # Create user and place ssh key
-  user { $title:
+  user { 'obs':
     ensure     => present,
-    uid        => $uid,
-    gid        => $gid,
+    uid        => '3000',
+    gid        => '3000',
     groups     => ['waarneming'],
     managehome => true,
     shell      => '/bin/bash',
-    require    => Group[$title]
   }
-
-  group { $title:
-    ensure => present,
-    gid    => $gid
-  }
-
 
   # Add entries to sudoers. obs user can restart services. 
-  augeas { "sudorestart${title}":
+  augeas { "sudorestartobs":
     context => "/files/etc/sudoers",
     changes => [
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/name ${upcase($title)}SERVICES",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[1] '/usr/local/bin/docker-compose pull'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[2] '/usr/local/bin/docker-compose up -d'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[3] '/usr/local/bin/docker-compose up -d --force-recreate'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[4] '/usr/bin/puppet agent -t'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[5] '/usr/bin/puppet agent -t --debug'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[6] '/usr/local/bin/docker-compose exec ${title} bash'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[7] '/usr/local/bin/docker-compose logs ${title}'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[8] '/usr/local/bin/docker-compose logs -f ${title}'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[9] '/usr/local/bin/docker-compose logs'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[10] '/usr/local/bin/docker-compose logs -f'",
-      "set Cmnd_Alias[alias/name = '${upcase($title)}SERVICES']/alias/command[11] '/usr/local/bin/docker-compose ps'",
-      "set spec[user = '${title}']/user ${title}",
-      "set spec[user = '${title}']/host_group/host ALL",
-      "set spec[user = '${title}']/host_group/command ${upcase($title)}SERVICES",
-      "set spec[user = '${title}']/host_group/command/runas_user root",
-      "set spec[user = '${title}']/host_group/command/tag NOPASSWD",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/name SERVICES",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[1] '/usr/bin/supervisorctl start obs'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[2] '/usr/bin/supervisorctl stop obs'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[3] '/usr/bin/supervisorctl restart obs'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[4] '/usr/bin/puppet agent -t'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[5] '/usr/bin/puppet agent -t --debug'",
+      "set spec[user = 'obs']/user obs",
+      "set spec[user = 'obs']/host_group/host ALL",
+      "set spec[user = 'obs']/host_group/command SERVICES",
+      "set spec[user = 'obs']/host_group/command/runas_user root",
+      "set spec[user = 'obs']/host_group/command/tag NOPASSWD",
       ],
   }
 
-#  file {
-#    "/home/${title}/.bashrc":  content => template('role_waarneming/bashrc.erb');
-#    "/home/${title}/.bash_profile": source => 'puppet:///modules/role_waarneming/bash_profile';
-#  }
+  file {
+    '/home/obs/.bashrc': source => 'puppet:///modules/role_waarneming/obs_bashrc';
+    '/home/obs/.bash_profile': source => 'puppet:///modules/role_waarneming/obs_bash_profile';
+  }
 
   file {
-    "/home/${title}/bin"                             : ensure => 'directory';
-    "/home/${title}/bin/flush_memcache.py"  : content => template('role_waarneming/django/flush_memcache.py.erb'), mode => '0755';
-    "/home/${title}/bin/remove_constraints" : content => template('role_waarneming/django/remove_constraints.erb'), mode => '0755';
-    "/home/${title}/bin/schema_cache"       : content => template('role_waarneming/django/schema_cache.erb'), mode => '0755';
+    '/home/obs/bin'                    : ensure => 'directory';
+    '/home/obs/bin/flush_memcache.py'  : content => template('role_waarneming/obs_bin/flush_memcache.py.erb'), mode => '0755';
+    '/home/obs/bin/remove_constraints' : content => template('role_waarneming/obs_bin/remove_constraints.erb'), mode => '0755';
+    '/home/obs/bin/schema_cache'       : content => template('role_waarneming/obs_bin/schema_cache.erb'), mode => '0755';
   }
 
-  file { "/home/${title}/.ssh":
+  file { '/home/obs/.ssh':
     ensure  => directory,
     mode    => '0700',
-  }
-
-  file { "/home/${title}/media":
-    ensure  => 'link',
-    target  => '/home/waarneming/media',
   }
 
   create_resources('ssh_authorized_key', $ssh_keys)
 
   # Place obs ssh key private and public parts
-  file { "/home/${title}/.ssh/id_rsa":
+  file { '/home/obs/.ssh/id_rsa':
     mode    => '0600',
-    content => $repo_key,
+    content => $::role_waarneming::conf::git_repo_key_django,
+    require => File['/home/obs/.ssh'],
   }
 
-  ssh_authorized_key { "${title}@web":
-    user    => $title,
-    key     => $ssh_pub_key,
-    target  => "/home/${title}/.ssh/id_rsa.pub",
-    require => File["/home/${title}/.ssh"],
+  ssh_authorized_key { 'obs@web':
+    user    => 'obs',
+    key     => $::role_waarneming::conf::ssh_key_obs,
+    target  => '/home/obs/.ssh/id_rsa.pub',
+    require => File['/home/obs/.ssh'],
   }
 
   # Check out bitbucket repo
-  vcsrepo { "/home/${title}/django":
-    ensure   => $repo_ensure,
+  vcsrepo { '/home/obs/django':
+    ensure   => $::role_waarneming::conf::git_repo_ensure_django,
     provider => git,
-    source   => $repo_url,
-    revision => $repo_rev,
-    user     => $title,
+    source   => $::role_waarneming::conf::git_repo_url_django,
+    revision => $::role_waarneming::conf::git_repo_rev_django,
+    user     => 'obs',
     require  => [
-      File["/home/${title}/.ssh/id_rsa"],
-      Ssh_authorized_key["${title}@web"],
+      File['/home/obs/.ssh/id_rsa'],
       Sshkey['bitbucket_org_rsa'],
       Sshkey['bitbucket_org_dsa'],
     ]
   }
 
   # Configure postgres user credentials in app
-#  file { "/home/${title}/django/app/settings_local.py":
-#    content => template('role_waarneming/settings_local.py.erb'),
-#    replace => $managesettings,
-#    require => Vcsrepo["/home/${title}/django"],
-#  }
-
-  # Configure postgres user credentials in app
-  file { "/home/${title}/django/.env":
-    content => template('role_waarneming/env.erb'),
-    replace => $managesettings,
-    require => Vcsrepo["/home/${title}/django"],
+  file { '/home/obs/django/app/settings_local.py':
+    content => template('role_waarneming/settings_local.py.erb'),
+    replace => $::role_waarneming::conf::obs_managesettings,
+    require => Vcsrepo['/home/obs/django'],
   }
 
-
   # Install postgres python and dev libs
-#  class { '::postgresql::lib::python': }
-#  class { '::postgresql::lib::devel': }
+  class { '::postgresql::lib::python': }
+  class { '::postgresql::lib::devel': }
 
   # Install packages needed by django-app
-#  package { ['zlib1g-dev', 'libgdal1i']:
-#    ensure  => present,
-#    require => Class['apt::update'],
-#  }
+  package { ['zlib1g-dev', 'libgdal1i']:
+    ensure  => present,
+    require => Class['apt::update'],
+  }
 
   # Install python, python-dev, virtualenv and create the virtualenv
-#  class { '::python':
-#    version    => $python_version,
-#    dev        => present,
-#    virtualenv => present,
-#  }->
-#  ::python::virtualenv { '/home/obs/virtualenv' :
-#    ensure       => present,
-#    requirements => '/home/obs/django/requirements.txt',
-#    owner        => 'obs',
-#    group        => 'obs',
-#    require      => [
-#      Vcsrepo['/home/obs/django'],
-#      Class['postgresql::lib::devel'],
-#    ],
-#  }
+  class { '::python':
+    dev        => present,
+    virtualenv => present,
+  }->
+  ::python::virtualenv { '/home/obs/virtualenv' :
+    ensure       => present,
+    requirements => '/home/obs/django/requirements.txt',
+    owner        => 'obs',
+    group        => 'obs',
+    require      => [
+      Vcsrepo['/home/obs/django'],
+      Class['postgresql::lib::devel'],
+    ],
+  }
 
   # Supervisord is used to manage the django UWSGI process
-#  package { 'supervisor':
-#    ensure  => present,
-#    require => Class['apt::update'],
-#  }
+  package { 'supervisor':
+    ensure  => present,
+    require => Class['apt::update'],
+  }
 
-#  service { 'supervisor':
-#    ensure  => running,
-#    require => Package['supervisor'],
-#  }
+  service { 'supervisor':
+    ensure  => running,
+    require => Package['supervisor'],
+  }
 
   # Create uwsgi socket dir
-#  file { '/var/uwsgi':
-#    ensure => directory,
-#    owner  => 'root',
-#    group  => 'root',
-#    mode   => '0733',
-#    before => Exec['restart obs'],
-#  }
+  file { '/var/uwsgi':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0733',
+    before => Exec['restart obs'],
+  }
 
-#  file { "/etc/supervisor/conf.d/${title}.conf":
-#    ensure  => present,
-#    owner  => 'root',
-#    group  => 'root',
-#    source  => 'puppet:///modules/role_waarneming/supervisor_obs.conf',
-#    require => Package['supervisor'],
-#    notify  => Service['supervisor'],
-#  }
+  file { '/etc/supervisor/conf.d/obs.conf':
+    ensure  => present,
+    owner  => 'root',
+    group  => 'root',
+    source  => 'puppet:///modules/role_waarneming/supervisor_obs.conf',
+    require => Package['supervisor'],
+    notify  => Service['supervisor'],
+  }
 
   # Run migrate to update DB schema
-#  exec { 'migrate obs':
-#    command     => 'python manage.py migrate --noinput',
-#    path        => '/home/obs/virtualenv/bin/',
-#    cwd         => '/home/obs/django',
-#    user        => 'obs',
-#    require     => [
-#      File['/home/obs/django/app/settings_local.py'],
-#      Python::Virtualenv['/home/obs/virtualenv'],
-#    ],
-#    before      => Exec['restart obs'],
-#    subscribe   => Vcsrepo['/home/obs/django'],
-#    refreshonly => true,
-#    timeout     => 0,
-#  }
+  exec { 'migrate obs':
+    command     => 'python manage.py migrate --noinput',
+    path        => '/home/obs/virtualenv/bin/',
+    cwd         => '/home/obs/django',
+    user        => 'obs',
+    require     => [
+      File['/home/obs/django/app/settings_local.py'],
+      Python::Virtualenv['/home/obs/virtualenv'],
+    ],
+    before      => Exec['restart obs'],
+    subscribe   => Vcsrepo['/home/obs/django'],
+    refreshonly => true,
+    timeout     => 0,
+  }
 
-#  exec { 'collectstatic obs':
-#    command     => 'python manage.py collectstatic --noinput',
-#    path        => '/home/obs/virtualenv/bin/',
-#    cwd         => '/home/obs/django',
-#    user        => 'obs',
-#    require     => [
-#      File['/home/obs/django/app/settings_local.py'],
-#      Python::Virtualenv['/home/obs/virtualenv'],
-#    ],
-#    before      => Exec['restart obs'],
-#    subscribe   => Vcsrepo['/home/obs/django'],
-#    refreshonly => true,
-#    timeout     => 0,
-#  }
+  exec { 'collectstatic obs':
+    command     => 'python manage.py collectstatic --noinput',
+    path        => '/home/obs/virtualenv/bin/',
+    cwd         => '/home/obs/django',
+    user        => 'obs',
+    require     => [
+      File['/home/obs/django/app/settings_local.py'],
+      Python::Virtualenv['/home/obs/virtualenv'],
+    ],
+    before      => Exec['restart obs'],
+    subscribe   => Vcsrepo['/home/obs/django'],
+    refreshonly => true,
+    timeout     => 0,
+  }
 
-#  exec { 'restart obs':
-#    command     => '/usr/bin/supervisorctl restart obs',
-#    require     => File['/etc/supervisor/conf.d/obs.conf'],
-#    subscribe   => Vcsrepo['/home/obs/django'],
-#    refreshonly => true,
-#  }
+  exec { 'restart obs':
+    command     => '/usr/bin/supervisorctl restart obs',
+    require     => File['/etc/supervisor/conf.d/obs.conf'],
+    subscribe   => Vcsrepo['/home/obs/django'],
+    refreshonly => true,
+  }
 
+  # Special defined resource until config is cleaned up
+  # and we can use build-in nginx module resources
+  # disabled while copying vhost config files verbatim
+  #create_resources('::role_waarneming::vhost', $sites)
 }

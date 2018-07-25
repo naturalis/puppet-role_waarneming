@@ -157,22 +157,13 @@ class role_waarneming::php_app (
   }
 
   # Install required PHP packages
-   apt::key { 'ondrej':
-    id      => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
-    server  => 'pgp.mit.edu',
-    notify  => Exec['apt_update']
-  }
-
-  ::apt::ppa { 'ppa:ondrej/php': }
-
   $php_packages = [
     'php7.0-fpm', 'php-memcached', 'php7.0-curl', 'php7.0-gd', 'php7.0-pgsql', 'php7.0-intl', 'php7.0-mbstring', 'php7.0-xml', 'php7.0-zip', 'php-redis'
   ]
   package { $php_packages:
     ensure  => present,
-    require => [Class['apt::update'],Apt::Ppa['ppa:ondrej/php'],Apt::Key['ondrej']]
+    require => Class['apt::update'],
   }
-
 
   # Configure and run fpm service
   file { '/etc/php/7.0/fpm/php.ini':
