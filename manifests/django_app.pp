@@ -113,8 +113,8 @@ class role_waarneming::django_app (
   }
 
   # Configure postgres user credentials in app
-  file { '/home/obs/django/app/settings_local.py':
-    content => template('role_waarneming/settings_local.py.erb'),
+  file { '/home/obs/django/.env':
+    content => template('role_waarneming/.env.erb'),
     replace => $::role_waarneming::conf::obs_managesettings,
     require => Vcsrepo['/home/obs/django'],
   }
@@ -129,12 +129,30 @@ class role_waarneming::django_app (
     require => Class['apt::update'],
   }
 
+  ensure_packages(['libjpeg-dev','libpng12-dev','rabbitmq-server'])
+
+  apt::source { 'deadsnakes':
+    location => 'http://ppa.launchpad.net/deadsnakes/ppa/ubuntu/',
+    release  => 'xenial',
+    repos    => 'main',
+    key      => {
+      'id'     => 'F23C5A6CF475977595C89F51BA6932366A755776',
+      'server' => 'keyserver.ubuntu.com',
+    },
+    notify   => Exec['apt_update']
+  }
+  package {['python3.7-minimal', 'python3.7-dev']:
+    require   => Apt::Source['deadsnakes']
+  }
+
   # Install python, python-dev, virtualenv and create the virtualenv
   class { '::python':
     dev        => present,
     virtualenv => present,
   }->
-  ::python::virtualenv { '/home/obs/virtualenv' :
+  python::virtualenv { '/home/obs/virtualenv' :
+    version      => '3.7',
+    distribute   => false,
     ensure       => present,
     requirements => '/home/obs/django/requirements.txt',
     owner        => 'obs',
@@ -142,6 +160,7 @@ class role_waarneming::django_app (
     require      => [
       Vcsrepo['/home/obs/django'],
       Class['postgresql::lib::devel'],
+      Package['libjpeg-dev','libpng12-dev']
     ],
   }
 
@@ -181,7 +200,7 @@ class role_waarneming::django_app (
     cwd         => '/home/obs/django',
     user        => 'obs',
     require     => [
-      File['/home/obs/django/app/settings_local.py'],
+      File['/home/obs/django/.env'],
       Python::Virtualenv['/home/obs/virtualenv'],
     ],
     before      => Exec['restart obs'],
@@ -196,7 +215,7 @@ class role_waarneming::django_app (
     cwd         => '/home/obs/django',
     user        => 'obs',
     require     => [
-      File['/home/obs/django/app/settings_local.py'],
+      File['/home/obs/django/.env'],
       Python::Virtualenv['/home/obs/virtualenv'],
     ],
     before      => Exec['restart obs'],
