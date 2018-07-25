@@ -158,7 +158,19 @@ class role_waarneming::php_app (
 
   # Install required PHP packages
   $php_packages = [
-    'php7.0-fpm', 'php-memcached', 'php7.0-curl', 'php7.0-gd', 'php7.0-pgsql', 'php7.0-intl', 'php7.0-mbstring', 'php7.0-xml', 'php7.0-zip', 'php-redis'
+    'php7.0-fpm',
+    'php-memcached',
+    'php7.0-curl',
+    'php7.0-gd',
+    'php7.0-pgsql',
+    'php7.0-intl',
+    'php7.0-mbstring',
+    'php7.0-xml',
+    'php7.0-zip',
+    'php7.0-mbstring',
+    'php7.0-bcmath',
+    'php-amqplib', 
+    'php-redis',
   ]
   package { $php_packages:
     ensure  => present,
