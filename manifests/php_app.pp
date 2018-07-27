@@ -174,12 +174,21 @@ class role_waarneming::php_app (
     'php7.2-mbstring',
     'php7.2-xml',
     'php7.2-zip',
-    'php7.2-amqp',
+    'php-amqp',
     'php-memcached',
     'php-redis',
   ]
   package { $php_packages:
     ensure  => present,
+    require => [Class['apt::update'],Apt::Ppa['ppa:ondrej/php'],Apt::Key['ondrej']]
+  }
+
+  #remove php 7.0 
+  $remove_php_packages = [
+    'php7.0-fpm',
+  ]
+  package { $remove_php_packages:
+    ensure  => absent,
     require => [Class['apt::update'],Apt::Ppa['ppa:ondrej/php'],Apt::Key['ondrej']]
   }
 
@@ -204,6 +213,7 @@ class role_waarneming::php_app (
     require => [
       Package['php7.2-fpm'],
       Class['redis'],
+      Package[$remove_php_packages]
     ],
   }
 
