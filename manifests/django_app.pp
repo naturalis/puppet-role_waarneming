@@ -57,6 +57,9 @@ class role_waarneming::django_app (
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[3] '/usr/bin/supervisorctl restart obs'",
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[4] '/usr/bin/puppet agent -t'",
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[5] '/usr/bin/puppet agent -t --debug'",
+      “set Cmnd_Alias[alias/name = ‘SERVICES’]/alias/command[6] ‘/usr/bin/supervisorctl start obs-worker’“,
+      “set Cmnd_Alias[alias/name = ‘SERVICES’]/alias/command[7] ‘/usr/bin/supervisorctl stop obs-worker’“,
+      “set Cmnd_Alias[alias/name = ‘SERVICES’]/alias/command[8] ‘/usr/bin/supervisorctl restart obs-worker’“,
       "set spec[user = 'obs']/user obs",
       "set spec[user = 'obs']/host_group/host ALL",
       "set spec[user = 'obs']/host_group/command SERVICES",
@@ -189,6 +192,15 @@ class role_waarneming::django_app (
     owner  => 'root',
     group  => 'root',
     source  => 'puppet:///modules/role_waarneming/supervisor_obs.conf',
+    require => Package['supervisor'],
+    notify  => Service['supervisor'],
+  }
+
+  file { '/etc/supervisor/conf.d/obs-worker.conf':
+    ensure  => present,
+    owner  => 'root',
+    group  => 'root',
+    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker.conf',
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }
