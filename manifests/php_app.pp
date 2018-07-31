@@ -180,7 +180,7 @@ class role_waarneming::php_app (
   ]
   package { $php_packages:
     ensure  => present,
-    require => [Class['apt::update'],Apt::Ppa['ppa:ondrej/php'],Apt::Key['ondrej']]
+    require => [Class['apt::update'],Apt::Ppa['ppa:ondrej/php'],Apt::Key['ondrej'],Package[$remove_php_packages]]
   }
 
   #remove php 7.0 
