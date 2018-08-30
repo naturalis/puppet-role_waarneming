@@ -14,6 +14,7 @@ class role_waarneming::django_app (
     'dylan_django'   => { user => 'obs', key => $::role_waarneming::conf::ssh_key_dylan },
     'folkert_django' => { user => 'obs', key => $::role_waarneming::conf::ssh_key_folkert },
     'jieter_django'  => { user => 'obs', key => $::role_waarneming::conf::ssh_key_jieter },
+    'sjaak_django'  => { user => 'obs', key => $::role_waarneming::conf::ssh_key_sjaak },
     'b1_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_b1 },
     'b2_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_b2 },
     'bt_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_bt },

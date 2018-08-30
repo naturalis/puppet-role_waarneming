@@ -12,6 +12,7 @@ class role_waarneming::conf (
   $ssh_key_dylan,
   $ssh_key_folkert,
   $ssh_key_hisko,
+  $ssh_key_sjaak,
 
   # ::php_app
   $git_repo_key_php,

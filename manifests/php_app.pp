@@ -23,6 +23,7 @@ class role_waarneming::php_app (
     'hugo_php'       => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_hugo },
     'dylan_php'      => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_dylan },
     'hisko_php'      => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_hisko },
+    'sjaak_php'      => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_sjaak },
     'b1_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_b1 },
     'b2_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_b2 },
     'bt_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_bt },
