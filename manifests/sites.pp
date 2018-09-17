@@ -12,6 +12,8 @@ class role_waarneming::sites (
     '/etc/nginx/ssl/observations_be.key'         => { content => $::role_waarneming::conf::observations_be_key },
     '/etc/nginx/ssl/waarnemingen_be.key'         => { content => $::role_waarneming::conf::waarnemingen_be_key },
     '/etc/nginx/ssl/www_wnimg_nl.key'            => { content => $::role_waarneming::conf::www_wnimg_nl_key },
+    '/etc/nginx/ssl'                             => { source       => 'puppet:///modules/role_waarneming/nginx_ssl',
+                                                      recurse      => true, },
   },
   $sites = {
     '/etc/nginx/sites-enabled/default'                 => { source => 'puppet:///modules/role_waarneming/nginx_sites/default' },
@@ -24,13 +26,15 @@ class role_waarneming::sites (
     '/etc/nginx/sites-enabled/wnimg'                   => { source => 'puppet:///modules/role_waarneming/nginx_sites/wnimg' },
     '/etc/nginx/sites-enabled/project.waarnemingen.be' => { source => 'puppet:///modules/role_waarneming/nginx_sites/project.waarnemingen.be' },
     '/etc/nginx/sites-enabled/nederlandzoemt.waarneming.nl'  => { source => 'puppet:///modules/role_waarneming/nginx_sites/nederlandzoemt.waarneming.nl' },
-#    '/etc/nginx/sites-enabled/beta.waarneming.nl'      => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarneming.nl' },
+    '/etc/nginx/sites-enabled/beta.waarneming.nl'      => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarneming.nl' },
     '/etc/nginx/sites-enabled/noordzee.waarneming.nl'  => { source => 'puppet:///modules/role_waarneming/nginx_sites/noordzee.waarneming.nl' },
-#    '/etc/nginx/sites-enabled/beta.waarnemingen.be'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarnemingen.be' },
-#    '/etc/nginx/sites-enabled/beta.observations.be'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observations.be' },
-#    '/etc/nginx/sites-enabled/beta.observation.org'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observation.org' },
-#    '/etc/nginx/sites-enabled/beta.observado.org'      => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observado.org' },
+    '/etc/nginx/sites-enabled/beta.waarnemingen.be'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarnemingen.be' },
+    '/etc/nginx/sites-enabled/beta.observations.be'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observations.be' },
+    '/etc/nginx/sites-enabled/beta.observation.org'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observation.org' },
+    '/etc/nginx/sites-enabled/beta.observado.org'      => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.observado.org' },
     '/etc/nginx/sites-available/offline'               => { source => 'puppet:///modules/role_waarneming/nginx_sites/offline' },
+    '/etc/nginx/sites-enabled/beta.waarneming-test.nl' => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarneming-test.nl' },
+    '/etc/nginx/sites-enabled/waarneming-test.nl '     => { source => 'puppet:///modules/role_waarneming/nginx_sites/waarneming-test.nl' },
   }
 ) {
   # Defaults for all file resources
@@ -40,10 +44,6 @@ class role_waarneming::sites (
     group  => 'root',
     mode   => '0644',
     notify => Service['nginx'],
-  }
-
-  file { '/etc/nginx/ssl':
-    ensure  => directory,
     require => Package['nginx'],
   }
 
