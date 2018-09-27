@@ -3,6 +3,7 @@ server {
     server_name		beta.waarneming.nl beta-acc.waarneming.nl beta-test.waarneming.nl;
     ssl_certificate	/etc/nginx/ssl/waarneming_nl-chained.crt;
     ssl_certificate_key	/etc/nginx/ssl/waarneming_nl.key;
+    include include/pfs.conf;
 
     #include include/block_ip.conf;
 

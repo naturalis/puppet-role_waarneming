@@ -3,6 +3,7 @@ server {
     server_name		beta.waarneming-test.nl;
     ssl_certificate	/etc/nginx/ssl/waarneming-test.nl/fullchain1.pem;
     ssl_certificate_key	/etc/nginx/ssl/waarneming-test.nl/privkey1.pem;
+    include include/pfs.conf;
 
     #include include/block_ip.conf;
 

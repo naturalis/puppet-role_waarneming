@@ -3,6 +3,7 @@ server {
     server_name		beta.waarnemingen-acc.be;
     ssl_certificate	/etc/nginx/ssl/waarnemingen-acc.be/fullchain1.pem;
     ssl_certificate_key	/etc/nginx/ssl/waarnemingen-acc.be/privkey1.pem;
+    include include/pfs.conf;
 
     #include include/block_ip.conf;
 

@@ -3,6 +3,7 @@ server {
     server_name		beta.observation-test.org;
     ssl_certificate	/etc/nginx/ssl/observation-test.org/fullchain1.pem;
     ssl_certificate_key	/etc/nginx/ssl/observation-test.org/privkey1.pem;
+    include include/pfs.conf;
 
     #include include/block_ip.conf;
 

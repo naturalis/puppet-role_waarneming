@@ -3,6 +3,7 @@ server {
     server_name		beta.observado.org beta-acc.observado.org beta-test.observado.org;
     ssl_certificate	/etc/nginx/ssl/observation_org-chained.crt;
     ssl_certificate_key	/etc/nginx/ssl/observation_org.key;
+    include include/pfs.conf;
 
     #include include/block_ip.conf;
 

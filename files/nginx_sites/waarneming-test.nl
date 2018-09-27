@@ -3,6 +3,7 @@ server {
     server_name		waarneming-test.nl *.waarneming-test.nl;
     ssl_certificate /etc/nginx/ssl/waarneming-test.nl/fullchain1.pem;
     ssl_certificate_key /etc/nginx/ssl/waarneming-test.nl/privkey1.pem;
+    include include/pfs.conf;
     keepalive_timeout	60;
     access_log		/var/log/nginx/waarneming-test.nl_access.log custom;
     error_log		/var/log/nginx/waarneming-test.nl_error.log;

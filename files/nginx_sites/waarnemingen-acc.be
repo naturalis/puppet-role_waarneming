@@ -3,6 +3,7 @@ server {
     server_name		waarnemingen-acc.be *.waarnemingen-acc.be;
     ssl_certificate /etc/nginx/ssl/waarnemingen-acc.be/fullchain1.pem;
     ssl_certificate_key /etc/nginx/ssl/waarnemingen-acc.be/privkey1.pem;
+    include include/pfs.conf;
     keepalive_timeout	60;
     access_log		/var/log/nginx/waarnemingen-acc.be_access.log custom;
     error_log		/var/log/nginx/waarnemingen-acc.be_error.log;
