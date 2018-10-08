@@ -37,6 +37,27 @@ server {
     alias /home/obs/media/;
     }
 
+    # PHP for /pda/
+    location ~ ^/_router\.php$ { 
+        alias    /home/waarneming/www/;
+        include include/php_long.conf;
+    }
+    location /pda/ {
+        alias    /home/waarneming/www/;
+        location ~ /\.  { deny all; }
+        client_max_body_size    50M;
+        ## rewrite /index.php to / and do the opposite for the mobile site
+        #if ($host !~* "^m\..+") { rewrite ^/index.php(.*)$ /$1 permanent; }
+        if ($host ~* "^m\..+")          { rewrite ^/$ /index.php permanent; }
+        ## add index.php to directories with a slash
+        if ($request_uri ~ "(.+)/$")    { rewrite ^(.*)$ $1index.php permanent; }
+        if ($request_uri ~ "^/$")       { rewrite ^ /_router.php; }
+        if ($request_uri ~ "^/\?")      { rewrite ^ /_router.php; }
+        if ($uri ~ \.php$)              { set $router true; }
+        if (!-e $request_filename)      { set $router true; }
+        if ($router)                    { rewrite ^ /_router.php; }
+    }
+
 }
 
 server {
