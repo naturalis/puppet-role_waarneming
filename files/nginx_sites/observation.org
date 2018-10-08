@@ -1,6 +1,6 @@
 server {
     listen		443 ssl;
-    server_name		observation.org *.observation.org;
+    server_name		*.observation.org;
     ssl_certificate	/etc/nginx/ssl/observation_org-chained.crt;
     ssl_certificate_key	/etc/nginx/ssl/observation_org.key;
     keepalive_timeout	60;
