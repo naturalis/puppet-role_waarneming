@@ -2,8 +2,9 @@ server {
 	listen			*:443 ssl;
 	listen			*:80;
 	server_name		wnimg.nl www.wnimg.nl;
-	ssl_certificate		/etc/nginx/ssl/www_wnimg_nl-chained.crt;
-	ssl_certificate_key	/etc/nginx/ssl/www_wnimg_nl.key;
+    ssl_certificate /etc/nginx/ssl/wnimg.nl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/wnimg.nl/privkey.pem;
+
 	keepalive_timeout	60;
 	access_log		/var/log/nginx/wnimg_access.log custom;
 	error_log		/var/log/nginx/wnimg_error.log;
@@ -29,8 +30,8 @@ server {
 	listen			*:443 ssl;
 	listen			*:80;
 	server_name		wnimg.waarneming.nl wnimg-acc.waarneming.nl wnimg-test.waarneming.nl wnimg-dev.waarneming.nl;
-	ssl_certificate		/etc/nginx/ssl/waarneming_nl-chained.crt;
-	ssl_certificate_key	/etc/nginx/ssl/waarneming_nl.key;
+    ssl_certificate /etc/nginx/ssl/waarneming.nl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/waarneming.nl/privkey.pem;
 	keepalive_timeout	60;
 	access_log		/var/log/nginx/wnimg_access.log custom;
 	error_log		/var/log/nginx/wnimg_error.log;

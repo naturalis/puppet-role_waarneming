@@ -1,8 +1,9 @@
 server {
     listen		*:443 ssl;
     server_name		observations.be www.observations.be;
-    ssl_certificate	/etc/nginx/ssl/observations_be-chained.crt;
-    ssl_certificate_key	/etc/nginx/ssl/observations_be.key;
+    ssl_certificate /etc/nginx/ssl/observations.be/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/observations.be/privkey.pem;
+
     keepalive_timeout	60;
     access_log		/var/log/nginx/observations.be_access.log custom;
     error_log		/var/log/nginx/observations.be_error.log;

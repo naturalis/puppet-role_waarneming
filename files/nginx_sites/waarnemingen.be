@@ -1,8 +1,9 @@
 server {
     listen		443 ssl;
     server_name		waarnemingen.be *.waarnemingen.be;
-    ssl_certificate	/etc/nginx/ssl/waarnemingen_be-chained.crt;
-    ssl_certificate_key	/etc/nginx/ssl/waarnemingen_be.key;
+    ssl_certificate /etc/nginx/ssl/waarnemingen.be/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/waarnemingen.be/privkey.pem;
+
     keepalive_timeout	60;
     access_log		/var/log/nginx/waarnemingen.be_access.log custom;
     error_log		/var/log/nginx/waarnemingen.be_error.log;

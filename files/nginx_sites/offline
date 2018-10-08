@@ -24,8 +24,8 @@ server {
     listen              443 ssl;
     listen              80;
     server_name         observation.org *.observation.org;
-    ssl_certificate     /etc/nginx/ssl/observation_org-chained.crt;
-    ssl_certificate_key /etc/nginx/ssl/observation_org.key;
+    ssl_certificate     /etc/nginx/ssl/observation.org/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/observation.org/privkey.pem;
     keepalive_timeout   60;
     access_log          /var/log/nginx/offline_access.log custom;
     error_log           /var/log/nginx/offline_error.log;
@@ -37,8 +37,8 @@ server {
     listen              443 ssl;
     listen              80;
     server_name         waarnemingen.be *.waarnemingen.be;
-    ssl_certificate     /etc/nginx/ssl/waarnemingen_be-chained.crt;
-    ssl_certificate_key /etc/nginx/ssl/waarnemingen_be.key;
+    ssl_certificate /etc/nginx/ssl/waarneming.nl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/waarneming.nl/privkey.pem;
     keepalive_timeout   60;
     access_log          /var/log/nginx/offline_access.log custom;
     error_log           /var/log/nginx/offline_error.log;
@@ -50,8 +50,8 @@ server {
     listen              443 ssl;
     listen              80;
     server_name         observations.be *.observations.be;
-    ssl_certificate     /etc/nginx/ssl/observations_be-chained.crt;
-    ssl_certificate_key /etc/nginx/ssl/observations_be.key;
+    ssl_certificate     /etc/nginx/ssl/observations.be/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/observations.be/privkey.pem;
     keepalive_timeout   60;
     access_log          /var/log/nginx/offline_access.log custom;
     error_log           /var/log/nginx/offline_error.log;
