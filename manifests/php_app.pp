@@ -142,7 +142,7 @@ class role_waarneming::php_app (
     replace => $::role_waarneming::conf::obs_managesettings,
     owner   => 'waarneming',
     group   => 'waarneming',
-    require => File['/home/waarneming/www/scripts'],
+    require => File['/home/waarneming/scripts'],
   }
 
   # Configure postgres use credentials in app
