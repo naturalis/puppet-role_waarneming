@@ -112,14 +112,6 @@ class role_waarneming::php_app (
     require => User['waarneming'],
   }
 
-  # Create config file used by the scripts
-  file { '/home/waarneming/scripts/_settings_local.sh':
-    owner   => 'waarneming',
-    group   => 'waarneming',
-    content => template('role_waarneming/_settings_local.sh.erb'),
-    require => Vcsrepo['/home/waarneming/scripts'],
-  }
-
   # Check out php app repo
   vcsrepo { '/home/waarneming/www':
     ensure   => $::role_waarneming::conf::git_repo_ensure_php,
@@ -141,13 +133,24 @@ class role_waarneming::php_app (
     target => '/home/waarneming/www/_scripts',
     owner   => 'waarneming',
     group   => 'waarneming',
+    require => User['waarneming'],
+  }
+
+  # Create config file used by the scripts
+  file { '/home/waarneming/www/_scripts/_settings_local.sh':
+    content => template('role_waarneming/_settings_local.sh.erb'),
+    replace => $::role_waarneming::conf::obs_managesettings,
+    owner   => 'waarneming',
+    group   => 'waarneming',
+    require => File['/home/waarneming/www/scripts'],
   }
 
   # Configure postgres use credentials in app
   file { '/home/waarneming/www/_app/config.app.database.php':
+    content => template('role_waarneming/config.app.database.php.erb'),
+    replace => $::role_waarneming::conf::obs_managesettings,
     owner   => 'waarneming',
     group   => 'waarneming',
-    content => template('role_waarneming/config.app.database.php.erb'),
     require => Vcsrepo['/home/waarneming/www'],
   }
 

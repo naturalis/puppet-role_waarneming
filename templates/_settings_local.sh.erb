@@ -2,15 +2,14 @@
 #
 # host specific/private settings
 
-#export PGHOST=wpml
+#export PGHOST=localhost
 
 send_mail=<%= scope['::role_waarneming::conf::scripts_send_mail'] %>
 do_curls=<%= scope['::role_waarneming::conf::scripts_do_curl'] %>
-domain_prefix="<%= scope['::role_waarneming::conf::scripts_domain_prefix'] %>" # ex. "test."
 
-waarneming_nl="https://"$domain_prefix"waarneming.nl"
-waarnemingen_be="https://"$domain_prefix"waarnemingen.be"
-observation_org="https://"$domain_prefix"observation.org"
+waarneming_nl="https://localhost.waarneming.nl"
+waarnemingen_be="https://localhost.waarnemingen.be"
+observation_org="https://localhost.observation.org"
 
 ## database logins
 
