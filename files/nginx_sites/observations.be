@@ -1,6 +1,6 @@
 server {
     listen		*:443 ssl;
-    server_name		observations.be www.observations.be acc.observations.be test.observations.be;
+    server_name		observations.be www.observations.be acc.observations.be test.observations.be localhost.observations.be;
 
     ssl_certificate /etc/nginx/ssl/observations.be/fullchain.pem;
     ssl_certificate_key /etc/nginx/ssl/observations.be/privkey.pem;

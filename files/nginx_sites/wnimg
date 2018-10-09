@@ -1,7 +1,7 @@
 server {
 	listen			*:443 ssl;
 	listen			*:80;
-	server_name		wnimg.nl www.wnimg.nl acc.wnimg.nl test.wnimg.nl;
+	server_name		wnimg.nl www.wnimg.nl acc.wnimg.nl test.wnimg.nl localhost.wnimg.nl;
 
     ssl_certificate /etc/nginx/ssl/wnimg.nl/fullchain.pem;
     ssl_certificate_key /etc/nginx/ssl/wnimg.nl/privkey.pem;
