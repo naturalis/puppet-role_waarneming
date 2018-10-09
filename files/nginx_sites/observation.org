@@ -1,8 +1,11 @@
 server {
     listen		443 ssl;
     server_name		observation.org *.observation.org;
+
     ssl_certificate /etc/nginx/ssl/observation.org/fullchain.pem;
     ssl_certificate_key /etc/nginx/ssl/observation.org/privkey.pem;
+    include include/pfs.conf;
+
     keepalive_timeout	60;
     access_log		/var/log/nginx/observation.org_access.log custom;
     error_log		/var/log/nginx/observation.org_error.log;
