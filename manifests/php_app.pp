@@ -112,20 +112,6 @@ class role_waarneming::php_app (
     require => User['waarneming'],
   }
 
-  # Check out scripts repo
-  vcsrepo { '/home/waarneming/scripts':
-    ensure   => present,
-    provider => git,
-    source   => $::role_waarneming::conf::git_repo_url_scripts,
-    revision => $::role_waarneming::conf::git_repo_rev_scripts,
-    user     => 'waarneming',
-    require  => [
-      File['/home/waarneming/.ssh/id_rsa'],
-      Sshkey['bitbucket_org_rsa'],
-      Sshkey['bitbucket_org_dsa'],
-    ]
-  }
-
   # Create config file used by the scripts
   file { '/home/waarneming/scripts/_settings_local.sh':
     owner   => 'waarneming',
@@ -147,6 +133,14 @@ class role_waarneming::php_app (
       Sshkey['bitbucket_org_rsa'],
       Sshkey['bitbucket_org_dsa'],
     ]
+  }
+
+  # Symlink scripts
+  file { '/home/waarneming/scripts':
+    ensure => 'link',
+    target => '/home/waarneming/www/_scripts',
+    owner   => 'waarneming',
+    group   => 'waarneming',
   }
 
   # Configure postgres use credentials in app
