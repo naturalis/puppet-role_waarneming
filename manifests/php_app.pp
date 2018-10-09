@@ -133,7 +133,7 @@ class role_waarneming::php_app (
     target => '/home/waarneming/www/_scripts',
     owner   => 'waarneming',
     group   => 'waarneming',
-    require => User['waarneming'],
+    require => [User['waarneming'],Vcsrepo['/home/waarneming/www']]
   }
 
   # Create config file used by the scripts
