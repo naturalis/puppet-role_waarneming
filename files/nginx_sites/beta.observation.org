@@ -1,8 +1,9 @@
 server {
     listen		443 ssl;
-    server_name		beta.observation.org beta-acc.observation.org beta-test.observation.org;
-    ssl_certificate	/etc/nginx/ssl/observation_org-chained.crt;
-    ssl_certificate_key	/etc/nginx/ssl/observation_org.key;
+    server_name beta.observation.org;
+
+    ssl_certificate /etc/nginx/ssl/observation.org/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/observation.org/privkey.pem;
     include include/pfs.conf;
 
     #include include/block_ip.conf;
@@ -41,6 +42,6 @@ server {
 
 server {
     listen 80;
-    server_name		beta.observation.org beta-acc.observation.org beta-test.observation.org;
+    server_name beta.observation.org;
     rewrite ^ https://$host$request_uri? permanent;
 }

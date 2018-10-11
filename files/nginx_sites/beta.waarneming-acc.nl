@@ -1,6 +1,7 @@
 server {
     listen		443 ssl;
     server_name		beta.waarneming-acc.nl;
+
     ssl_certificate	/etc/nginx/ssl/waarneming-acc.nl/fullchain1.pem;
     ssl_certificate_key	/etc/nginx/ssl/waarneming-acc.nl/privkey1.pem;
     include include/pfs.conf;
@@ -42,5 +43,15 @@ server {
 server {
     listen 80;
     server_name		beta.waarneming-acc.nl;
-    rewrite ^ https://$host$request_uri? permanent;
+    return 301 https://beta.waarneming-acc.nl$request_uri;
+}
+
+server {
+    listen 80;
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/ssl/waarneming.nl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/waarneming.nl/privkey.pem;
+
+    server_name beta-acc.waarneming.nl;
+    return 301 https://beta.waarneming-acc.nl$request_uri;
 }

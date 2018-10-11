@@ -1,8 +1,9 @@
 server {
     listen		443 ssl;
-    server_name		beta.observado.org beta-acc.observado.org beta-test.observado.org;
-    ssl_certificate	/etc/nginx/ssl/observation_org-chained.crt;
-    ssl_certificate_key	/etc/nginx/ssl/observation_org.key;
+    server_name beta.observado.org;
+
+    ssl_certificate /etc/nginx/ssl/observado.org/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/observado.org/privkey.pem;
     include include/pfs.conf;
 
     #include include/block_ip.conf;
@@ -41,6 +42,6 @@ server {
 
 server {
     listen 80;
-    server_name		beta.observado.org beta-acc.observado.org beta-test.observado.org;
+    server_name beta.observado.org;
     rewrite ^ https://$host$request_uri? permanent;
 }

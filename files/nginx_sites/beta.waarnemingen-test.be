@@ -1,6 +1,7 @@
 server {
     listen		443 ssl;
     server_name		beta.waarnemingen-test.be;
+
     ssl_certificate	/etc/nginx/ssl/waarnemingen-test.be/fullchain1.pem;
     ssl_certificate_key	/etc/nginx/ssl/waarnemingen-test.be/privkey1.pem;
     include include/pfs.conf;
@@ -41,6 +42,17 @@ server {
 
 server {
     listen 80;
-    server_name		beta.waarnemingen-test.be;
-    rewrite ^ https://$host$request_uri? permanent;
+    server_name beta.waarnemingen-test.be;
+    return 301 https://beta.waarnemingen-test.be$request_uri;
+}
+
+
+server {
+    listen 80;
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/ssl/waarnemingen.be/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/waarnemingen.be/privkey.pem;
+
+    server_name beta-test.waarnemingen.be;
+    return 301 https://beta.waarnemingen-test.be$request_uri;
 }

@@ -1,8 +1,9 @@
 server {
     listen		443 ssl;
-    server_name		beta.waarneming.nl beta-acc.waarneming.nl beta-test.waarneming.nl;
-    ssl_certificate	/etc/nginx/ssl/waarneming_nl-chained.crt;
-    ssl_certificate_key	/etc/nginx/ssl/waarneming_nl.key;
+    server_name beta.waarneming.nl;
+
+    ssl_certificate /etc/nginx/ssl/waarneming.nl/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/waarneming.nl/privkey.pem;
     include include/pfs.conf;
 
     #include include/block_ip.conf;
@@ -41,6 +42,6 @@ server {
 
 server {
     listen 80;
-    server_name		beta.waarneming.nl beta-acc.waarneming.nl beta-test.waarneming.nl;
+    server_name beta.waarneming.nl;
     rewrite ^ https://$host$request_uri? permanent;
 }

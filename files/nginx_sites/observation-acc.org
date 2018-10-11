@@ -24,3 +24,13 @@ server {
 
     include include/non-ssl-obsmapp.conf;
 }
+
+server {
+    listen 80;
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/ssl/observation.org/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/observation.org/privkey.pem;
+
+    server_name acc.observation.org;
+    return 301 https://observation-acc.org$request_uri;
+}
