@@ -53,14 +53,11 @@ class role_waarneming::django_app (
     context => "/files/etc/sudoers",
     changes => [
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/name SERVICES",
-      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[1] '/usr/bin/supervisorctl start obs'",
-      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[2] '/usr/bin/supervisorctl stop obs'",
-      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[3] '/usr/bin/supervisorctl restart obs'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[1] '/usr/bin/supervisorctl start *'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[2] '/usr/bin/supervisorctl stop *'",
+      "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[3] '/usr/bin/supervisorctl restart *'",
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[4] '/usr/bin/puppet agent -t'",
       "set Cmnd_Alias[alias/name = 'SERVICES']/alias/command[5] '/usr/bin/puppet agent -t --debug'",
-      "set Cmnd_Alias[alias/name = ‘SERVICES’]/alias/command[6] ‘/usr/bin/supervisorctl start obs-worker’",
-      "set Cmnd_Alias[alias/name = ‘SERVICES’]/alias/command[7] ‘/usr/bin/supervisorctl stop obs-worker’",
-      "set Cmnd_Alias[alias/name = ‘SERVICES’]/alias/command[8] ‘/usr/bin/supervisorctl restart obs-worker’",
       "set spec[user = 'obs']/user obs",
       "set spec[user = 'obs']/host_group/host ALL",
       "set spec[user = 'obs']/host_group/command SERVICES",
@@ -133,7 +130,7 @@ class role_waarneming::django_app (
     require => Class['apt::update'],
   }
 
-  ensure_packages(['libjpeg-dev','libpng12-dev','rabbitmq-server'])
+  ensure_packages(['libjpeg-dev','libpng12-dev'])
 
   apt::source { 'deadsnakes':
     location => 'http://ppa.launchpad.net/deadsnakes/ppa/ubuntu/',
@@ -145,7 +142,7 @@ class role_waarneming::django_app (
     },
     notify   => Exec['apt_update']
   }
-  package {['python3.7-minimal', 'python3.7-dev']:
+  package {['python3.6-minimal', 'python3.6-dev']:
     require   => Apt::Source['deadsnakes']
   }
 
@@ -155,7 +152,7 @@ class role_waarneming::django_app (
     virtualenv => present,
   }->
   python::virtualenv { '/home/obs/virtualenv' :
-    version      => '3.7',
+    version      => '3.6',
     distribute   => false,
     ensure       => present,
     requirements => '/home/obs/django/requirements.txt',
@@ -202,6 +199,15 @@ class role_waarneming::django_app (
     owner  => 'root',
     group  => 'root',
     source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker.conf',
+    require => Package['supervisor'],
+    notify  => Service['supervisor'],
+  }
+
+  file { '/etc/supervisor/conf.d/obs-worker2.conf':
+    ensure  => present,
+    owner  => 'root',
+    group  => 'root',
+    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker2.conf',
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }

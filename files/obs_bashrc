@@ -1,12 +1,35 @@
 source ~/virtualenv/bin/activate
 
-alias start="/usr/bin/sudo /usr/bin/supervisorctl start obs"
-alias stop="/usr/bin/sudo /usr/bin/supervisorctl stop obs"
-alias restart="/usr/bin/sudo /usr/bin/supervisorctl restart obs"
+workers='obs-worker obs-worker2'
 
-alias start-worker="/usr/bin/sudo /usr/bin/supervisorctl start obs-worker"
-alias stop-worker="/usr/bin/sudo /usr/bin/supervisorctl stop obs-worker"
-alias restart-worker="/usr/bin/sudo /usr/bin/supervisorctl restart obs-worker"
+function start {
+    if [ "$1" == "" ]; then
+        sudo supervisorctl start obs
+    elif [ "$1" == "workers" ] ; then
+        for i in $workers; do sudo supervisorctl start $i; done
+    else
+        sudo supervisorctl start $1
+    fi
+}
+function stop {
+    if [ "$1" == "" ]; then
+        sudo supervisorctl stop obs
+    elif [ "$1" == "workers" ] ; then
+        for i in $workers; do sudo supervisorctl stop $i; done
+    else
+        sudo supervisorctl stop $1
+    fi
+}
+function restart {
+    if [ "$1" == "" ]; then
+        sudo supervisorctl restart obs
+    elif [ "$1" == "workers" ] ; then
+        for i in $workers; do sudo supervisorctl restart $i; done
+    else
+        sudo supervisorctl restart $1
+    fi
+}
 
-#alias upgrade_all="pip install --upgrade --no-deps \`pip freeze | grep -v jango | sed 's/\=\=.*//g'\`"
-alias upgrade_all="pip install --upgrade --no-deps \`pip freeze | sed 's/\=\=.*//g'\`"
+alias start-worker="start workers"
+alias stop-worker="stop workers"
+alias restart-worker="restart workers"
