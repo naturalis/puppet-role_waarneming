@@ -9,7 +9,7 @@ server {
     #include include/block_ip.conf;
 
     location @uwsgi {
-    uwsgi_pass  unix:///var/uwsgi/obs.socket;
+        uwsgi_pass  unix:///var/uwsgi/obs.socket;
         include uwsgi_params;
     }
 
@@ -42,16 +42,24 @@ server {
 
 server {
     listen 80;
-    server_name beta.waarneming-test.nl;
+    server_name beta.waarneming-test.nl beta-test.waarneming.nl;
     return 301 https://beta.waarneming-test.nl$request_uri;
 }
 
 server {
-    listen 80;
     listen 443 ssl;
+    server_name beta-test.waarneming.nl;
+
     ssl_certificate /etc/nginx/ssl/waarneming.nl/fullchain.pem;
     ssl_certificate_key /etc/nginx/ssl/waarneming.nl/privkey.pem;
+    include include/pfs.conf;
 
-    server_name beta-test.waarneming.nl;
-    return 301 https://beta.waarneming-test.nl$request_uri;
+    location / {
+        return 301 https://beta.waarneming-test.nl$request_uri;
+    }
+
+    location /api/ {
+        uwsgi_pass  unix:///var/uwsgi/obs.socket;
+        include uwsgi_params;
+    }
 }
