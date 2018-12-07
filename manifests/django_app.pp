@@ -195,6 +195,15 @@ class role_waarneming::django_app (
     notify  => Service['supervisor'],
   }
 
+  file { '/etc/supervisor/conf.d/obs-beat.conf':
+    ensure  => present,
+    owner  => 'root',
+    group  => 'root',
+    source  => 'puppet:///modules/role_waarneming/supervisor_obs-beat.conf',
+    require => Package['supervisor'],
+    notify  => Service['supervisor'],
+  }
+
   file { '/etc/supervisor/conf.d/obs-worker.conf':
     ensure  => present,
     owner  => 'root',
