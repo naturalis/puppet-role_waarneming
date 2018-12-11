@@ -4,12 +4,11 @@ server {
     ssl_certificate /etc/nginx/ssl/observation-acc.org/fullchain1.pem;
     ssl_certificate_key /etc/nginx/ssl/observation-acc.org/privkey1.pem;
     include include/pfs.conf;
-    keepalive_timeout	60;
     access_log		/var/log/nginx/observation-acc.org_access.log custom;
     error_log		/var/log/nginx/observation-acc.org_error.log;
 
+    include include/redirect_to_world.conf;
     include include/common-site-config.conf;
-    include include/phppgadmin.conf;
 }
 
 server {
