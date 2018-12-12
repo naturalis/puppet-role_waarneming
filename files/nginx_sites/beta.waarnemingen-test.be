@@ -2,8 +2,8 @@ server {
     listen		443 ssl;
     server_name		beta.waarnemingen-test.be;
 
-    ssl_certificate	/etc/nginx/ssl/waarnemingen-test.be/fullchain1.pem;
-    ssl_certificate_key	/etc/nginx/ssl/waarnemingen-test.be/privkey1.pem;
+    ssl_certificate	/etc/letsencrypt/live/waarnemingen-test.be/fullchain.pem;
+    ssl_certificate_key	/etc/letsencrypt/live/waarnemingen-test.be/privkey.pem;
     include include/pfs.conf;
 
     #include include/block_ip.conf;

@@ -1,8 +1,8 @@
 server {
     listen		443 ssl;
     server_name		observation-acc.org *.observation-acc.org;
-    ssl_certificate /etc/nginx/ssl/observation-acc.org/fullchain1.pem;
-    ssl_certificate_key /etc/nginx/ssl/observation-acc.org/privkey1.pem;
+    ssl_certificate /etc/letsencrypt/live/observation-acc.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/observation-acc.org/privkey.pem;
     include include/pfs.conf;
     access_log		/var/log/nginx/observation-acc.org_access.log custom;
     error_log		/var/log/nginx/observation-acc.org_error.log;

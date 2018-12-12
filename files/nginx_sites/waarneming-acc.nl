@@ -1,8 +1,8 @@
 server {
     listen		443 ssl;
     server_name		waarneming-acc.nl;
-    ssl_certificate /etc/nginx/ssl/waarneming-acc.nl/fullchain1.pem;
-    ssl_certificate_key /etc/nginx/ssl/waarneming-acc.nl/privkey1.pem;
+    ssl_certificate /etc/letsencrypt/live/waarneming-acc.nl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarneming-acc.nl/privkey.pem;
     include include/pfs.conf;
     access_log		/var/log/nginx/waarneming-acc.nl_access.log custom;
     error_log		/var/log/nginx/waarneming-acc.nl_error.log;
@@ -13,8 +13,8 @@ server {
 server {
     listen      443 ssl;
     server_name     *.waarneming-acc.nl;
-    ssl_certificate /etc/nginx/ssl/waarneming-acc.nl/fullchain1.pem;
-    ssl_certificate_key /etc/nginx/ssl/waarneming-acc.nl/privkey1.pem;
+    ssl_certificate /etc/letsencrypt/live/waarneming-acc.nl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarneming-acc.nl/privkey.pem;
     include include/pfs.conf;
     access_log      /var/log/nginx/waarneming-acc.nl_access.log custom;
     error_log       /var/log/nginx/waarneming-acc.nl_error.log;
