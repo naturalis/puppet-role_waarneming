@@ -1,8 +1,8 @@
 server {
     listen		443 ssl;
     server_name		noordzee.waarneming.nl noordzee-acc.waarneming.nl noordzee-test.waarneming.nl;
-    ssl_certificate	/etc/nginx/ssl/waarneming_nl-chained.crt;
-    ssl_certificate_key	/etc/nginx/ssl/waarneming_nl.key;
+    ssl_certificate	/etc/letsencrypt/live/waarneming.nl/fullchain.pem;
+    ssl_certificate_key	/etc/letsencrypt/live/waarneming.nl/privkey.pem;
 
     #include include/block_ip.conf;
 

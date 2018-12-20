@@ -50,8 +50,8 @@ server {
     listen 443 ssl;
     server_name beta-test.waarneming.nl;
 
-    ssl_certificate /etc/nginx/ssl/waarneming.nl/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/waarneming.nl/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/waarneming.nl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarneming.nl/privkey.pem;
     include include/pfs.conf;
 
     location / {

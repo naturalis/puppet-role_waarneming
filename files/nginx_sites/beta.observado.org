@@ -2,8 +2,8 @@ server {
     listen		443 ssl;
     server_name beta.observado.org;
 
-    ssl_certificate /etc/nginx/ssl/observado.org/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/observado.org/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/observado.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/observado.org/privkey.pem;
     include include/pfs.conf;
 
     #include include/block_ip.conf;

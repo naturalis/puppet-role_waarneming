@@ -27,8 +27,8 @@ server {
 server {
     listen 80;
     listen 443 ssl;
-    ssl_certificate /etc/nginx/ssl/observation.org/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/observation.org/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/observation.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/observation.org/privkey.pem;
 
     server_name test.observation.org;
     return 301 https://observation-test.org$request_uri;

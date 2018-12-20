@@ -49,8 +49,8 @@ server {
 server {
     listen 80;
     listen 443 ssl;
-    ssl_certificate /etc/nginx/ssl/waarneming.nl/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/waarneming.nl/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/waarneming.nl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarneming.nl/privkey.pem;
 
     server_name beta-acc.waarneming.nl;
     return 301 https://beta.waarneming-acc.nl$request_uri;

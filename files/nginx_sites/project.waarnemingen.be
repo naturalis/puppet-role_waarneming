@@ -1,8 +1,8 @@
 server {
     listen		443 ssl;
     server_name		project.waarnemingen.be project-acc.waarnemingen.be project-test.waarnemingen.be;
-    ssl_certificate	/etc/nginx/ssl/waarnemingen_be-chained.crt;
-    ssl_certificate_key	/etc/nginx/ssl/waarnemingen_be.key;
+    ssl_certificate	     /etc/letsencrypt/live/waarnemingen.be/fullchain.pem;
+    ssl_certificate_key	 /etc/letsencrypt/live/waarnemingen.be/privkey.pem;
 
     #include include/block_ip.conf;
 

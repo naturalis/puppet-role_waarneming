@@ -2,8 +2,8 @@ server {
     listen		443 ssl;
     server_name		waarnemingen.be *.waarnemingen.be;
 
-    ssl_certificate /etc/nginx/ssl/waarnemingen.be/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/waarnemingen.be/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/waarnemingen.be/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarnemingen.be/privkey.pem;
     include include/pfs.conf;
 
     keepalive_timeout	60;

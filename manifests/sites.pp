@@ -1,20 +1,6 @@
 # Copy all website configs verbatim
 class role_waarneming::sites (
   $defaults = { require => Package['nginx'] },
-  $certs_and_keys = {
-    '/etc/nginx/ssl/waarneming_nl-chained.crt'   => { content => $::role_waarneming::conf::waarneming_nl_crt },
-    '/etc/nginx/ssl/observation_org-chained.crt' => { content => $::role_waarneming::conf::observation_org_crt },
-    '/etc/nginx/ssl/observations_be-chained.crt' => { content => $::role_waarneming::conf::observations_be_crt },
-    '/etc/nginx/ssl/waarnemingen_be-chained.crt' => { content => $::role_waarneming::conf::waarnemingen_be_crt },
-    '/etc/nginx/ssl/www_wnimg_nl-chained.crt'    => { content => $::role_waarneming::conf::www_wnimg_nl_crt },
-    '/etc/nginx/ssl/waarneming_nl.key'           => { content => $::role_waarneming::conf::waarneming_nl_key },
-    '/etc/nginx/ssl/observation_org.key'         => { content => $::role_waarneming::conf::observation_org_key },
-    '/etc/nginx/ssl/observations_be.key'         => { content => $::role_waarneming::conf::observations_be_key },
-    '/etc/nginx/ssl/waarnemingen_be.key'         => { content => $::role_waarneming::conf::waarnemingen_be_key },
-    '/etc/nginx/ssl/www_wnimg_nl.key'            => { content => $::role_waarneming::conf::www_wnimg_nl_key },
-    '/etc/nginx/ssl'                             => { source       => 'puppet:///modules/role_waarneming/nginx_ssl',
-                                                      recurse      => true, },
-  },
   $sites = {
     '/etc/nginx/sites-enabled/default'                   => { source => 'puppet:///modules/role_waarneming/nginx_sites/default' },
     '/etc/nginx/sites-enabled/observado.org'             => { source => 'puppet:///modules/role_waarneming/nginx_sites/observado.org' },
@@ -55,9 +41,6 @@ class role_waarneming::sites (
     notify => Service['nginx'],
     require => Package['nginx'],
   }
-
-  # SSL certs and keys for sites
-  create_resources(file, $certs_and_keys, $defaults)
 
   # Nginx site config files, verbatim
   create_resources(file, $sites, $defaults)

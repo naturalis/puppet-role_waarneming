@@ -2,8 +2,8 @@ server {
     listen		443 ssl;
     server_name beta.observation.org;
 
-    ssl_certificate /etc/nginx/ssl/observation.org/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/observation.org/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/observation.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/observation.org/privkey.pem;
     include include/pfs.conf;
 
     #include include/block_ip.conf;

@@ -29,8 +29,8 @@ server {
 server {
     listen 80;
     listen 443 ssl;
-    ssl_certificate /etc/nginx/ssl/waarnemingen.be/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/waarnemingen.be/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/waarnemingen.be/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarnemingen.be/privkey.pem;
 
     server_name test.waarnemingen.be;
     return 301 https://waarnemingen-test.be$request_uri;

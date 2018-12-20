@@ -226,5 +226,4 @@ class role_waarneming::db (
     target  => "/usr/lib/postgresql/${::role_waarneming::conf::postgresql_version}/bin/pg_basebackup",
     require => Class['postgresql::globals']
   }
-    
 }

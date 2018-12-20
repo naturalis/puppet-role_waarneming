@@ -3,8 +3,8 @@ server {
     server_name ~^(?<sub>\w+)\.observado\.org$;
     rewrite ^ https://$sub.observation.org$request_uri? permanent;
 
-    ssl_certificate     /etc/nginx/ssl/observado.org/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/observado.org/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/observado.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/observado.org/privkey.pem;
     include include/pfs.conf;
 
     access_log      /var/log/nginx/observation.org_nossl_access.log custom;
@@ -15,8 +15,8 @@ server {
     listen          443;
     server_name observado.org;
 
-    ssl_certificate     /etc/nginx/ssl/observado.org/fullchain.pem;
-    ssl_certificate_key /etc/nginx/ssl/observado.org/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/observado.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/observado.org/privkey.pem;
     include include/pfs.conf;
 
     access_log  /var/log/nginx/observado.org_access.log custom;
