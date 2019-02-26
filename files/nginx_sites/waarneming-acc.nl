@@ -7,6 +7,7 @@ server {
     access_log		/var/log/nginx/waarneming-acc.nl_access.log custom;
     error_log		/var/log/nginx/waarneming-acc.nl_error.log;
     include include/common-site-config-new.conf;
+    include include/custom-error-page.conf;
     include include/phppgadmin.conf;
 }
 
