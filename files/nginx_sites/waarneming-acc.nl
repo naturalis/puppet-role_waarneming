@@ -1,6 +1,6 @@
 server {
     listen		443 ssl;
-    server_name		waarneming-acc.nl;
+    server_name		waarneming-acc.nl nederlandzoemt.waarneming-acc.nl;
     ssl_certificate /etc/letsencrypt/live/waarneming-acc.nl/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/waarneming-acc.nl/privkey.pem;
     include include/pfs.conf;
