@@ -1,6 +1,6 @@
 server {
     listen		443 ssl;
-    server_name		waarneming.nl;
+    server_name		waarneming.nl noordzee.waarneming.nl nederlandzoemt.waarneming.nl;
     ssl_certificate /etc/letsencrypt/live/waarneming.nl/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/waarneming.nl/privkey.pem;
     include include/pfs.conf;
