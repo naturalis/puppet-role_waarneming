@@ -1,12 +1,13 @@
 server {
     listen		443 ssl;
-    server_name		waarneming.nl;
+    server_name		waarneming.nl noordzee.waarneming.nl nederlandzoemt.waarneming.nl;
     ssl_certificate /etc/letsencrypt/live/waarneming.nl/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/waarneming.nl/privkey.pem;
     include include/pfs.conf;
     access_log		/var/log/nginx/waarneming.nl_access.log custom;
     error_log		/var/log/nginx/waarneming.nl_error.log;
     include include/common-site-config-new.conf;
+    include include/custom-error-page.conf;
     include include/phppgadmin.conf;
 }
 
