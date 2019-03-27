@@ -1,25 +1,27 @@
 server {
-    listen		443 ssl;
-    server_name		waarnemingen-acc.be;
-    access_log		/var/log/nginx/waarnemingen-acc.be_access.log custom;
-    error_log		/var/log/nginx/waarnemingen-acc.be_error.log;
-    include include/pfs.conf;
-    access_log		/var/log/nginx/waarnemingen-acc.be_access.log custom;
-    error_log		/var/log/nginx/waarnemingen-acc.be_error.log;
-    include include/common-site-config-new.conf;
-    include include/phppgadmin.conf;
+    listen              443 ssl;
+    server_name		    waarnemingen-acc.be;
+    ssl_certificate     /etc/letsencrypt/live/waarnemingen-acc.be/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarnemingen-acc.be/privkey.pem;
+    include             include/pfs.conf;
+
+    access_log          /var/log/nginx/waarnemingen-acc.be_access.log custom;
+    error_log           /var/log/nginx/waarnemingen-acc.be_error.log;
+    include             include/common-site-config-new.conf;
+    include             include/phppgadmin.conf;
 }
 
 server {
-    listen      443 ssl;
-    server_name     *.waarnemingen-acc.be;
-    access_log		/var/log/nginx/waarnemingen-acc.be_access.log custom;
-    error_log		/var/log/nginx/waarnemingen-acc.be_error.log;
-    include include/pfs.conf;
-    access_log      /var/log/nginx/waarnemingen-acc.be_access.log custom;
-    error_log       /var/log/nginx/waarnemingen-acc.be_error.log;
-    include include/common-site-config.conf;
-    include include/phppgadmin.conf;
+    listen              443 ssl;
+    server_name         *.waarnemingen-acc.be;
+    ssl_certificate     /etc/letsencrypt/live/waarnemingen-acc.be/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarnemingen-acc.be/privkey.pem;
+    include             include/pfs.conf;
+
+    access_log          /var/log/nginx/waarnemingen-acc.be_access.log custom;
+    error_log           /var/log/nginx/waarnemingen-acc.be_error.log;
+    include             include/common-site-config.conf;
+    include             include/phppgadmin.conf;
 }
 
 server {

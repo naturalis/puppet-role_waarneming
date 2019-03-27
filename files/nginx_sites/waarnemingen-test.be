@@ -1,25 +1,27 @@
 server {
-    listen		443 ssl;
-    server_name		waarnemingen-test.be;
-    access_log		/var/log/nginx/waarnemingen-test.be_access.log custom;
-    error_log		/var/log/nginx/waarnemingen-test.be_error.log;
-    include include/pfs.conf;
-    access_log		/var/log/nginx/waarnemingen-test.be_access.log custom;
-    error_log		/var/log/nginx/waarnemingen-test.be_error.log;
-    include include/common-site-config-new.conf;
-    include include/phppgadmin.conf;
+    listen              443 ssl;
+    server_name         waarnemingen-test.be;
+    ssl_certificate     /etc/letsencrypt/live/waarnemingen-test.be/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarnemingen-test.be/privkey.pem;
+    include             include/pfs.conf;
+
+    access_log          /var/log/nginx/waarnemingen-test.be_access.log custom;
+    error_log           /var/log/nginx/waarnemingen-test.be_error.log;
+    include             include/common-site-config-new.conf;
+    include             include/phppgadmin.conf;
 }
 
 server {
-    listen      443 ssl;
-    server_name     *.waarnemingen-test.be;
-    access_log		/var/log/nginx/waarnemingen-test.be_access.log custom;
-    error_log		/var/log/nginx/waarnemingen-test.be_error.log;
-    include include/pfs.conf;
-    access_log      /var/log/nginx/waarnemingen-test.be_access.log custom;
-    error_log       /var/log/nginx/waarnemingen-test.be_error.log;
-    include include/common-site-config.conf;
-    include include/phppgadmin.conf;
+    listen              443 ssl;
+    server_name         *.waarnemingen-test.be;
+    ssl_certificate     /etc/letsencrypt/live/waarnemingen-test.be/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/waarnemingen-test.be/privkey.pem;
+    include             include/pfs.conf;
+
+    access_log          /var/log/nginx/waarnemingen-test.be_access.log custom;
+    error_log           /var/log/nginx/waarnemingen-test.be_error.log;
+    include             include/common-site-config.conf;
+    include             include/phppgadmin.conf;
 }
 
 server {
