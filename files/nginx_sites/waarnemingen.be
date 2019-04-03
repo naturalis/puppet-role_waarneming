@@ -1,27 +1,27 @@
 server {
-    listen		443 ssl;
-    server_name		waarnemingen.be *.waarnemingen.be;
+    listen              443 ssl;
+    server_name         waarnemingen.be *.waarnemingen.be;
 
-    ssl_certificate /etc/letsencrypt/live/waarnemingen.be/fullchain.pem;
+    ssl_certificate     /etc/letsencrypt/live/waarnemingen.be/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/waarnemingen.be/privkey.pem;
-    include include/pfs.conf;
+    include             include/pfs.conf;
 
-    keepalive_timeout	60;
-    access_log		/var/log/nginx/waarnemingen.be_access.log custom;
-    error_log		/var/log/nginx/waarnemingen.be_error.log;
+    keepalive_timeout   60;
+    access_log          /var/log/nginx/waarnemingen.be_access.log custom;
+    error_log           /var/log/nginx/waarnemingen.be_error.log;
 
-    include include/common-site-config.conf;
+    include             include/common-site-config.conf;
 }
 
 server {
-    listen		80;
-    server_name		waarnemingen.be *.waarnemingen.be;
-    access_log		/var/log/nginx/waarnemingen.be_nossl_access.log custom;
-    error_log		/var/log/nginx/waarnemingen.be_nossl_error.log;
+    listen              80;
+    server_name         waarnemingen.be *.waarnemingen.be;
+    access_log          /var/log/nginx/waarnemingen.be_nossl_access.log custom;
+    error_log           /var/log/nginx/waarnemingen.be_nossl_error.log;
 
     location / {
-	return 301 https://$host$request_uri;
+        return 301 https://$host$request_uri;
     }
 
-    include include/non-ssl-obsmapp.conf;
+    include             include/non-ssl-obsmapp.conf;
 }
