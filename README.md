@@ -7,9 +7,6 @@ Parameters
 -------------
 Sensible defaults for Naturalis in init.pp
 
-```
-
-```
 
 
 Classes
@@ -55,7 +52,7 @@ This module has been built on and tested against Puppet 4 and higher.
 The module has been tested on:
 - Ubuntu 16.04LTS
 
-Dependencies releases tested: 
+Dependencies releases tested:
 - puppetlabs/concat 1.2.0
 - voxpupuli/php
 
@@ -65,4 +62,3 @@ Dependencies releases tested:
 Authors
 -------------
 Author Name <hugo.vanduijn@naturalis.nl>
-

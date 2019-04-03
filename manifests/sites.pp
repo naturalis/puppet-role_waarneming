@@ -11,6 +11,7 @@ class role_waarneming::sites (
     '/etc/nginx/sites-enabled/waarnemingen.nl'           => { source => 'puppet:///modules/role_waarneming/nginx_sites/waarnemingen.nl' },
     '/etc/nginx/sites-enabled/wnimg'                     => { source => 'puppet:///modules/role_waarneming/nginx_sites/wnimg' },
     '/etc/nginx/sites-enabled/project.waarnemingen.be'   => { source => 'puppet:///modules/role_waarneming/nginx_sites/project.waarnemingen.be' },
+    '/etc/nginx/sites-enabled/project.waarnemingen-test.be' => { source => 'puppet:///modules/role_waarneming/nginx_sites/project.waarnemingen-test.be' },
     '/etc/nginx/sites-enabled/beta.waarneming.nl'        => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarneming.nl' },
     '/etc/nginx/sites-enabled/noordzee.waarneming.nl'    => { source => 'puppet:///modules/role_waarneming/nginx_sites/noordzee.waarneming.nl' },
     '/etc/nginx/sites-enabled/beta.waarnemingen.be'      => { source => 'puppet:///modules/role_waarneming/nginx_sites/beta.waarnemingen.be' },

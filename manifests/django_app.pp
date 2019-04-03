@@ -260,6 +260,36 @@ class role_waarneming::django_app (
     refreshonly => true,
   }
 
+  # Project app instance
+  # There is probably a better way to only apply this to the test environment
+  if ($::role_waarneming::conf::git_repo_rev_django == 'develop') {
+    vcsrepo { '/home/obs/project':
+      ensure   => $::role_waarneming::conf::git_repo_ensure_django,
+      provider => git,
+      source   => $::role_waarneming::conf::git_repo_url_django,
+      revision => 'project',
+      user     => 'obs',
+      require  => [
+        File['/home/obs/.ssh/id_rsa'],
+        Sshkey['bitbucket_org_rsa'],
+        Sshkey['bitbucket_org_dsa'],
+      ]
+    }
+    file { '/home/obs/project/.env':
+      content => template('role_waarneming/.env.erb'),
+      replace => $::role_waarneming::conf::obs_managesettings,
+      require => Vcsrepo['/home/obs/project'],
+    }
+    file { '/etc/supervisor/conf.d/project.conf':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      source  => 'puppet:///modules/role_waarneming/supervisor_project.conf',
+      require => Package['supervisor'],
+      notify  => Service['supervisor'],
+    }
+  }
+
   # Special defined resource until config is cleaned up
   # and we can use build-in nginx module resources
   # disabled while copying vhost config files verbatim
