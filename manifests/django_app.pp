@@ -153,7 +153,7 @@ class role_waarneming::django_app (
     virtualenv => present,
   }->
   python::virtualenv { '/home/obs/virtualenv' :
-    version      => '3.6',
+    version      => '3.7',
     distribute   => false,
     ensure       => present,
     requirements => '/home/obs/django/requirements.txt',
