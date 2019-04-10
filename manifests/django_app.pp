@@ -143,7 +143,7 @@ class role_waarneming::django_app (
     },
     notify   => Exec['apt_update']
   }
-  package {['python3.6-minimal', 'python3.6-dev']:
+  package {['python3.7-minimal', 'python3.7-dev']:
     require   => Apt::Source['deadsnakes']
   }
 
@@ -153,7 +153,7 @@ class role_waarneming::django_app (
     virtualenv => present,
   }->
   python::virtualenv { '/home/obs/virtualenv' :
-    version      => '3.6',
+    version      => '3.7',
     distribute   => false,
     ensure       => present,
     requirements => '/home/obs/django/requirements.txt',
