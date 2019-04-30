@@ -157,6 +157,7 @@ class role_waarneming::django_app (
     distribute   => false,
     ensure       => present,
     requirements => '/home/obs/django/requirements.txt',
+    extra_pip_args => '--no-binary :none:',
     owner        => 'obs',
     group        => 'obs',
     require      => [
