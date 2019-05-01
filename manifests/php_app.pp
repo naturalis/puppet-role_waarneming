@@ -145,6 +145,15 @@ class role_waarneming::php_app (
     require => File['/home/waarneming/scripts'],
   }
 
+  # Create settings.php
+  file { '/home/waarneming/www/_app/settings.php':
+    content => template('role_waarneming/settings.php.erb'),
+    replace => $::role_waarneming::conf::obs_managesettings,
+    owner   => 'waarneming',
+    group   => 'waarneming',
+    require => [User['waarneming'],Vcsrepo['/home/waarneming/www']]
+  }
+
   # Configure postgres use credentials in app
   file { '/home/waarneming/www/_app/config.app.database.php':
     content => template('role_waarneming/config.app.database.php.erb'),

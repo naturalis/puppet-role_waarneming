@@ -1,0 +1,7 @@
+<?php
+define('SENTRY_ENABLE', <%= scope['::role_waarneming::conf::php_sentry_enable'] %>);
+define('SENTRY_DSN', '<%= scope['::role_waarneming::conf::php_sentry_dsn'] %>');
+define('TRACK_PHP_ENABLE', FALSE);
+#define('TRACK_PHP_REDIS_HOST', '/var/run/redis/redis.sock');
+define('TRACK_PHP_REDIS_HOST', '127.0.0.1');
+define('TRACK_PHP_REDIS_DB', 7);
