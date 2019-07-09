@@ -1,7 +1,7 @@
 # Install and configure PostgreSQL as slave
 class role_waarneming::db_slave (
   $config_entries = {
-    'max_connections'      => {value => 150},
+    'max_connections'      => {value => 250},
     'hot_standby'          => {value => 'on'},
     'hot_standby_feedback' => {value => 'on'},
     'max_worker_processes' => {value => 16},
