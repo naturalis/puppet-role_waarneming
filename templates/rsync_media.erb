@@ -13,4 +13,4 @@ touch /var/log/rsync_media.log
 chown waarneming:root /var/log/rsync_media.log
 
 # rsync with --delete option, without compression. 
-/bin/su waarneming -c "rsync -avh --no-owner --no-group --no-perms --delete --log-file=/var/log/rsync_media.log waarneming@<%= scope['::role_waarneming::conf::web_host_prod'] %>:/data/waarneming/media /data/waarneming/"
+/bin/su waarneming -c "rsync -avh --no-owner --no-group --delete --log-file=/var/log/rsync_media.log waarneming@<%= scope['::role_waarneming::conf::web_host_prod'] %>:/data/waarneming/media /data/waarneming/"

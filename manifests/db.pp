@@ -80,7 +80,7 @@ class role_waarneming::db (
     'pg_stat_statements.track'          => {value => 'all'},
     'log_timezone'                      => {value => 'localtime'},
     'wal_level'                         => {value => 'hot_standby'},
-    'max_wal_senders'                   => {value => 2},
+    'max_wal_senders'                   => {value => 3},
     'max_worker_processes'              => {value => 16},
     'max_parallel_workers_per_gather'   => {value => 2},
     'wal_keep_segments'                 => {value => 512},
