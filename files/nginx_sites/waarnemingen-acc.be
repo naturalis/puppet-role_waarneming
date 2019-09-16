@@ -1,6 +1,6 @@
 server {
     listen              443 ssl;
-    server_name		    waarnemingen-acc.be;
+    server_name		    waarnemingen-acc.be mijntuinlab.waarnemingen-acc.be;
     ssl_certificate     /etc/letsencrypt/live/waarnemingen-acc.be/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/waarnemingen-acc.be/privkey.pem;
     include             include/pfs.conf;

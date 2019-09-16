@@ -1,6 +1,6 @@
 server {
     listen		443 ssl;
-    server_name		beta.observation-acc.org;
+    server_name		beta.observation-acc.org stagbeetle.observation-acc.org;
     ssl_certificate	/etc/letsencrypt/live/observation-acc.org/fullchain.pem;
     ssl_certificate_key	/etc/letsencrypt/live/observation-acc.org/privkey.pem;
     include include/pfs.conf;
@@ -11,7 +11,7 @@ server {
 
 server {
     listen 80;
-    server_name		beta.observation-acc.org;
+    server_name		beta.observation-acc.org stagbeetle.observation-acc.org;
     rewrite ^ https://$host$request_uri? permanent;
 }
 

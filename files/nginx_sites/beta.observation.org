@@ -1,6 +1,6 @@
 server {
     listen		443 ssl;
-    server_name beta.observation.org;
+    server_name beta.observation.org stagbeetle.observation.org;
 
     ssl_certificate /etc/letsencrypt/live/observation.org/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/observation.org/privkey.pem;
@@ -12,6 +12,6 @@ server {
 
 server {
     listen 80;
-    server_name beta.observation.org;
+    server_name beta.observation.org stagbeetle.observation.org;
     rewrite ^ https://$host$request_uri? permanent;
 }
