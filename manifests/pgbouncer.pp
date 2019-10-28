@@ -32,5 +32,7 @@ class role_waarneming::pgbouncer (
     ],
     pool_mode   => 'session',
     pidfile     => '/var/run/postgresql/pgbouncer.pid',
+    options     => { 'log_connections'      => '0',
+                     'log_disconnections'   => '0'}
   }
 }
