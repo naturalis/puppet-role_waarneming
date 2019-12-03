@@ -1,6 +1,6 @@
 server {
     listen		*:443 ssl;
-    server_name		observations.be *.observations.be;
+    server_name		observations.be www.observations.be;
 
     ssl_certificate /etc/letsencrypt/live/observations.be/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/observations.be/privkey.pem;
@@ -13,7 +13,7 @@ server {
 
 server {
     listen		*:443 ssl;
-    server_name		old.observations.be;
+    server_name		old.observations.be *.observations.be;
 
     ssl_certificate /etc/letsencrypt/live/observations.be/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/observations.be/privkey.pem;
