@@ -100,6 +100,12 @@ class role_waarneming::django_app (
     require => File['/home/obs/.ssh'],
   }
 
+  exec { "ssh_known_host_github":
+     command => "/usr/bin/ssh-keyscan github.com >> /home/obs/.ssh/known_hosts",
+     unless  => "/bin/grep github.com /home/obs/.ssh/known_hosts",
+     user    => 'obs',
+   }
+
   # Check out bitbucket repo
   vcsrepo { '/home/obs/django':
     ensure   => $::role_waarneming::conf::git_repo_ensure_django,
@@ -107,10 +113,10 @@ class role_waarneming::django_app (
     source   => $::role_waarneming::conf::git_repo_url_django,
     revision => $::role_waarneming::conf::git_repo_rev_django,
     user     => 'obs',
+    trust_server_cert => true,
     require  => [
       File['/home/obs/.ssh/id_rsa'],
-      Sshkey['bitbucket_org_rsa'],
-      Sshkey['bitbucket_org_dsa'],
+      Exec['ssh_known_host_github'],
     ]
   }
 
@@ -270,10 +276,10 @@ class role_waarneming::django_app (
       source   => $::role_waarneming::conf::git_repo_url_django,
       revision => 'project',
       user     => 'obs',
+      trust_server_cert => true,
       require  => [
         File['/home/obs/.ssh/id_rsa'],
-        Sshkey['bitbucket_org_rsa'],
-        Sshkey['bitbucket_org_dsa'],
+        Exec['ssh_known_host_github'],
       ]
     }
     file { '/home/obs/project/.env':
