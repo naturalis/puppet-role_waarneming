@@ -153,6 +153,13 @@ class role_waarneming::django_app (
     require   => Apt::Source['deadsnakes']
   }
 
+  # libgdal20 is required for Django 3.0 and not present in Ubuntu 16.04
+  ::apt::ppa { 'ppa:ubuntugis/ppa': }
+  package { ['libgdal20']:
+    ensure  => present,
+    require => [Class['apt::update'], Apt::Ppa['ppa:ubuntugis/ppa']],
+  }
+
   # Install python, python-dev, virtualenv and create the virtualenv
   class { '::python':
     dev        => present,
