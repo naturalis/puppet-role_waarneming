@@ -219,11 +219,6 @@ class role_waarneming::db (
     recurse => true,
   }
   
-  # Jq for json magic
-  package { 'jq':
-    ensure => present,
-  }
-
   # Generating postgres restore script
   file { '/usr/local/sbin/restore_db.sh':
     mode    => '0700',
