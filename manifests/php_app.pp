@@ -106,6 +106,12 @@ class role_waarneming::php_app (
     user  => 'waarneming',
   }
 
+  exec { 'ssh_known_host_github':
+     command => '/usr/bin/ssh-keyscan github.com >> /home/waarneming/.ssh/known_hosts',
+     unless  => '/bin/grep github.com /home/waarneming/.ssh/known_hosts',
+     user    => 'waarneming',
+   }
+
   file { '/home/waarneming/media':
     ensure  => link,
     target  => '/data/waarneming/media',

@@ -100,9 +100,9 @@ class role_waarneming::django_app (
     require => File['/home/obs/.ssh'],
   }
 
-  exec { "ssh_known_host_github":
-     command => "/usr/bin/ssh-keyscan github.com >> /home/obs/.ssh/known_hosts",
-     unless  => "/bin/grep github.com /home/obs/.ssh/known_hosts",
+  exec { 'ssh_known_host_github':
+     command => '/usr/bin/ssh-keyscan github.com >> /home/obs/.ssh/known_hosts',
+     unless  => '/bin/grep github.com /home/obs/.ssh/known_hosts',
      user    => 'obs',
    }
 
