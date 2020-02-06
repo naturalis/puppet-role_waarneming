@@ -106,7 +106,7 @@ class role_waarneming::php_app (
     user  => 'waarneming',
   }
 
-  exec { 'ssh_known_host_github':
+  exec { 'ssh_known_host_github_waarneming':
      command => '/usr/bin/ssh-keyscan github.com >> /home/waarneming/.ssh/known_hosts',
      unless  => '/bin/grep github.com /home/waarneming/.ssh/known_hosts',
      user    => 'waarneming',
