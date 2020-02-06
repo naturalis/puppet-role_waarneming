@@ -128,8 +128,7 @@ class role_waarneming::php_app (
     notify   => Service['php7.2-fpm'],
     require  => [
       File['/home/waarneming/.ssh/id_rsa'],
-      Sshkey['bitbucket_org_rsa'],
-      Sshkey['bitbucket_org_dsa'],
+      Exec['ssh_known_host_github_waarneming']
     ]
   }
 

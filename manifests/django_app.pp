@@ -116,7 +116,7 @@ class role_waarneming::django_app (
     trust_server_cert => true,
     require  => [
       File['/home/obs/.ssh/id_rsa'],
-      Exec['ssh_known_host_github'],
+      Exec['ssh_known_host_github_obs'],
     ]
   }
 
