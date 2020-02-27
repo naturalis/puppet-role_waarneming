@@ -73,7 +73,7 @@ class role_waarneming::conf (
   $db_slave_zostera    = '127.0.0.1',
   $db_slave_zostera2   = '127.0.0.1',
   $db_name             = 'waarneming',
-  $postgresql_version  = '9.6',
+  $postgresql_version  = '12',
   $pgbouncer_port      = 5432,
   $waarneming_password,
   $local_be_password,
@@ -91,6 +91,6 @@ class role_waarneming::conf (
   class { '::postgresql::globals':
     manage_package_repo => true,
     version             => $postgresql_version,
-    postgis_version     => '2.3',
+    postgis_version     => '3',
   }
 }
