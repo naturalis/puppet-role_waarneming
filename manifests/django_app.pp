@@ -160,6 +160,16 @@ class role_waarneming::django_app (
     require => [Class['apt::update'], Apt::Ppa['ppa:ubuntugis/ppa']],
   }
 
+  # Manually create virtualenv if it doesn't exist
+  exec { 'create virtualenv':
+    command     => 'python3.8 -m venv virtualenv',
+    creates     => '/home/obs/virtualenv',
+    path        => '/usr/bin',
+    cwd         => '/home/obs',
+    user        => 'obs',
+    timeout     => 0,
+  }
+
   # Install python, python-dev, virtualenv and create the virtualenv
   class { '::python':
     dev        => present,
