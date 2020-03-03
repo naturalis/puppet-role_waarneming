@@ -172,7 +172,7 @@ class role_waarneming::django_app (
 
   exec { 'install requirements':
     command     => 'pip install --upgrade pip ; pip install --upgrade ipython -r /home/obs/django/requirements.txt',
-    path        => '/home/obs/virtualenv/bin/',
+    path        => '/home/obs/virtualenv/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     cwd         => '/home/obs',
     user        => 'obs',
     timeout     => 0,
