@@ -125,7 +125,7 @@ class role_waarneming::php_app (
     source   => $::role_waarneming::conf::git_repo_url_php,
     revision => $::role_waarneming::conf::git_repo_rev_php,
     user     => 'waarneming',
-    notify   => Service['php7.2-fpm'],
+    notify   => Service['php7.4-fpm'],
     require  => [
       File['/home/waarneming/.ssh/id_rsa'],
       Exec['ssh_known_host_github_waarneming']
@@ -178,15 +178,14 @@ class role_waarneming::php_app (
   ::apt::ppa { 'ppa:ondrej/php': }
 
   $php_packages = [
-    'php7.2-fpm',
-    'php7.2-curl',
-    'php7.2-gd',
-    'php7.2-pgsql',
-    'php7.2-intl',
-    'php7.2-mbstring',
-    'php7.2-xml',
-    'php7.2-zip',
-    'php-amqp',
+    'php7.4-fpm',
+    'php7.4-curl',
+    'php7.4-gd',
+    'php7.4-pgsql',
+    'php7.4-intl',
+    'php7.4-mbstring',
+    'php7.4-xml',
+    'php7.4-zip',
     'php-memcached',
     'php-redis',
   ]
@@ -198,6 +197,7 @@ class role_waarneming::php_app (
   #remove php 7.0 
   $remove_php_packages = [
     'php7.0-fpm',
+    'php7.2-fpm',
   ]
   package { $remove_php_packages:
     ensure  => absent,
@@ -206,24 +206,24 @@ class role_waarneming::php_app (
 
 
   # Configure and run fpm service
-  file { '/etc/php/7.2/fpm/php.ini':
+  file { '/etc/php/7.4/fpm/php.ini':
     ensure  => present,
     content => template('role_waarneming/php.ini.erb'),
-    notify  => Service['php7.2-fpm'],
-    require => Package['php7.2-fpm'],
+    notify  => Service['php7.4-fpm'],
+    require => Package['php7.4-fpm'],
   }
 
-  file { '/etc/php/7.2/fpm/pool.d/www.conf':
+  file { '/etc/php/7.4/fpm/pool.d/www.conf':
     source  => 'puppet:///modules/role_waarneming/fpm/www.conf',
-    notify  => Service['php7.2-fpm'],
-    require => Package['php7.2-fpm'],
+    notify  => Service['php7.4-fpm'],
+    require => Package['php7.4-fpm'],
   }
 
-  service { 'php7.2-fpm':
+  service { 'php7.4-fpm':
     ensure  => running,
     enable  => true,
     require => [
-      Package['php7.2-fpm'],
+      Package['php7.4-fpm'],
       Class['redis'],
       Package[$remove_php_packages]
     ],
