@@ -162,32 +162,17 @@ class role_waarneming::django_app (
 
   # Manually create virtualenv if it doesn't exist
   exec { 'create virtualenv':
-    command     => 'python3.8 -m venv virtualenv',
+    command     => [
+      'python3.8 -m venv virtualenv',
+      'pip install --upgrade pip',
+      'pip install --upgrade ipython',
+      'pip install --upgrade -r /home/obs/django/requirements.txt',
+    ],
     creates     => '/home/obs/virtualenv',
-    path        => '/usr/bin',
+    path        => ['/home/obs/virtualenv/bin/', '/usr/bin'],
     cwd         => '/home/obs',
     user        => 'obs',
     timeout     => 0,
-  }
-
-  # Install python, python-dev, virtualenv and create the virtualenv
-  class { '::python':
-    dev        => present,
-    virtualenv => present,
-  }->
-  python::virtualenv { '/home/obs/virtualenv' :
-    version      => '3.8',
-    distribute   => false,
-    ensure       => present,
-    requirements => '/home/obs/django/requirements.txt',
-    extra_pip_args => '--no-binary :none:',
-    owner        => 'obs',
-    group        => 'obs',
-    require      => [
-      Vcsrepo['/home/obs/django'],
-      Class['postgresql::lib::devel'],
-      Package['libjpeg-dev','libpng12-dev']
-    ],
   }
 
   # Supervisord is used to manage the django UWSGI process
