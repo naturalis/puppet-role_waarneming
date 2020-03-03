@@ -244,7 +244,6 @@ class role_waarneming::django_app (
     user        => 'obs',
     require     => [
       File['/home/obs/django/.env'],
-      Python::Virtualenv['/home/obs/virtualenv'],
     ],
     before      => Exec['restart obs'],
     subscribe   => Vcsrepo['/home/obs/django'],
@@ -259,7 +258,6 @@ class role_waarneming::django_app (
     user        => 'obs',
     require     => [
       File['/home/obs/django/.env'],
-      Python::Virtualenv['/home/obs/virtualenv'],
     ],
     before      => Exec['restart obs'],
     subscribe   => Vcsrepo['/home/obs/django'],
