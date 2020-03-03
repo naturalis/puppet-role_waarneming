@@ -162,17 +162,22 @@ class role_waarneming::django_app (
 
   # Manually create virtualenv if it doesn't exist
   exec { 'create virtualenv':
-    command     => [
-      'python3.8 -m venv virtualenv',
-      'pip install --upgrade pip',
-      'pip install --upgrade ipython',
-      'pip install --upgrade -r /home/obs/django/requirements.txt',
-    ],
+    command     => 'python3.8 -m venv virtualenv',
     creates     => '/home/obs/virtualenv',
-    path        => ['/home/obs/virtualenv/bin/', '/usr/bin'],
+    path        => '/usr/bin',
     cwd         => '/home/obs',
     user        => 'obs',
     timeout     => 0,
+  }
+
+  exec { 'install requirements':
+    command     => 'pip install --upgrade pip ; pip install --upgrade ipython -r /home/obs/django/requirements.txt',
+    path        => '/home/obs/virtualenv/bin/',
+    cwd         => '/home/obs',
+    user        => 'obs',
+    timeout     => 0,
+    subscribe   => Exec['create virtualenv'],
+    refreshonly => true,
   }
 
   # Supervisord is used to manage the django UWSGI process
