@@ -137,7 +137,7 @@ class role_waarneming::django_app (
     require => Class['apt::update'],
   }
 
-  ensure_packages(['libjpeg-dev','libpng12-dev','ffmpeg'])
+  ensure_packages(['build-essential', 'libjpeg-dev','libpng12-dev','ffmpeg'])
 
   apt::source { 'deadsnakes':
     location => 'http://ppa.launchpad.net/deadsnakes/ppa/ubuntu/',
