@@ -31,6 +31,7 @@ class role_waarneming::sites (
     '/etc/nginx/sites-enabled/waarnemingen-acc.be '      => { source => 'puppet:///modules/role_waarneming/nginx_sites/waarnemingen-acc.be' },
     '/etc/nginx/sites-enabled/observation-test.org '     => { source => 'puppet:///modules/role_waarneming/nginx_sites/observation-test.org' },
     '/etc/nginx/sites-enabled/observation-acc.org'       => { source => 'puppet:///modules/role_waarneming/nginx_sites/observation-acc.org' },
+    '/etc/nginx/sites-enabled/mijntuinlab.be'            => { source => 'puppet:///modules/role_waarneming/nginx_sites/mijntuinlab.be' },
   }
 ) {
   # Defaults for all file resources
