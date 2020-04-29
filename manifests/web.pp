@@ -32,11 +32,12 @@ class role_waarneming::web (
 
   # Activate memcached service
   class { 'memcached':
-    max_memory  => 10240,
-    user        => 'memcache',
-    listen_ip   => '127.0.0.1',
-    pidfile     => false,
-    install_dev => true,
+    max_memory    => 1024,
+    max_item_size => '10M',
+    user          => 'memcache',
+    listen_ip     => '127.0.0.1',
+    pidfile       => false,
+    install_dev   => true,
   }
 
   # Install nginx
