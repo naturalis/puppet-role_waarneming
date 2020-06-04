@@ -1,28 +1,11 @@
 server {
+    listen 80;
     listen		443 ssl;
-    server_name		beta.observation-acc.org stagbeetle.observation-acc.org;
-    ssl_certificate	/etc/letsencrypt/live/observation-acc.org/fullchain.pem;
-    ssl_certificate_key	/etc/letsencrypt/live/observation-acc.org/privkey.pem;
+    server_name beta.observation-acc.org;
+
+    ssl_certificate /etc/letsencrypt/live/observation-acc.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/observation-acc.org/privkey.pem;
     include include/pfs.conf;
 
-    include include/common-site-config-new.conf;
-    include include/custom-error-page.conf;
+    rewrite ^ https://observation-acc.org$request_uri? permanent;
 }
-
-server {
-    listen 80;
-    server_name		beta.observation-acc.org stagbeetle.observation-acc.org;
-    rewrite ^ https://$host$request_uri? permanent;
-}
-
-
-server {
-    listen 80;
-    listen 443 ssl;
-    ssl_certificate /etc/letsencrypt/live/observation.org/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/observation.org/privkey.pem;
-
-    server_name beta-acc.observation.org;
-    return 301 https://beta.observation-acc.org$request_uri;
-}
-

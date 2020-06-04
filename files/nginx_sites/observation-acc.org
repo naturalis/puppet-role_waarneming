@@ -1,13 +1,24 @@
 server {
     listen		443 ssl;
-    server_name		observation-acc.org *.observation-acc.org;
+    server_name		observation-acc.org stagbeetle.observation-acc.org;
     ssl_certificate /etc/letsencrypt/live/observation-acc.org/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/observation-acc.org/privkey.pem;
     include include/pfs.conf;
     access_log		/var/log/nginx/observation-acc.org_access.log custom;
     error_log		/var/log/nginx/observation-acc.org_error.log;
 
-    include include/redirect_to_world.conf;
+    include include/common-site-config-new.conf;
+}
+
+server {
+    listen		443 ssl;
+    server_name		*.observation-acc.org;
+    ssl_certificate /etc/letsencrypt/live/observation-acc.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/observation-acc.org/privkey.pem;
+    include include/pfs.conf;
+    access_log		/var/log/nginx/observation-acc.org_access.log custom;
+    error_log		/var/log/nginx/observation-acc.org_error.log;
+
     include include/common-site-config.conf;
 }
 
