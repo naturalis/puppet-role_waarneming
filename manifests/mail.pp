@@ -7,7 +7,11 @@ class role_waarneming::mail (
   class { '::postfix':
     inet_interfaces => '127.0.0.1',
     myorigin        => 'waarneming.nl',
-    myhostname      => 'mail.waarneming.nl',
+  }
+
+  postfix::config { 'myhostname':
+    ensure  => present,
+    value   => 'mail.waarneming.nl',
   }
 
   postfix::config { 'inet_protocols':
