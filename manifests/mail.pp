@@ -7,6 +7,7 @@ class role_waarneming::mail (
   class { '::postfix':
     inet_interfaces => '127.0.0.1',
     myorigin        => 'waarneming.nl',
+    myhostname      => 'mail.waarneming.nl',
   }
 
   postfix::config { 'inet_protocols':
@@ -14,17 +15,17 @@ class role_waarneming::mail (
     value   => 'ipv4',
   }
 
-  postfix::config { 'smpt_destination_concurrency_limit':
+  postfix::config { 'smtp_destination_concurrency_limit':
     ensure  => present,
     value   => '2',
   }
 
-  postfix::config { 'smpt_destination_rate_delay':
+  postfix::config { 'smtp_destination_rate_delay':
     ensure  => present,
     value   => '1s',
   }
 
-  postfix::config { 'smpt_extra_recipient_limit':
+  postfix::config { 'smtp_extra_recipient_limit':
     ensure  => present,
     value   => '10',
   }
