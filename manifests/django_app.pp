@@ -220,19 +220,34 @@ class role_waarneming::django_app (
   }
 
   file { '/etc/supervisor/conf.d/obs-worker.conf':
+    ensure  => absent,
+  }
+  file { '/etc/supervisor/conf.d/obs-worker-default.conf':
     ensure  => present,
     owner  => 'root',
     group  => 'root',
-    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker.conf',
+    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker-default.conf',
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }
 
   file { '/etc/supervisor/conf.d/obs-worker2.conf':
+    ensure  => absent,
+  }
+  file { '/etc/supervisor/conf.d/obs-worker-identify.conf':
     ensure  => present,
     owner  => 'root',
     group  => 'root',
-    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker2.conf',
+    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker-identify.conf',
+    require => Package['supervisor'],
+    notify  => Service['supervisor'],
+  }
+
+  file { '/etc/supervisor/conf.d/obs-worker-export.conf':
+    ensure  => present,
+    owner  => 'root',
+    group  => 'root',
+    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker-export.conf',
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }

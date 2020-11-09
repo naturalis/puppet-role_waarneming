@@ -1,6 +1,6 @@
 source ~/virtualenv/bin/activate
 
-workers='obs-worker obs-worker2'
+workers='obs-worker-default obs-worker-identify obs-worker-export'
 
 function start {
     if [ "$1" == "" ]; then
