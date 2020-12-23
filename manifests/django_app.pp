@@ -6,23 +6,9 @@ class role_waarneming::django_app (
       'ssl_crt'     => $::role_waarneming::conf::observation_crt,
       'server_name' => 'test-nl.observation.org test-be.observation.org',
     },
-  },
-
-  $ssh_keys = {
-    'obs_django'     => { user => 'obs', key => $::role_waarneming::conf::ssh_key_obs },
-    'hugo_django'    => { user => 'obs', key => $::role_waarneming::conf::ssh_key_hugo },
-    'dylan_django'   => { user => 'obs', key => $::role_waarneming::conf::ssh_key_dylan },
-    'folkert_django' => { user => 'obs', key => $::role_waarneming::conf::ssh_key_folkert },
-    'jieter_django'  => { user => 'obs', key => $::role_waarneming::conf::ssh_key_jieter },
-    'sjaak_django'  => { user => 'obs', key => $::role_waarneming::conf::ssh_key_sjaak },
-    'alex_django'    => { user => 'obs', key => $::role_waarneming::conf::ssh_key_alex },
-    'joep_django'    => { user => 'obs', key => $::role_waarneming::conf::ssh_key_joep },
-    'b1_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_b1 },
-    'b2_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_b2 },
-    'bt_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_bt },
-    'bh_django'      => { user => 'obs', key => $::role_waarneming::conf::ssh_key_bh },
   }
-) {
+)
+{
   # Install and configure webserver
   include ::role_waarneming::web
 
@@ -32,12 +18,6 @@ class role_waarneming::django_app (
     owner  => 'obs',
     group  => 'obs',
     mode   => '0644',
-  }
-
-  # Defaults for all ssh authorized keys
-  Ssh_Authorized_Key {
-    ensure => present,
-    type   => 'ssh-rsa',
   }
 
   # Create user and place ssh key
@@ -84,8 +64,6 @@ class role_waarneming::django_app (
     ensure  => directory,
     mode    => '0700',
   }
-
-  create_resources('ssh_authorized_key', $ssh_keys)
 
   # Place obs ssh key private and public parts
   file { '/home/obs/.ssh/id_rsa':

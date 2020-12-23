@@ -16,20 +16,9 @@ class role_waarneming::php_app (
       'ssl_crt'     => $::role_waarneming::conf::wnimg_crt,
       'server_name' => $::role_waarneming::conf::wnimg_server_name,
     },
-  },
-
-  $ssh_keys = {
-    'waarneming_php' => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_waarneming },
-    'hugo_php'       => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_hugo },
-    'dylan_php'      => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_dylan },
-    'hisko_php'      => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_hisko },
-    'sjaak_php'      => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_sjaak },
-    'b1_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_b1 },
-    'b2_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_b2 },
-    'bt_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_bt },
-    'bh_php'         => { user => 'waarneming', key => $::role_waarneming::conf::ssh_key_bh },
   }
-) {
+)
+{
   # Install and configure webserver
   include ::role_waarneming::web
 
@@ -41,12 +30,6 @@ class role_waarneming::php_app (
     mode   => '0644',
   }
 
-  # Defaults for all ssh authorized keys
-  Ssh_Authorized_Key {
-    ensure => present,
-    type   => 'ssh-rsa',
-  }
-
   # Create user and place ssh key and git config
   user { 'waarneming':
     ensure     => present,
@@ -56,7 +39,7 @@ class role_waarneming::php_app (
     managehome => true,
     shell      => '/bin/bash',
   }
-  
+
   # Create /home/waarneming/temp dir structure
   $tmpdir = '/home/waarneming/temp'
   $temp_dirs = [
@@ -83,8 +66,6 @@ class role_waarneming::php_app (
     require => User['waarneming'],
   }
 
-  create_resources('ssh_authorized_key', $ssh_keys)
-
   # Place obs ssh key private and public parts
   file { '/home/waarneming/.ssh/id_rsa':
     owner   => 'waarneming',
@@ -107,10 +88,10 @@ class role_waarneming::php_app (
   }
 
   exec { 'ssh_known_host_github_waarneming':
-     command => '/usr/bin/ssh-keyscan github.com >> /home/waarneming/.ssh/known_hosts',
-     unless  => '/bin/grep github.com /home/waarneming/.ssh/known_hosts',
-     user    => 'waarneming',
-   }
+    command => '/usr/bin/ssh-keyscan github.com >> /home/waarneming/.ssh/known_hosts',
+    unless  => '/bin/grep github.com /home/waarneming/.ssh/known_hosts',
+    user    => 'waarneming',
+  }
 
   file { '/home/waarneming/media':
     ensure  => link,
@@ -134,8 +115,8 @@ class role_waarneming::php_app (
 
   # Symlink scripts
   file { '/home/waarneming/scripts':
-    ensure => 'link',
-    target => '/home/waarneming/www/_scripts',
+    ensure  => 'link',
+    target  => '/home/waarneming/www/_scripts',
     owner   => 'waarneming',
     group   => 'waarneming',
     require => [User['waarneming'],Vcsrepo['/home/waarneming/www']]
@@ -169,7 +150,7 @@ class role_waarneming::php_app (
   }
 
   # Install required PHP packages
-   apt::key { 'ondrej':
+  apt::key { 'ondrej':
     id      => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
     server  => 'pgp.mit.edu',
     notify  => Exec['apt_update']
@@ -194,7 +175,7 @@ class role_waarneming::php_app (
     require => [Class['apt::update'],Apt::Ppa['ppa:ondrej/php'],Apt::Key['ondrej'],Package[$remove_php_packages]]
   }
 
-  #remove php 7.0 
+  #remove php 7.0
   $remove_php_packages = [
     'php7.0-fpm',
     'php7.2-fpm',
@@ -203,7 +184,6 @@ class role_waarneming::php_app (
     ensure  => absent,
     require => [Class['apt::update'],Apt::Ppa['ppa:ondrej/php'],Apt::Key['ondrej']]
   }
-
 
   # Configure and run fpm service
   file { '/etc/php/7.4/fpm/php.ini':
