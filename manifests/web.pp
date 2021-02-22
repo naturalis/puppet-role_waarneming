@@ -57,6 +57,14 @@ class role_waarneming::web (
     notify  => Service['nginx'],
     require => Package['nginx'],
   }
+  
+  # Nginx conf.d files, verbatim
+  file { '/etc/nginx/conf.d':
+    source  => 'puppet:///modules/role_waarneming/nginx_conf_d',
+    recurse => true,
+    notify  => Service['nginx'],
+    require => Package['nginx'],
+  }
 
   # Nginx phppgadmin.conf include config
   file { '/etc/nginx/include/phppgadmin.conf':
