@@ -27,6 +27,14 @@ class role_waarneming::common (
     gid    => '3107',
   }
 
+  file { '/etc/sysctl.conf':
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => 'puppet:///modules/role_waarneming/sysctl.conf',
+  }
+
   # Create special rsync user for backup sync
   user { 'rsync':
     ensure     => present,
