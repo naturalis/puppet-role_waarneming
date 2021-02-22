@@ -59,10 +59,9 @@ class role_waarneming::web (
     require => Package['nginx'],
   }
   
-  # Nginx conf.d files, verbatim
-  file { '/etc/nginx/conf.d':
-    source  => 'puppet:///modules/role_waarneming/nginx_conf_d',
-    recurse => true,
+  # Nginx conf.d/rate-limit.conf
+  file { '/etc/nginx/conf.d/rate-limit.conf':
+    source  => 'puppet:///modules/role_waarneming/nginx_conf_d/rate-limit.conf',
     notify  => Service['nginx'],
     require => Package['nginx'],
   }
