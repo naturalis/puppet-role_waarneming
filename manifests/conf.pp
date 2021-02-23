@@ -33,6 +33,11 @@ class role_waarneming::conf (
   # ::web, for direct copying of site configs
   $nginx_allow_ip = ['1.1.1.1','2.2.2.2'],
   $nginx_allow_user = {'user' => {'cryptpasswd' => 'xx'}, 'user2' => {'cryptpasswd' => 'yy'}},
+  $nginx_worker_processes = '4',
+  $supervisor_obs_processes = '48',
+  $supervisor_worker_default_processes = '4',
+  $supervisor_worker_export_processes = '4',
+  $supervisor_worker_identify_processes = '8,4',
   $waarneming_nl_crt,
   $waarneming_nl_key,
   $observation_org_crt,

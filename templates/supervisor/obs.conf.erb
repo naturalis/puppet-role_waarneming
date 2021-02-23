@@ -5,7 +5,7 @@ command=/home/obs/virtualenv/bin/uwsgi
   --socket /var/uwsgi/obs.socket
   --chmod-socket
   --master
-  --processes 48
+  --processes <%= scope['::role_waarneming::conf::supervisor_obs_processes'] %>
   --harakiri 61
   --max-requests 100
   --stats /var/uwsgi/obs_stats.socket
