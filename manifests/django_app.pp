@@ -290,7 +290,7 @@ class role_waarneming::django_app (
       ensure  => present,
       owner   => 'root',
       group   => 'root',
-      source  => 'puppet:///modules/role_waarneming/supervisor_project.conf',
+      content  => template('role_waarneming/supervisor/project.conf.erb'),
       require => Package['supervisor'],
       notify  => Service['supervisor'],
     }
