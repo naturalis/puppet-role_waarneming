@@ -183,7 +183,7 @@ class role_waarneming::django_app (
     ensure  => present,
     owner  => 'root',
     group  => 'root',
-    source  => 'puppet:///modules/role_waarneming/supervisor_obs.conf',
+    content  => template('role_waarneming/supervisor/obs.conf.erb'),
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }
@@ -192,7 +192,7 @@ class role_waarneming::django_app (
     ensure  => present,
     owner  => 'root',
     group  => 'root',
-    source  => 'puppet:///modules/role_waarneming/supervisor_obs-beat.conf',
+    content  => template('role_waarneming/supervisor/obs-beat.conf.erb'),
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }
@@ -204,7 +204,7 @@ class role_waarneming::django_app (
     ensure  => present,
     owner  => 'root',
     group  => 'root',
-    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker-default.conf',
+    content  => template('role_waarneming/supervisor/obs-worker-default.conf.erb'),
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }
@@ -216,7 +216,7 @@ class role_waarneming::django_app (
     ensure  => present,
     owner  => 'root',
     group  => 'root',
-    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker-identify.conf',
+    content  => template('role_waarneming/supervisor/obs-worker-identify.conf.erb'),
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }
@@ -225,7 +225,7 @@ class role_waarneming::django_app (
     ensure  => present,
     owner  => 'root',
     group  => 'root',
-    source  => 'puppet:///modules/role_waarneming/supervisor_obs-worker-export.conf',
+    content  => template('role_waarneming/supervisor/obs-worker-export.conf.erb'),
     require => Package['supervisor'],
     notify  => Service['supervisor'],
   }
