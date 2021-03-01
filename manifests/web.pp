@@ -58,10 +58,17 @@ class role_waarneming::web (
     notify  => Service['nginx'],
     require => Package['nginx'],
   }
+
+  # Nginx include/rate.conf
+  file { '/etc/nginx/include/rate.conf':
+    content => template('role_waarneming/nginx/include_rate.conf.erb'),
+    notify  => Service['nginx'],
+    require => Package['nginx'],
+  }
   
   # Nginx conf.d/rate-limit.conf
   file { '/etc/nginx/conf.d/rate-limit.conf':
-    source  => 'puppet:///modules/role_waarneming/nginx_conf_d/rate-limit.conf',
+    content => template('role_waarneming/nginx/conf_d_rate_limit.conf.erb'),
     notify  => Service['nginx'],
     require => Package['nginx'],
   }
@@ -77,13 +84,13 @@ class role_waarneming::web (
 
   # Nginx include block_ip.conf
   file { '/etc/nginx/include/block_ip.conf':
-    content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd'}),
+    content => epp('role_waarneming/nginx/block_ip.epp', {'htpassfile' => '.htpasswd'}),
     notify  => Service['nginx'],
   }
 
   # Nginx include block_ip_intern.conf
   file { '/etc/nginx/include/block_ip_intern.conf':
-    content => epp('role_waarneming/nginx_block_ip.epp', {'htpassfile' => '.htpasswd'}),
+    content => epp('role_waarneming/nginx/block_ip.epp', {'htpassfile' => '.htpasswd'}),
     notify  => Service['nginx'],
   }
 

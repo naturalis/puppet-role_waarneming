@@ -1,0 +1,2 @@
+limit_req_zone $binary_remote_addr zone=limitbyaddr:10m rate=<%= scope['::role_waarneming::conf::nginx_rate_requests'] %>;
+limit_req_status 429;
