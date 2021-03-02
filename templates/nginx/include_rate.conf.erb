@@ -1,0 +1,2 @@
+limit_req zone=limitbyaddr burst=<%= scope['::role_waarneming::conf::nginx_rate_burst'] %> delay=<%= scope['::role_waarneming::conf::nginx_rate_delay'] %>;
+limit_req_log_level <%= scope['::role_waarneming::conf::nginx_rate_log_level'] %>;
